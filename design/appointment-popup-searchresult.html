@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>SMS: Salon Management Software</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.uniform.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function(){
+		$("select.tall214Select").uniform({selectClass: 'tall214Selector'});
+		$("select.short268Select").uniform({selectClass: 'short268Selector'});
+      });
+    </script>
+<link href="uniform.default.css" rel="stylesheet" type="text/css" media="screen">
+<link href="sms-styles2.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+	<!-- START APPOINTMENT POPUP -->
+    	<div class="popupBox apptPopup">
+        	<div class="titleBar apptPopupBar clearfix">
+        	<div class="closeBtn floatRight"><p><a href="#" title="Close Window">Close&nbsp;&nbsp;<span class="closeIcon"></span></a></p></div>
+            <div class="floatLeft fDate"><p><span class="moveIcon"></span>New Appointment</p></div>
+            </div>
+          <div class="subTitleBar popupPad"><p>Client</p></div>
+          <div class="popupPadInput inputSmall fClientName"><input type="text" name="client_name"></div>
+          
+          <div class="resultBoxAppt">
+            	<div class="searchResultAppt"><a href="#"><strong>Holloway</strong>, Joan</a></div>
+                <div class="searchResultAppt"><a href="#"><strong>Holloway</strong>, Dartanian</a></div>
+                <div class="searchResultAppt"><a href="#"><strong>Holloway</strong>, Alexandra</a></div>
+                <div class="resultNonLink"><p>Too many results. Refine your search.</p></div>
+                <div class="clear"></div>
+                <div class="addClientBtn"><p><a href="#" title="Add New Client">Add John Holly</a></p></div>
+          </div>
+            
+            <div class="subTitleBar popupPad"><p>Phone Number</p></div>
+            <div class="popupPadInput inputSmall fPhoneNumber"><input type="text" name="client_name"></div></td>
+                    
+    <div class="subTitleBar popupPad"><p>Service</p></div>
+            <div class="apptPopupFiver">
+                <div class="short268"><select class="short268Select">
+                    <option>Haircut</option>
+                    <option>Color</option>
+                    <option>Blow Out</option>
+                    <option>Bridal</option>
+              </select></div>
+          </div>
+            
+            <div class="subTitleBar popupPad"><p>Stylist</p></div>
+            <div class="apptPopupFiver">
+                <div class="short268"><select class="short268Select">
+                    <option>Clarissa Malek</option>
+                    <option>Darth Maul</option>
+                    <option>Patrick Swayze</option>
+                    <option>Steven Segal</option>
+              </select></div>
+          </div>
+            
+            <table cellpadding="0" cellspacing="0">
+            	<tr>
+                	<td><div class="startTime subTitleBar fStartTime"><p>Start Time</p></div></td>
+                    <td><div class="endTime subTitleBar"><p>End Time</p></div></td>
+                </tr>
+                <tr>
+                	<td><div class="startTimeInput inputSmall fEndTime"><input type="text" name=""></div></td>
+                    <td><div class="endTimeInput inputSmall"><input type="text" name=""></div></td>
+                </tr>
+            </table>
+            
+            <div class="clear"></div>
+            
+            <div class="apptSaveDeleteBox clearfix">
+            	<div class="actionBtn floatLeft"><h4><a href="#" title="Book This Appoinment">Book It!</a></h4></div>
+                <div class="cancelActionBox floatLeft">
+                  <h4>or <a href="#" class="redLink fDelete" title="Cancel This Appoinment">Cancel</a></h4></div>
+            </div>
+            
+            <div class="twentyPxSpacer"></div>
+            
+            <div class="subTitleBar apptCheckout" style="text-align:center;">
+            	<p><a href="#" title="Checkout This Person"><span class="smallCalIcon"></span> Checkout This Person</a></p>
+            </div>
+        </div>
+    <!-- END APPOINTMENT POPUP -->
+</body>
+</html>

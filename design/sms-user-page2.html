@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>SMS: Salon Management Software</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.uniform.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function(){
+		$("select.tall214Select").uniform({selectClass: 'tall214Selector'});
+		$("select.short268Select").uniform({selectClass: 'short268Selector'});
+      });
+    </script>
+<link href="uniform.default.css" rel="stylesheet" type="text/css" media="screen">
+<link href="sms-styles2.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+	
+    <!-- START ADMIN TOP BAR -->
+    	<div class="adminBar">
+        	<div class="busName"><p><a href="#" title="Go To Home Page">Bloom Beauty Lounge</a></p></div>
+            <div class="adminBtn"><a href="#">Log Out</a></div>
+            <div class="adminBtn"><a href="#">Admin</a></div>
+            <div class="adminBtn"><a href="#">My Preferences</a></div>
+            <div class="adminBtn"><a href="#">Reports</a></div>
+            <div class="adminBtn"><a href="#">Transactions</a></div>
+            <div class="adminBtn"><a href="#">Clients</a></div>
+            <div class="adminBtn"><a href="#">Calendar</a></div>
+            <div class="clear"></div>
+        </div>
+    <!-- END ADMIN TOP BAR -->
+    
+    <!-- START TOP SEARCH AND CHECKOUT -->
+    	<div class="calSearchCheckBar">
+        	<div class="calCheckoutBtn floatLeft">
+            	<a href="#" title="Calendar">
+                	<div class="calIconBig floatLeft"></div>
+                    <div class="calCheckoutBtnTxt floatLeft">Calendar</div>
+                </a>
+            </div>
+            
+            <div class="searchBox">
+            	<input name="search" type="text" value="Search or add people" />
+                <div class="clear"></div>
+            </div>
+            
+            <div class="calCheckoutBtn floatLeft">
+            	<a href="#" title="Checkoutr">
+                	<div class="checkoutIconBig floatLeft"></div>
+                    <div class="calCheckoutBtnTxt floatLeft">Checkout</div>
+              </a>
+            </div>
+        </div>
+        
+    	
+    	<!-- END TOP SEARCH AND CHECKOUT -->
+    	
+    	<!-- START CLIENT AND SERVICE DETAILS -->
+   	  <div class="userWrapper">
+      
+      	<div class="noteToolbar">
+        	<p><a href="#"><span class="smallCalIcon"></span> Checkout this Client</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#"><span class="noteIconAdd"></span> Add a Note</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#"><span class="noteIconEmail"></span> Send E-Mail</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#"><span class="noteIconAppt"></span> Make an Appointment</a></p>
+        </div>
+        
+        <div class="clientName"><span class="iconFemale"></span><a href="#">Ladybird Johnson</a></div>
+        
+        <div class="clear"></div>
+      
+   	    <!-- NOTES -->
+   	    <div class="noteContainer">
+        	<div class="noteWrapper">
+            	<table border="0" cellpadding="0" cellspacing="0">
+                	<tr>
+                   	  <td>
+						<div class="noteDate"><p>05/20/10</p></div>
+                   	  </td>
+                   	  <td class="note">
+                   	    <input name="textfield" type="text" id="textfield" value="Client has sensitivity to bleach.">
+                   	  </td>
+                   	  <td>
+						<div class="noteDelete"><a href="#" title="Delete Note"></a></div>
+                   	  </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="noteWrapperLast">
+            	<table border="0" cellpadding="0" cellspacing="0">
+                	<tr>
+                   	  <td>
+						<div class="noteDate"><p>05/20/10</p></div>
+                   	  </td>
+                      <td class="note">
+                   	    <input name="textfield" type="text" id="textfield" value="Client had a bad experience with a shaved goat as a child, now has a phobia of hairless animals.">
+                   	  </td>
+                   	  <td>
+						<div class="noteDelete"><a href="#" title="Delete Note"></a></div>
+                   	  </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- END NOTES --> 
+        
+        
+        <!-- LEFT COLUMN -->	
+        <div class="userLeftCol floatLeft">	
+        	<div class="titleBar"><p>E-Mail Address</p></div>
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="610"><div class="emailInput"><input type="text" name="email"></div></td>
+                    </tr>
+            	</table>
+                
+            <div class="titleBar"><p>Phone Number</p></div>
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="390"><div class="phoneNum"><input type="text" name="phone"></div></td>
+                        <td width="200"><div class="phoneType"><div class="tall214"><select class="tall214Select">
+                        		<option selected>Mobile</option>
+                                <option>Work</option>
+                                <option>Home</option>
+                            </select></div></div>
+                        </td>
+                        <td width="56"><div class="addBtn"><a href="#" title="Add A Phone Number"></a></div> </td>
+                    </tr>
+            	</table>
+                	
+            <div class="titleBar"><p>Mailing Address</p></div>
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="460"><div class="subTitleBar streetaddress"><p>Street Address</p></div></td>
+                        <td width="148"><div class="subTitleBar apt"><p>Apartment #</p></div></td>
+                    </tr>
+                    <tr>
+                    	<td width="440"><div class="streetaddressInput"><input type="text" name="street"></div></td>
+                        <td width="150"><div class="aptInput"><input type="text" name="apt"></div></td>
+                    </tr>	
+                </table>
+            	
+                <table cellpadding="0" cellspacing="0" class="borderCollapse">
+            		<tr>
+                    	<td width="403"><div class="subTitleBar city"><p>City</p></div></td>
+                        <td width="50"><div class="subTitleBar state"><p>State</p></div></td>
+                        <td width="111"><div class="subTitleBar zip"><p>Zip Code</p></div></td>
+                    </tr>
+                    <tr>
+                    	<td width="415"><div class="cityInput"><input type="text" name="city"></div></td>
+                        <td width="55"><div class="stateInput"><input type="text" name="state"></div></td>
+                        <td width="120"><div class="zipInput"><input type="text" name="zip"></div></td>
+                    </tr>
+             	</table>
+            
+            <div class="titleBar"><p>Profile Details</p></div>
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="413"><div class="subTitleBar bday"><p>Birthday</p></div></td>
+                        <td width="190"><div class="subTitleBar gender"><p>Gender</p></div></td>
+                    </tr>
+                </table>
+            
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="200"><div class="bdaySelect"><div class="tall214"><select class="tall214Select">
+                          <option selected>January</option>
+                          <option>February</option>
+                          <option>March</option>
+                          <option>April</option>
+                          <option>May</option>
+                          <option>June</option>
+                          <option>July</option>
+                          <option>August</option>
+                          <option>September</option>
+                          <option>October</option>
+                          <option>November</option>
+                          <option>December</option>
+                        </select></div></div></td>
+                        <td width="30"><div class="stateInput"><input type="text" name="day"></div></td>
+                        <td width="104"><div class="year"><input type="text" name="year"></div></td>
+                        <td width="200"><div class="genderSelect"><div class="tall214"><select class="tall214Select">
+                          <option selected>Female</option>
+                          <option>Male</option>
+                        </select>
+                        </div></div></td>
+                    </tr>
+                </table>
+            
+            	<table cellpadding="0" cellspacing="0" class="borderCollapse">
+                	<tr>
+                    	<td width="441"><div class="subTitleBar bday"><p>Referred By</p></div></td>
+                        <td width="10"></td>
+                        <td width="190"><div class="subTitleBar gender"><p>This Person Is A&hellip;</p></div></td>
+                    </tr>
+                    <tr>
+                    	<td><div class="referredInput"><input type="text" name="referred"></div></td>
+                        <td width="10"></td>
+                        <td><div class="genderSelect"><div class="tall214"><select class="tall214Select">
+                              <option selected>Client</option>
+                              <option>Stylist</option>
+                              <option>Receptionist</option>
+                            </select></div>
+                            </div></td>
+                    </tr>
+                </table>  
+            
+        </div>	
+                    
+                 <!-- START RIGHT COLUMN -->
+       	  <div class="userRightCol floatLeft">
+                    	<div class="titleBarColor"><p>Preferred Stylist</p></div>
+                        <div class="rightColSelect">
+                        	<div class="short268"><select class="short268Select">
+                            	<option selected>Clarissa Malek</option>
+                                <option>Paula Dean</option>
+                                <option>Roscoe P. Coletrain</option>
+                                <option>The Blob</option>
+                                <option>Jeff Beaderass</option>
+                                <option>Juice Newton</option>
+                            </select></div>
+                        </div>
+                        
+                        <div class="titleBarColor"><p>Preferred Colorist</p></div>
+                        <div class="rightColSelectLast">
+                        	<div class="short268"><select class="short268Select">
+                            	<option selected>Clarissa Malek</option>
+                                <option>Paula Dean</option>
+                                <option>Roscoe P. Coletrain</option>
+                                <option>The Blob</option>
+                                <option>Jeff Beaderass</option>
+                                <option>Juice Newton</option>
+                            </select></div>
+                        </div>
+        </div>
+                    
+                    <div class="userRightCol floatLeft">
+                    	
+                        <div class="titleBar"><p>Recent Transactions</p></div>
+                        
+                        <div class="basicList">
+                        	<ul>
+                                <li><a href="#">
+                                	<table cellpadding="0" cellspacing="0">
+                                    	<tr>
+                                        	<td width="210"><p>May 20, 2010</p></td>
+                                    		<td width="70" align="right"><p>$8972.00</p></td>
+                                      </tr>
+                                </table>
+                                     </a>
+                                </li>
+                                <li><a href="#">
+                                	<table cellpadding="0" cellspacing="0">
+                                    	<tr>
+                                        	<td width="210"><p>Apr 17, 2010</p></td>
+                                    		<td width="70" align="right"><p>$129.00</p></td>
+                                      </tr>
+                                </table>
+                                     </a>
+                                </li>
+                                <li><a href="#">
+                                	<table cellpadding="0" cellspacing="0">
+                                    	<tr>
+                                        	<td width="210"><p>Mar 13, 2010</p></td>
+                                    		<td width="70" align="right"><p>$129.00</p></td>
+                                      </tr>
+                                </table>
+                                     </a>
+                                </li>
+                                <li><a href="#">
+                                	<table cellpadding="0" cellspacing="0">
+                                    	<tr>
+                                        	<td width="210"><p>Feb 11, 2010</p></td>
+                                    		<td width="70" align="right"><p>$167.00</p></td>
+                                      </tr>
+                                </table>
+                                    </a>
+                                </li>
+                                <li><a href="#">
+                                	<table cellpadding="0" cellspacing="0" align="center">
+                                    	<tr>
+                                        	<td width="210"><p>Dec 7, 2009</p></td>
+                                    		<td width="70" align="right"><p>$348.00</p></td>
+                                      </tr>
+                                </table>
+                                     </a>
+                                </li>
+                          </ul>
+                      </div>
+                    	<div class="clear"></div>
+                        <br>
+                        <table cellpadding="0" cellspacing="0" width="270">
+                        	<tr>
+                            	<td width="35"></td>
+                    			<td width="200"><div class="button"><p><a href="#">View All Transactions</a></p></div></td>
+                                <td width="35"></td>
+                        	</tr>
+                        </table>
+                    </div>
+            <div class="clear"></div>
+
+</div>
+<!-- END CLIENT AND SERVICE DETAILS -->
+    <script type="text/javascript"> Cufon.now(); </script>
+</body>
+</html>

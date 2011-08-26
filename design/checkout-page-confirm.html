@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>SMS: Salon Management Software</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery.uniform.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(function(){
+		$("select.tall214Select").uniform({selectClass: 'tall214Selector'});
+		$("select.short268Select").uniform({selectClass: 'short268Selector'});
+		$("select.short300Select").uniform({selectClass: 'short300Selector'});
+		$("select.short50Select").uniform({selectClass: 'short50Selector'});
+      });
+    </script>
+<link href="uniform.default.css" rel="stylesheet" type="text/css" media="screen">
+<link href="sms-styles2.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+	
+    <!-- START ADMIN TOP BAR -->
+    	<div class="adminBar">
+        	<div class="busName"><p><a href="#" title="Go To Home Page">Bloom Beauty Lounge</a></p></div>
+            <div class="adminBtn"><a href="#">Log Out</a></div>
+            <div class="adminBtn"><a href="#">Admin</a></div>
+            <div class="adminBtn"><a href="#">My Preferences</a></div>
+            <div class="adminBtn"><a href="#">Reports</a></div>
+            <div class="adminBtn"><a href="#">Transactions</a></div>
+            <div class="adminBtn"><a href="#">Clients</a></div>
+            <div class="adminBtn"><a href="#">Calendar</a></div>
+            <div class="clear"></div>
+        </div>
+    <!-- END ADMIN TOP BAR -->
+    
+    <!-- START TOP SEARCH AND CHECKOUT -->
+    	<div class="calSearchCheckBar">
+        	<div class="calCheckoutBtn floatLeft">
+            	<a href="#" title="Calendar">
+                	<div class="calIconBig floatLeft"></div>
+                    <div class="calCheckoutBtnTxt floatLeft">Calendar</div>
+                </a>
+            </div>
+            
+            <div class="searchBox">
+            	<input name="search" type="text" value="Find People" />
+                <div class="clear"></div>
+            </div>
+            
+            <div class="calCheckoutBtn floatLeft">
+            	<a href="#" title="Checkout">
+                	<div class="checkoutIconBig floatLeft"></div>
+                    <div class="calCheckoutBtnTxt floatLeft">Checkout</div>
+              </a>
+            </div>
+        </div>
+        
+    	
+    <!-- END TOP SEARCH AND CHECKOUT -->
+    
+    <!-- START CHECKOUT -->
+  <div class="checkoutContainerOuter">
+    
+		<div class="alertBox clearfix">
+            	<div class="floatLeft">
+                <h1><strong>You're awesome!</strong></h1>
+                <p>This is <strong><a href="#">transaction #781</a></strong>. You can edit this invoice below.</p>
+                </div>
+                <div class="button buttonSpacing floatRight"><h3><a href="#"><span class="voidIcon floatLeft"></span>&nbsp;Void Transaction</a></h3></div>
+                <div class="button buttonSpacing floatRight"><h3><a href="#"><span class="printIcon floatLeft"></span>&nbsp;Print Receipt</a></h3></div>
+                <div class="button buttonSpacing floatRight"><h3><a href="#"><span class="homeIcon floatLeft"></span>&nbsp;Back To Home</a></h3></div>
+            </div>
+        
+        <div class="clear"></div> 
+                
+
+    
+    	<div class="checkoutContainers clearfix"> 
+           		<div class="transactionsBox">
+                          <div class="titleBar"><p>What services did this person receive?</p></div>
+                          
+                          <div class="service">
+                            	<div class="subTitleBar"><p>Service</p></div>
+                            </div>
+                            
+                            <div class="soldBy">
+                            	<div class="subTitleBar"><p>Stylist</p></div>
+                            </div>
+                            
+                            <div class="pricetag">
+                            	<div class="subTitleBar"><p>Price</p></div>
+                            </div>
+                            
+                            <div class="edit">
+                            	<div class="subTitleBar"><p>Edit</p></div>
+                            </div>
+                            
+                            <div class="itemRow">
+                            	<div class="service">
+                              				<div class="short300"><select class="short300Select">
+                            					<option selected>I am a dropdown box!</option>
+                                				<option>I'm a really long option that just keeps going!</option>
+                            				</select></div>
+                            	</div>
+                            
+                            	<div class="soldBy">
+                                	<div class="short300"><select class="short300Select">
+                            					<option selected>Clarissa Malek</option>
+                                				<option>Paula Dean</option>
+                                				<option>Roscoe P. Coletrain</option>
+                                				<option>The Blob</option>
+                                				<option>Jeff Beaderass</option>
+                                				<option>Juice Newton</option>
+                            				</select></div>
+                            	</div>
+                            
+                            	<div class="pricetag">
+                                	<div class="pricepoint"><input type="text" name="" value="$0.00"></div>
+                            	</div>
+                                
+                                <div class="delCheckItemNA"><a href="#" title="Void Disabled"></a></div>
+                            
+                            	<div class="addNewItem">
+                            		<p><a href="#" title="Add Another Service">Add Service</a></p>
+                            	</div>
+                            
+                            	<div class="clear"></div>
+                           </div>
+                            
+                            <div>
+                            	<div class="subtotalTxt">Services Subtotal:</div>
+                                <div class="subtotalNum">$80.00</div>
+                                <div class="clear"></div>
+                            </div>
+                            </div> 
+                        </div>
+                        
+                        <div class="checkoutContainers transactionsBoxOuter clearfix">
+                        
+                        <div class="transactionsBox">
+                        	<div class="titleBar">
+                            	<p>What Products did this Client purchase?</p>
+                                <div class="clear"></div>
+                            </div>
+                            
+                            <div class="product">
+                            	<div class="subTitleBar"><p>Product Name</p></div>
+                            </div>
+                            
+                            <div class="qty">
+                            	<div class="subTitleBar"><p>Quantity</p></div>
+                            </div>
+                            
+                            <div class="soldBy">
+                            	<div class="subTitleBar"><p>Product sold by</p></div>
+                            </div>
+                            
+                            <div class="pricetag">
+                            	<div class="subTitleBar"><p>Price</p></div>
+                            </div>
+                            
+                            <div class="edit">
+                            	<div class="subTitleBar"><p>Edit</p></div>
+                            </div>
+                            
+                            <div class="itemRow">
+                            	<div class="product">
+                                	<div class="short300"><select class="short300Select">
+                            					<option selected>I am a dropdown box!</option>
+                                				<option>I'm a really long option that just keeps going!</option>
+                            				</select></div>
+                            	</div>
+                                
+                                <div class="qty">
+                                	<div class="short50"><select class="short50Select">
+                            					<option selected>1</option>
+                                				<option>2</option>
+                                				<option>3</option>
+                                				<option>4</option>
+                                				<option>5</option>
+                                				<option>6</option>
+                                                <option>7</option>
+                                				<option>8</option>
+                                				<option>9</option>
+                            				</select></div>
+                            	</div>
+                                
+                            
+                            	<div class="soldBy">
+                                	<div class="short300"><select class="short300Select">
+                            					<option selected>Clarissa Malek</option>
+                                				<option>Paula Dean</option>
+                                				<option>Roscoe P. Coletrain</option>
+                                				<option>The Blob</option>
+                                				<option>Jeff Beaderass</option>
+                                				<option>Juice Newton</option>
+                            				</select></div>
+                            	</div>
+                            
+                            	<div class="pricetag">
+                                	<div class="pricepoint"><input type="text" name="" value="$80.00"></div>
+                            	</div>
+                                
+                                <div class="delCheckItem"><a href="#" title="Void This Item"></a></div>
+                            
+                            	<div class="clear"></div>
+                            </div>
+                            
+                            <div class="itemRow">
+                            	<div class="product">
+                                	<div class="short300"><select class="short300Select">
+                            					<option selected>I am a dropdown box!</option>
+                                				<option>I'm a really long option that just keeps going!</option>
+                            				</select></div>
+                            	</div>
+                                
+                                <div class="qty">
+                                	<div class="short50"><select class="short50Select">
+                            					<option selected>1</option>
+                                				<option>2</option>
+                                				<option>3</option>
+                                				<option>4</option>
+                                				<option>5</option>
+                                				<option>6</option>
+                                                <option>7</option>
+                                				<option>8</option>
+                                				<option>9</option>
+                            				</select></div>
+                            	</div>
+                            
+                            	<div class="soldBy">
+                                	<div class="short300"><select class="short300Select">
+                            					<option selected>Clarissa Malek</option>
+                                				<option>Paula Dean</option>
+                                				<option>Roscoe P. Coletrain</option>
+                                				<option>The Blob</option>
+                                				<option>Jeff Beaderass</option>
+                                				<option>Juice Newton</option>
+                            				</select></div>
+                            	</div>
+                            
+                            	<div class="pricetag">
+                                	<div class="pricepoint"><input type="text" name="" value="$50.00"></div>
+                            	</div>
+                                
+                                <div class="delCheckItem"><a href="#" title="Void This Item"></a></div>
+                            
+                            	<div class="addNewItem">
+                            		<p><a href="#" title="Add Another Product">Add Product</a></p>
+                            	</div>
+                            
+                            	<div class="clear"></div>
+                            </div>
+                            
+                            <div>
+                            	<div class="subtotalTxt">Products Subtotal:</div>
+                                <div class="subtotalNum">$160.00</div>
+                                <div class="clear"></div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="checkoutContainers transactionsBoxOuter clearfix">
+                        
+                        
+                        <div class="transactionsBox">
+                        	<div class="titleBar">
+                            	<p>Finalize Transaction</p>
+                                <div class="clear"></div>
+                            </div>
+                            
+                            <div class="itemRow">
+                            	<div class="referredCode">
+                            		<div class="subTitleBar"><p>Does the Client have a Promotional Code?</p></div>
+                                	<div class="referredCode">
+                						<input name="search" value="Enter Promo Code">
+                        				<div class="clear"></div>
+                					</div>
+                            	</div>
+                            
+                            	<div class="paymentMethod">
+                            		<div class="subTitleBar"><p>Payment Method</p></div>
+                                	<div class="checkedInClients"> 
+                            			<div class="tall214"><select class="tall214Select">
+                          					<option>Cash</option>
+                                            <option>Check</option>
+                                            <option>AMEX</option>
+                                            <option>Discover</option>
+                                            <option>Mastercard</option>
+                          					<option selected>Visa</option>
+                        				</select>
+                        				</div>
+                          			</div>
+                            	</div>
+                                
+                                <div class="finalPrice">
+                            		<div class="subTitleBar"><p>Subtotal</p></div>
+                                	<div class="subtotal">$240.00</div>
+                            	</div>
+                            
+                            	<div class="taxTag">
+                            		<div class="subTitleBar"><p>Taxes</p></div>
+                                	<div class="taxes">$20.00</div>
+                            	</div>
+                            
+                            	<div class="grandTotal">
+                            		<p><strong>GRAND TOTAL</strong></p>
+                                    <h1>$260.00</h1>
+                            	</div>
+                            
+                            	<div class="clear"></div>
+                            </div>
+                            
+                            
+                            
+                            <div class="confirmBox">
+                            <div class="bigActionBtn"><h2><a href="#">Confirm Transaction</a></h2></div>
+                            <div class="clear"></div>
+                            </div>
+            		</div>
+                </div>
+    </div>
+	<!-- END CHECKOUT -->
+    
+    </div>
+    
+</body>
+</html>
