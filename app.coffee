@@ -41,10 +41,24 @@ app.dynamicHelpers { session: (req, res) -> req.session }
 global.db = require('./models/db').db
 
 ### Initialize controllers ###
+Users = (require './controllers/users').Users
+Import = (require './controllers/utils/import').Import   # Temporary importer script from mysql
 
 # Home Page
 app.get '/', (req, res) ->
   console.log 'blah'
+
+app.get '/users', (req, res) ->
+  users = new Users
+  imp = new Import
+  
+  imp.users (json) ->
+    res.send json
+  
+  # users.get (json) ->
+  #     res.send json
+
+  
 
 ### Socket.io Stuff ###
 # Note, may need authentication later: https://github.com/dvv/socket.io/commit/ff1bcf0fb2721324a20f9d7516ff32fbe893a693#L0R111

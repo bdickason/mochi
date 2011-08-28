@@ -14,6 +14,7 @@ Phone = new Schema {
 Note = new Schema {
   date: { type: Date },
   message: { type: String },
+  author: { type: String }
 }
 
 
@@ -43,7 +44,7 @@ UserSchema = new Schema {
   stylist: { type: Boolean, required: true, default: false },
 
   ssn: { type: String },
-  employee: { type: boolean },    # Some stylists are employees (W-2) some are contractors (W-9)
+  employee: { type: Boolean },    # Some stylists are employees (W-2) some are contractors (W-9)
 
   password: {
     hash: { type: String },
