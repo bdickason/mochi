@@ -52,8 +52,17 @@ app.get '/users', (req, res) ->
   users = new Users
   imp = new Import
   
-  imp.users (json) ->
-    res.send json
+  imp.users (json) =>
+    for user in json
+      # Takes a single user (json), cleans it up, shoves it into mongo
+
+      # Clean up the data a bit
+      if user.email is null or user.email is ''
+        delete user.email
+      console.log user
+
+      users.set user, (callback) ->
+        # console.log callback    
   
   # users.get (json) ->
   #     res.send json

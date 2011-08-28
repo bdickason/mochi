@@ -13,8 +13,24 @@ exports.Users = class Users
       else
         callback data
     
-  set: (id) ->
+  set: (json, callback) ->
+    # Add a user given some json
+    # Callback should be error or no callback if successful
+    user = new User json
+    # console.log user
     
   update: (id) ->
     
   remove: (id) ->
+    
+  import: (user) ->
+    console.log user
+    # Takes a single user (json), cleans it up, shoves it into mongo
+      
+    # Clean up the data a bit
+    if user.email is null or user.email is ''
+      delete user.email
+    console.log user.email      
+    
+    @set user, (callback) ->
+      # console.log callback

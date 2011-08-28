@@ -5,19 +5,20 @@ exports.Import = class Import
     @options = {
       host: 'bloom.getmochi.com'
       port: 80
-      path: 'http://bloom.getmochi.com/api/users?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json'
+      path: 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json'
+      method: 'GET'
     }
   
-  users: (json) ->
-    @options.path += '&action=list&num=5000'
-    @getRequest (json) ->
-      callback json
-      
+  users: (callback) ->
+    @options.path += '&action=list&num=100'
+    @getRequest callback
+    # console.log callback
+  
+  
     
   ### API: 'GET' ###
   getRequest: (callback) ->
     _options = @options
-    console.log _options
 
     tmp = []  # Russ at the NYC NodeJS Meetup said array push is faster
 
@@ -29,4 +30,5 @@ exports.Import = class Import
 
       res.on 'end', (e) ->
         body = tmp.join('')
-        callback body
+        callback JSON.parse body
+    .end()

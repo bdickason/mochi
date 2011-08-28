@@ -41,7 +41,7 @@ UserSchema = new Schema {
   
   ### Stylist stuff goes below here ###
   # Is this user a stylist? Not sure if we need this.
-  stylist: { type: Boolean, required: true, default: false },
+  stylist: { type: Boolean },
 
   ssn: { type: String },
   employee: { type: Boolean },    # Some stylists are employees (W-2) some are contractors (W-9)
