@@ -17,6 +17,10 @@ exports.Users = class Users
     # Add a user given some json
     # Callback should be error or no callback if successful
     user = new User json
+    console.log user
+    ###user.save (err) ->
+      if err
+        console.log err ###
     # console.log user
     
   update: (id) ->

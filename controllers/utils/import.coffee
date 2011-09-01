@@ -10,11 +10,9 @@ exports.Import = class Import
     }
   
   users: (callback) ->
-    @options.path += '&action=list&num=100'
+    @options.path += '&action=list&num=20'
     @getRequest callback
-    # console.log callback
-  
-  
+    
     
   ### API: 'GET' ###
   getRequest: (callback) ->
