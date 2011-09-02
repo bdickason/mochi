@@ -58,25 +58,50 @@ app.get '/users', (req, res) ->
 
       # HACK - for some reason doing a 'for key in user' doesn't work so this will have to do for now
       # Clean up the data a bit
+      
+      # Phone numbers -> array/json
+      user.phone = []
+      if user.phone_primary_type is 'pager'
+        console.log 'seriously?!'
+      if user.phone_primary_number isnt null and user.phone_primary_number isnt ''
+        user.phone.push {number: user.phone_primary_number, type: user.phone_primary_type}      
+      delete user.phone_primary_number
+      delete user.phone_primary_type
+
+      if user.phone_secondary_number isnt null and user.phone_secondary_number isnt ''
+        user.phone.push {number: user.phone_secondary_number, type: user.phone_secondary_type}      
+      delete user.phone_secondary_number
+      delete user.phone_secondary_type
+      
+      # Address -> array/json
+      user.address = {}
+      if user.address_street isnt null and user.address_street isnt ''
+        user.address.street = user.address_street
+      if user.address_apartment isnt null and user.address_apartment isnt ''
+        user.address.apartment = user.address_apartment
+      if user.address_city isnt null and user.address_city isnt ''
+        user.address.city = user.address_city
+      if user.address_state isnt null and user.address_state isnt ''
+        user.address.state = user.address_state
+      if user.address_zip isnt null and user.address_zip isnt ''
+        user.address.zip = user.address_zip
+      delete user.address_street
+      delete user.address_apartment
+      delete user.address_city
+      delete user.address_state
+      delete user.address_zip
+      
       if user.email is null or user.email is ''
         delete user.email
       if user.uid is null or user.uid is ''
         delete user.uid
       if user.last_transaction_date is null or user.last_transaction_date is ''
         delete user.last_transaction_date
-      if user.password_hash is null or user.password_hash is ''
-        delete user.password_hash
-      if user.password_salt is null or user.password_salt is ''
-        delete user.password_salt
       if user.ssn is null or user.ssn is ''
         delete user.ssn
       if user.permissions is null or user.permissions is ''
-        delete user.permissions
-      if user.address_apartment is null or user.address_apartment is ''
-        delete user.address_apartment
-      
-
-
+        delete user.permissions            
+        
       users.set user, (callback) ->
 
   

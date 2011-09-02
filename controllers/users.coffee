@@ -18,9 +18,9 @@ exports.Users = class Users
     # Callback should be error or no callback if successful
     user = new User json
     console.log user
-    ###user.save (err) ->
+    user.save (err) ->
       if err
-        console.log err ###
+        console.log err
     # console.log user
     
   update: (id) ->
@@ -32,9 +32,6 @@ exports.Users = class Users
     # Takes a single user (json), cleans it up, shoves it into mongo
       
     # Clean up the data a bit
-    if user.email is null or user.email is ''
-      delete user.email
-    console.log user.email      
     
     @set user, (callback) ->
       # console.log callback
