@@ -66,35 +66,41 @@ app.get '/users', (req, res) ->
       user.phone = []
       if user.phone_primary_type is 'pager'
         console.log 'seriously?!'
-      if user.phone_primary_number and user.phone_primary_number isnt null and user.phone_primary_number isnt ''
+      if user.phone_primary_number
         user.phone.push {number: user.phone_primary_number, type: user.phone_primary_type}      
       delete user.phone_primary_number
       delete user.phone_primary_type
 
-      if user.phone_secondary_number and user.phone_secondary_number isnt null and user.phone_secondary_number isnt ''
+      if user.phone_secondary_number
         user.phone.push {number: user.phone_secondary_number, type: user.phone_secondary_type}      
       delete user.phone_secondary_number
       delete user.phone_secondary_type
-
-      ###          
+     
       # Address -> array/json
       user.address = {}
-      if user.address_street isnt null and user.address_street isnt ''
+      if user.address_street
         user.address.street = user.address_street
-      if user.address_apartment isnt null and user.address_apartment isnt ''
+      if user.address_apartment
         user.address.apartment = user.address_apartment
-      if user.address_city isnt null and user.address_city isnt ''
+      if user.address_city
         user.address.city = user.address_city
-      if user.address_state isnt null and user.address_state isnt ''
+      if user.address_state
         user.address.state = user.address_state
-      if user.address_zip isnt null and user.address_zip isnt ''
+      if user.address_zip
         user.address.zip = user.address_zip
+      if user.address_country
+        user.address.country = user.address_country
       delete user.address_street
       delete user.address_apartment
       delete user.address_city
       delete user.address_state
       delete user.address_zip      
-      ###
+      delete user.address_country
+      
+      # Birthdays -> Remove dummy data
+      if user.birthdate is '0000-00-00' or '1969-12-31'
+        delete user.birthdate
+        
 
       users.set user, (callback) ->
 
