@@ -61,24 +61,22 @@ app.get '/users', (req, res) ->
         # Strip null or empty strings
         if value is null or value is ''
           delete user[key]
-        
-      console.log user
 
-      ###    
       # Phone numbers -> array/json
       user.phone = []
       if user.phone_primary_type is 'pager'
         console.log 'seriously?!'
-      if user.phone_primary_number isnt null and user.phone_primary_number isnt ''
+      if user.phone_primary_number and user.phone_primary_number isnt null and user.phone_primary_number isnt ''
         user.phone.push {number: user.phone_primary_number, type: user.phone_primary_type}      
       delete user.phone_primary_number
       delete user.phone_primary_type
 
-      if user.phone_secondary_number isnt null and user.phone_secondary_number isnt ''
+      if user.phone_secondary_number and user.phone_secondary_number isnt null and user.phone_secondary_number isnt ''
         user.phone.push {number: user.phone_secondary_number, type: user.phone_secondary_type}      
       delete user.phone_secondary_number
       delete user.phone_secondary_type
-      
+
+      ###          
       # Address -> array/json
       user.address = {}
       if user.address_street isnt null and user.address_street isnt ''
