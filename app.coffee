@@ -51,14 +51,20 @@ app.get '/', (req, res) ->
 app.get '/users', (req, res) ->
   users = new Users
   imp = new Import
-  
+ 
+  # Takes a single user (json), cleans it up, shoves it into mongo 
   imp.users (json) =>
     for user in json.users
-      # Takes a single user (json), cleans it up, shoves it into mongo
-
-      # HACK - for some reason doing a 'for key in user' doesn't work so this will have to do for now
-      # Clean up the data a bit
       
+      for key, value of user
+
+        # Strip null or empty strings
+        if value is null or value is ''
+          delete user[key]
+        
+      console.log user
+
+      ###    
       # Phone numbers -> array/json
       user.phone = []
       if user.phone_primary_type is 'pager'
@@ -89,19 +95,9 @@ app.get '/users', (req, res) ->
       delete user.address_apartment
       delete user.address_city
       delete user.address_state
-      delete user.address_zip
-      
-      if user.email is null or user.email is ''
-        delete user.email
-      if user.uid is null or user.uid is ''
-        delete user.uid
-      if user.last_transaction_date is null or user.last_transaction_date is ''
-        delete user.last_transaction_date
-      if user.ssn is null or user.ssn is ''
-        delete user.ssn
-      if user.permissions is null or user.permissions is ''
-        delete user.permissions            
-        
+      delete user.address_zip      
+      ###
+
       users.set user, (callback) ->
 
   
