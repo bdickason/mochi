@@ -59,8 +59,7 @@ app.get '/import', (req, res) ->
  
   # Takes a single user (json), cleans it up, shoves it into mongo 
   imp.users (json) =>
-    for user in json.users
-      
+    for user in json.users      
       for key, value of user
 
         # Strip null or empty strings
@@ -114,6 +113,13 @@ app.get '/import', (req, res) ->
       if user.password_hash
         user.password.hash = user.password_hash
         delete user.password_hash
+      
+      # Notes -> array/json
+      if user.notes
+        tmp_notes = user.notes
+        delete user.notes
+        user.notes = []
+        user.notes.push { message: tmp_notes }
         
 
       users.set user, (callback) ->
