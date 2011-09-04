@@ -10,7 +10,7 @@ exports.Import = class Import
     }
   
   users: (callback) ->
-    @options.path += '&action=list&num=2'
+    @options.path += '&action=list&num=20000'
     @getRequest callback
     
     

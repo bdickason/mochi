@@ -53,8 +53,8 @@ UserSchema = new Schema {
       
   ### System stuff goes below here ###
   active: { type: Number, default: 1 },
-  date_added: { type: Date, required: true },
-  date_updated: { type: Date, required: true },
+  date_added: { type: Date },
+  date_updated: { type: Date },
   last_transaction_date: { type: Date},
   
   type: { type: String },         # Remove this eventually. Type = administrator, client, stylist?
