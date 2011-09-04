@@ -80,26 +80,35 @@ app.get '/users', (req, res) ->
       user.address = {}
       if user.address_street
         user.address.street = user.address_street
+        delete user.address_street
       if user.address_apartment
         user.address.apartment = user.address_apartment
+        delete user.address_apartment        
       if user.address_city
         user.address.city = user.address_city
+        delete user.address_city        
       if user.address_state
         user.address.state = user.address_state
+        delete user.address_state        
       if user.address_zip
         user.address.zip = user.address_zip
+        delete user.address_zip              
       if user.address_country
         user.address.country = user.address_country
-      delete user.address_street
-      delete user.address_apartment
-      delete user.address_city
-      delete user.address_state
-      delete user.address_zip      
-      delete user.address_country
-      
+        delete user.address_country
+
       # Birthdays -> Remove dummy data
       if user.birthdate is '0000-00-00' or '1969-12-31'
         delete user.birthdate
+      
+      # Password -> array/json
+      if user.password_salt
+        user.password = {}
+        user.password.salt = user.password_salt
+        delete user.password_salt        
+      if user.password_hash
+        user.password.hash = user.password_hash
+        delete user.password_hash
         
 
       users.set user, (callback) ->
