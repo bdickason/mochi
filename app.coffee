@@ -50,6 +50,11 @@ app.get '/', (req, res) ->
 
 app.get '/users', (req, res) ->
   users = new Users
+  users.get (json) ->
+    res.send json
+
+app.get '/import', (req, res) ->
+  users = new Users
   imp = new Import
  
   # Takes a single user (json), cleans it up, shoves it into mongo 
@@ -112,11 +117,6 @@ app.get '/users', (req, res) ->
         
 
       users.set user, (callback) ->
-
-  
-  # users.get (json) ->
-  #     res.send json
-
   
 
 ### Socket.io Stuff ###
