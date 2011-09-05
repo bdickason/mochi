@@ -39,10 +39,12 @@ UserSchema = new Schema {
   
   referral: { type: String },     # Who referred this stylist
   
+  stylists: {
+    cut: { type: Number },
+    color: { type: Number }
+  },
+  
   ### Stylist stuff goes below here ###
-  # Is this user a stylist? Not sure if we need this.
-  stylist: { type: Boolean },
-
   ssn: { type: String },
   employee: { type: Boolean },    # Some stylists are employees (W-2) some are contractors (W-9)
 
@@ -55,7 +57,7 @@ UserSchema = new Schema {
   active: { type: Number, default: 1 },
   date_added: { type: Date },
   date_updated: { type: Date },
-  last_transaction_date: { type: Date},
+  last_transaction_date: { type: Date },
   
   type: { type: String },         # Remove this eventually. Type = administrator, client, stylist?
   permissions: { type: String },  # Remove this eventually. Permissions = administrator, NULL
