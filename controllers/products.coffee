@@ -17,7 +17,6 @@ exports.Products = class Products
     # Add a product given some json
     # Callback should be error or no callback if successful
     product = new Product json
-    console.log product
 
     product.save (err) ->
       if err

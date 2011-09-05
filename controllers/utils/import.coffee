@@ -9,11 +9,11 @@ exports.Import = class Import
     }
   
   users: (callback) ->
-    @options.path = 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=100'
+    @options.path = 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000'
     @getRequest callback
   
   userOptions: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=100"
+    @options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000"
     @getRequest callback
   
   products: (callback) ->

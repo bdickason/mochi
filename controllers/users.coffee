@@ -18,10 +18,9 @@ exports.Users = class Users
     # Callback should be error or no callback if successful
     user = new User json
 
-    console.log user
-    
     user.save (err) ->
       if err
+        console.log user
         console.log err
     
   update: (id) ->

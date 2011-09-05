@@ -58,12 +58,10 @@ app.get '/import', (req, res) ->
   users = new Users
   imp = new Import
  
-  ### Testing
   # Takes a single user (json), cleans it up, shoves it into mongo 
   imp.users (json) =>
     imp2 = new Import 
     imp.userOptions (optionsjson) =>   
-      console.log json
   
       for user in json.users      
         for key, value of user
@@ -145,13 +143,12 @@ app.get '/import', (req, res) ->
 
         # Old/deprecated stuff
         delete user.tax_info
-
       
-
-        # console.log user
-
-        users.set user, (callback) =>
-  ###
+        user.active = 1 # Active is not set currently
+        
+        if user.name  # tons of clients don't have a damn name.
+          users.set user, (callback) =>
+  
   # Takes a single product (json), cleans it up, shoves it into mongo 
   products = new Products
   impProducts = new Import
