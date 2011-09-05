@@ -5,14 +5,16 @@ exports.Import = class Import
     @options = {
       host: 'bloom.getmochi.com'
       port: 80
-      path: 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json'
       method: 'GET'
     }
   
   users: (callback) ->
-    @options.path += '&action=list&num=20000'
+    @options.path = 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=100'
     @getRequest callback
-    
+  
+  userOptions: (callback) ->
+    @options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=100"
+    @getRequest callback
     
   ### API: 'GET' ###
   getRequest: (callback) ->

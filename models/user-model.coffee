@@ -31,7 +31,7 @@ UserSchema = new Schema {
     city: { type: String },
     state: { type: String },
     country: { type: String },
-    zip: { type: Number },
+    zip: { type: String },
   },
   phone: [Phone],  
   
@@ -39,7 +39,7 @@ UserSchema = new Schema {
   
   referral: { type: String },     # Who referred this stylist
   
-  stylists: {
+  stylist: { 
     cut: { type: Number },
     color: { type: Number }
   },
