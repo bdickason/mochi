@@ -42,6 +42,7 @@ global.db = require('./models/db').db
 
 ### Initialize controllers ###
 Users = (require './controllers/users').Users
+Products = (require './controllers/products').Products
 Import = (require './controllers/utils/import').Import   # Temporary importer script from mysql
 
 # Home Page
@@ -57,6 +58,7 @@ app.get '/import', (req, res) ->
   users = new Users
   imp = new Import
  
+  ### Testing
   # Takes a single user (json), cleans it up, shoves it into mongo 
   imp.users (json) =>
     imp2 = new Import 
@@ -144,11 +146,61 @@ app.get '/import', (req, res) ->
         # Old/deprecated stuff
         delete user.tax_info
 
-
+      
 
         # console.log user
 
-        users.set user, (callback) => 
+        users.set user, (callback) =>
+  ###
+  # Takes a single product (json), cleans it up, shoves it into mongo 
+  products = new Products
+  impProducts = new Import
+  impProducts.products (json) =>
+    for product in json.products
+      
+      # Brand Names
+      # Handle different brands - There's probably a better way to do this, but it'll work for now.
+      brand_array = product.product_name.split ' '
+      brand_first = brand_array[0].toString()
+      
+      switch brand_first
+        when 'Simply', 'Moroccan', 'Kevin'
+          # some have multiple words in their name
+          product.brand = {}
+          product.brand.name = (product.product_name.split ' ', 2).join(' ').toString()  # split 'em then join 'em then string 'em
+          product.name = brand_array[2...].join(' ').toString()
+        when 'Pretty'
+          # some have no brand at all  
+          product.name = product.product_name
+        else
+          # none of these need special handling
+          product.brand = {}
+          product.brand.name = brand_first
+          product.name = brand_array[1...].join(' ').toString() # Pop the rest of the name back in
+      delete product.product_name
+      
+      # Active -> Number
+      product.active = parseInt product.product_active
+      delete product.product_active
+      
+      # Product ID -> uid
+      product.uid = parseInt product.product_id
+      delete product.product_id
+      
+      # Price -> Number
+      product.price = {}
+      product.price.retail = parseFloat product.product_price
+      delete product.product_price
+      
+      # Date -> rename!
+      product.date_updated = product.last_updated
+      delete product.last_updated
+      
+      # Filter out the unwanted crap
+      delete product.product_sku        
+      
+      products.set product, (callback) ->
+
   
 
 ### Socket.io Stuff ###

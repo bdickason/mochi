@@ -15,6 +15,10 @@ exports.Import = class Import
   userOptions: (callback) ->
     @options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=100"
     @getRequest callback
+  
+  products: (callback) ->
+    @options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000"
+    @getRequest callback
     
   ### API: 'GET' ###
   getRequest: (callback) ->

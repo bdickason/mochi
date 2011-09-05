@@ -1,3 +1,10 @@
+### Users db model ###
+
+# Contains all relevant info about any PEOPLE involved in the biz
+# e.g. a user could be a client named John Smith
+#      a user could be a stylist named Clarissa Malek
+#      a user could be an admin named Tivs!
+
 cfg = require '../config/config.js'    # contains API keys, etc.
 mongoose = require 'mongoose'
 
@@ -65,5 +72,3 @@ UserSchema = new Schema {
 
 mongoose.model 'Users', UserSchema
 module.exports = db.model 'Users'
-
-module.exports

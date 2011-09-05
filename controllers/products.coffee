@@ -1,26 +1,25 @@
 cfg = require '../config/config'    # contains API keys, etc.
  
-# Initialize Users Model
-User = require '../models/user-model'
+# Initialize Products Model
+Product = require '../models/product-model'
 
-exports.Users = class Users
+exports.Products = class Products
 
   get: (callback) ->
-    # Show all users
-    User.find {}, (err, data) =>
+    # Show all products
+    Product.find {}, (err, data) =>
       if err
         console.log err
       else
         callback data
     
   set: (json, callback) ->
-    # Add a user given some json
+    # Add a product given some json
     # Callback should be error or no callback if successful
-    user = new User json
+    product = new Product json
+    console.log product
 
-    console.log user
-    
-    user.save (err) ->
+    product.save (err) ->
       if err
         console.log err
     
