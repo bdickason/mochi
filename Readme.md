@@ -6,7 +6,7 @@ Salon software without all the fluff
 
 1. <del>import Users</del>
 1. <del>import Products</del>
-3. import Services
-4. import Transactions
-5. **Reports!!!**
-6. import Appointments
+1. import Services
+1. import Transactions
+1. **Reports!!!**
+1. import Appointments
