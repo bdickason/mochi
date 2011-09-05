@@ -3,9 +3,9 @@
 Salon software without all the fluff
 
 **Todo**
-* <del>import Users</del>
-* <del>import Products</del>
-* import Services
-* import Transactions
-* **Reports!!!**
-* import Appointments
+1. <del>import Users</del>
+2. <del>import Products</del>
+3. import Services
+4. import Transactions
+5. **Reports!!!**
+6. import Appointments
