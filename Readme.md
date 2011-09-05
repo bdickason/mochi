@@ -3,6 +3,7 @@
 Salon software without all the fluff
 
 **Todo**
+
 1. <del>import Users</del>
 2. <del>import Products</del>
 3. import Services
