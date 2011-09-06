@@ -44,6 +44,7 @@ global.db = require('./models/db').db
 Users = (require './controllers/users').Users
 Products = (require './controllers/products').Products
 Services = (require './controllers/services').Services
+Appointments = (require './controllers/appointments').Appointments
 Import = (require './controllers/utils/import').Import   # Temporary importer script from mysql
 
 # Home Page
@@ -242,7 +243,24 @@ app.get '/import', (req, res) ->
       services.set service, (callback) ->
 
   ###  
-  
+  appointments = new Appointments
+  impAppointments = new Import
+  impTransactions = new Import  
+  impTransactionEntries = new Import
+
+  impAppointments.appointments (appointmentjson) =>
+    impTransactions.transactions (transactionjson) =>
+      impTransactionEntries.transactionEntries (entriesjson) =>
+        # woohoo nested callback city!
+        for appointment in appointmentjson.appointments
+          console.log appointment
+        for transaction in transactionjson
+          console.log transaction
+        for transentry in entriesjson
+          console.log transentry
+          
+        # Work some magic here to figure out which transaction is which
+        # and massage this into some damn fine json!
   
 
 ### Socket.io Stuff ###

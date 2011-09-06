@@ -19,7 +19,6 @@ exports.Users = class Users
             if err
               console.log err
             else
-              console.log data
               redis.set redisKey, JSON.stringify data
               callback data
         else
