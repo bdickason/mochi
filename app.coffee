@@ -20,7 +20,7 @@ app = express.createServer()
 io = (require 'socket.io').listen app
 
 # Start up redis to cache stuff
-redis = Redis.createClient cfg.REDIS_PORT, cfg.REDIS_HOSTNAME
+global.redis = Redis.createClient cfg.REDIS_PORT, cfg.REDIS_HOSTNAME
 redis.on 'error', (err) ->
   console.log 'REDIS Error:' + err
 
@@ -48,11 +48,26 @@ Import = (require './controllers/utils/import').Import   # Temporary importer sc
 
 # Home Page
 app.get '/', (req, res) ->
-  console.log 'blah'
+  console.log 'home'
 
 app.get '/users', (req, res) ->
   users = new Users
-  users.get (json) ->
+  users.get null, (json) ->
+    res.send json
+    
+app.get '/users/:uid', (req, res) ->
+  users = new Users
+  users.get req.params.uid, (json) ->
+    res.send json
+
+app.get '/products', (req, res) ->
+  products = new Products
+  products.get (json) ->
+    res.send json
+
+app.get '/services', (req, res) ->
+  services = new Services
+  services.get (json) ->
     res.send json
 
 app.get '/import', (req, res) ->
@@ -200,7 +215,7 @@ app.get '/import', (req, res) ->
       delete product.product_sku        
       
       products.set product, (callback) ->
-    ###
+
   services = new Services
   impServices = new Import
   impServices.services (json) =>
@@ -225,6 +240,9 @@ app.get '/import', (req, res) ->
       delete service.service_sku
       
       services.set service, (callback) ->
+
+  ###  
+  
   
 
 ### Socket.io Stuff ###
