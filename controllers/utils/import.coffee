@@ -19,7 +19,12 @@ exports.Import = class Import
   products: (callback) ->
     @options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000"
     @getRequest callback
-    
+
+  services: (callback) ->
+    console.log 'got here'
+    @options.path = "http://bloom.getmochi.com/api/services/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000"
+    @getRequest callback
+          
   ### API: 'GET' ###
   getRequest: (callback) ->
     _options = @options

@@ -43,6 +43,7 @@ global.db = require('./models/db').db
 ### Initialize controllers ###
 Users = (require './controllers/users').Users
 Products = (require './controllers/products').Products
+Services = (require './controllers/services').Services
 Import = (require './controllers/utils/import').Import   # Temporary importer script from mysql
 
 # Home Page
@@ -55,6 +56,8 @@ app.get '/users', (req, res) ->
     res.send json
 
 app.get '/import', (req, res) ->
+
+  ###
   users = new Users
   imp = new Import
  
@@ -197,7 +200,31 @@ app.get '/import', (req, res) ->
       delete product.product_sku        
       
       products.set product, (callback) ->
+    ###
+  services = new Services
+  impServices = new Import
+  impServices.services (json) =>
+    for service in json.services
+      for key, value of service
+        # Strip null or empty strings
+        if value is null or value is ''
+          delete service[key]
 
+      service.name = service.service_name
+      delete service.service_name
+
+      # Active -> Number
+      service.active = parseInt service.service_active
+      delete service.service_active
+      
+      # uid -> Number
+      service.uid = parseInt service.service_id
+      delete service.service_id
+      
+      # sku's are obsolete for services
+      delete service.service_sku
+      
+      services.set service, (callback) ->
   
 
 ### Socket.io Stuff ###
