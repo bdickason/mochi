@@ -51,29 +51,51 @@ Import = (require './controllers/utils/import').Import   # Temporary importer sc
 app.get '/', (req, res) ->
   console.log 'home'
 
-app.get '/users', (req, res) ->
-  users = new Users
-  users.get null, (json) ->
-    res.send json
-    
-app.get '/users/:uid', (req, res) ->
-  users = new Users
-  users.get req.params.uid, (json) ->
-    res.send json
-
-app.get '/products', (req, res) ->
-  products = new Products
-  products.get (json) ->
-    res.send json
-
-app.get '/services', (req, res) ->
-  services = new Services
-  services.get (json) ->
-    res.send json
+app.get '/favicon.ico', (req, res) ->
 
 app.get '/import', (req, res) ->
+  doImport req, res
+    
+# Get All - Generic RESTful route
+app.get '/:route', (req, res) ->
+  obj = getRoute req.params.route
+  
+  obj.get null, (json) ->
+    res.send json
 
-  ###
+### Get One - Generic Route
+app.get '/:route/:uid', (req, res) ->
+  obj = getRoute req.params.route
+
+  obj.get req.params.uid, (json) ->
+    res.send json
+###
+
+
+        
+### Socket.io Stuff ###
+# Note, may need authentication later: https://github.com/dvv/socket.io/commit/ff1bcf0fb2721324a20f9d7516ff32fbe893a693#L0R111
+
+io.enable 'browser client minification'
+io.set 'log level', 2
+
+app.listen process.env.PORT or 3000 
+
+getRoute = (route) ->
+  switch route
+    when 'appointments'
+      obj = new Appointments
+    when 'products'
+      obj = new Products
+    when 'services'
+      obj = new Services
+    when 'users'
+      obj = new Users
+
+  return obj
+  
+doImport = (req, res) ->
+
   users = new Users
   imp = new Import
  
@@ -81,7 +103,6 @@ app.get '/import', (req, res) ->
   imp.users (json) =>
     imp2 = new Import 
     imp.userOptions (optionsjson) =>   
-  
       for user in json.users      
         for key, value of user
 
@@ -242,7 +263,7 @@ app.get '/import', (req, res) ->
       
       services.set service, (callback) ->
 
-  ###  
+
   appointments = new Appointments
   impAppointments = new Import
   impTransactions = new Import  
@@ -339,8 +360,6 @@ app.get '/import', (req, res) ->
           delete appointment.transaction_uid
           delete appointment.transaction_created_date
           delete appointment.transactoin_updated_date
-
-          res.write JSON.stringify appointment
           
           appointments.set appointment, (callback) ->
           ### deal w/ this next
@@ -356,12 +375,4 @@ app.get '/import', (req, res) ->
         # Work some magic here to figure out which transaction is which
         # and massage this into some damn fine json! ###
   
-        res.end()
-        
-### Socket.io Stuff ###
-# Note, may need authentication later: https://github.com/dvv/socket.io/commit/ff1bcf0fb2721324a20f9d7516ff32fbe893a693#L0R111
-
-io.enable 'browser client minification'
-io.set 'log level', 2
-
-app.listen process.env.PORT or 3000 
+        res.send 'Done!'

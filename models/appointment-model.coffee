@@ -50,7 +50,7 @@ Transaction = new Schema {
 }
 
 AppointmentSchema = new Schema {
-  uid: Number,
+  uid: {type: Number, unique: true }
   transactions: [Transaction],
   payments: [Payment],  
   paid: { Boolean, default: false },

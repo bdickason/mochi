@@ -13,7 +13,7 @@ ObjectId = Schema.ObjectId
 
 ServiceSchema = new Schema {
   uid: { type: Number, required: true },
-  name: { type: String, required: true, unique: true }, 
+  name: { type: String, required: true }, 
   price:
     retail: { type: Number },
   active: { type: Number },

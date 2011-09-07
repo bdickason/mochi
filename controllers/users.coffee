@@ -35,10 +35,12 @@ exports.Users = class Users
     # Callback should be error or no callback if successful
     user = new User json
 
-    user.save (err) ->
-      if err
-        console.log user
-        console.log err
+    User.find {uid: user.uid}, (err, data) ->
+      if data.length is 0
+        # Does not exist, save it!
+        user.save (err) ->
+          if err
+            console.log err
     
   update: (id) ->
     
