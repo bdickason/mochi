@@ -25,7 +25,8 @@ exports.Appointments = class Appointments
   set: (json, callback) ->
     # Add an appointment given some json
     # Callback should be error or no callback if successful
-    appointment = new User json
+    appointment = new Appointment json
+    console.log appointment
 
     appointment.save (err) ->
       if err

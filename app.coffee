@@ -248,21 +248,116 @@ app.get '/import', (req, res) ->
   impTransactions = new Import  
   impTransactionEntries = new Import
 
-  impAppointments.appointments (appointmentjson) =>
-    impTransactions.transactions (transactionjson) =>
-      impTransactionEntries.transactionEntries (entriesjson) =>
-        # woohoo nested callback city!
-        for appointment in appointmentjson.appointments
+  impTransactions.transactions (transactionjson) =>
+    impTransactionEntries.transactionEntries (entriesjson) =>
+      impAppointments.appointments (appointmentjson) =>
+        # woohoo nested callback city!        
+        ### Transactions in phpcode = Appointments in nodecode 
+            -Appointments in php = Transactions in node
+            -Transaction_entries in php = Transactions in node  (sometimes tied together) ###
+        for appointment in transactionjson.transactions
+          appointment.uid = parseInt appointment.transaction_id
+          delete appointment.transaction_id
+
+          appointment.total = parseFloat appointment.transaction_total
+          delete appointment.transaction_total
+          
+          if parseInt appointment.transaction_void isnt 0
+            appointment.void = {}
+            appointment.void.void = true
+            if appointment.transaction_void_by_uid
+              appointment.void.user = parseInt appointment.transaction_void_by_uid
+            if appointment.transaction_void_date
+              appointment.void.date = appointmnet.transaction_void_date
+          
+          appointment.confirmed = Boolean parseInt appointment.transaction_finalized
+          delete appointment.transaction_finalized
+          
+          appointment.payments = []
+          # Currently, only supports 1 payment at a time, so we can push and reference payments[0]
+          if appointment.transaction_payment_type isnt null or appointment.transaction_payment_type isnt ''
+            appointment.payments.push { type: appointment.transaction_payment_type }
+
+          # Handle individual transactions
+          appointment.transactions = []
+          
+          for entry in entriesjson.entries
+            if appointment.uid is parseInt entry.transaction_id
+              entry.uid = parseInt entry.transaction_entry_id
+              delete entry.transaction_entry_id
+              
+              entry.client = parseInt appointment.transaction_uid  # In the php client, every transaction has only one user
+
+              entry.stylist = parseInt entry.transaction_entry_uid  # uid in this case is a stylist user ID
+              delete entry.transaction_entry_uid
+              
+              # Services and Products
+              switch entry.transaction_entry_type
+                when 'service'
+                  entry.service = {}
+                  entry.service.id = entry.transaction_entry_service_id
+                  entry.service.price = parseFloat entry.transaction_entry_price_added
+                when 'product'              
+                  entry.product = {}
+                  entry.product.id = entry.transaction_entry_service_id   # Original software reused this variable
+                  entry.product.quantity = entry.transaction_entry_quantity
+                  entry.product.price = parseFloat entry.transaction_entry_price_added
+
+              delete entry.transaction_entry_quantity
+              delete entry.transaction_entry_price_added
+              delete entry.transaction_entry_service_id
+              delete entry.transaction_entry_type
+              
+              # Date -> JSON object
+              entry.date = {}
+              entry.date.updated = entry.transaction_entry_date_added
+              delete entry.transaction_entry_date_added
+              
+              
+              
+              
+              # Don't need this crap
+              delete entry.transaction_id
+            
+            
+              appointment.transactions.push entry
+
+          # Delete the crap we don't need
+          delete appointment.transaction_code   # can't figure out what this is
+          delete appointment.transaction_paid   # doesn't seem to be set anywhere
+          delete appointment.transaction_payment_type
+          delete appointment.transaction_author_uid
+          delete appointment.transaction_updated_uid
+          delete appointment.transaction_stylists
+          delete appointment.transaction_products
+          delete appointment.transaction_client_name
+          delete appointment.transaction_void_date
+          delete appointment.transaction_void_by_uid
+          delete appointment.transaction_void
+
+          # Don't think we need this stuff
+          delete appointment.transaction_uid
+          delete appointment.transaction_created_date
+          delete appointment.transactoin_updated_date
+
+          res.write JSON.stringify appointment
+          
+          appointments.set appointment, (callback) ->
+          ### deal w/ this next
+
+          for appointment in appointmentjson.appointments
+            console.log appointment
+        
           console.log appointment
-        for transaction in transactionjson
-          console.log transaction
-        for transentry in entriesjson
-          console.log transentry
+
+
+          
           
         # Work some magic here to figure out which transaction is which
-        # and massage this into some damn fine json!
+        # and massage this into some damn fine json! ###
   
-
+        res.end()
+        
 ### Socket.io Stuff ###
 # Note, may need authentication later: https://github.com/dvv/socket.io/commit/ff1bcf0fb2721324a20f9d7516ff32fbe893a693#L0R111
 

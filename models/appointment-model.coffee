@@ -11,6 +11,14 @@ mongoose = require 'mongoose'
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
 
+### Embedded Doc - An Appointment can have many payments ###
+Payment = new Schema {
+  # A payment could be $15.99 in Visa
+  # A payment could be $20.06 in Cash
+  type: String,
+  amount: Number,
+}
+
 ### Embedded Doc - An appointment can have many transactions ###
 Transaction = new Schema {
   # A transaction is between one stylist and one user on a given checkout
@@ -39,18 +47,21 @@ Transaction = new Schema {
 
   author: Number,
   completed: Boolean,  # Checkout is completed and paid for!
-    
-  void: 
-    void: {type: Boolean, default: false }  # Couldn't come up with a better name :\
-    date: Date,
-    user: Number      
 }
 
 AppointmentSchema = new Schema {
   uid: Number,
   transactions: [Transaction],
-  active: Number,
-  confirmed: Boolean  # Did the receptionist confirm it?
+  payments: [Payment],  
+  paid: { Boolean, default: false },
+  active: { type: Number, default: 1 },
+  confirmed: Boolean,  # Did the receptionist confirm it?
+  total: Number
+  
+  void: 
+    void: {type: Boolean, default: false }  # Couldn't come up with a better name :\
+    date: Date,
+    user: Number
 }
 
 mongoose.model 'Appointments', AppointmentSchema
