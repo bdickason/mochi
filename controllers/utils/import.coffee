@@ -28,10 +28,6 @@ exports.Import = class Import
     @options.path = "http://bloom.getmochi.com/api/transactions/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000"
     @getRequest callback
 
-  appointments: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/appointments/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000"
-    @getRequest callback
-
   transactionEntries: (callback) ->
     @options.path = "http://bloom.getmochi.com/api/transactionEntries/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000"
     @getRequest callback

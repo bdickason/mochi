@@ -63,15 +63,12 @@ app.get '/:route', (req, res) ->
   obj.get null, (json) ->
     res.send json
 
-### Get One - Generic Route
+# Get One - Generic Route
 app.get '/:route/:uid', (req, res) ->
   obj = getRoute req.params.route
 
   obj.get req.params.uid, (json) ->
     res.send json
-###
-
-
         
 ### Socket.io Stuff ###
 # Note, may need authentication later: https://github.com/dvv/socket.io/commit/ff1bcf0fb2721324a20f9d7516ff32fbe893a693#L0R111
@@ -95,7 +92,8 @@ getRoute = (route) ->
   return obj
   
 doImport = (req, res) ->
-
+  # We should probably rip this out into a import.js standalone file that gets invoked nightly via cron or somethin.
+  
   users = new Users
   imp = new Import
  
@@ -271,7 +269,6 @@ doImport = (req, res) ->
 
   impTransactions.transactions (transactionjson) =>
     impTransactionEntries.transactionEntries (entriesjson) =>
-      impAppointments.appointments (appointmentjson) =>
         # woohoo nested callback city!        
         ### Transactions in phpcode = Appointments in nodecode 
             -Appointments in php = Transactions in node
@@ -334,12 +331,8 @@ doImport = (req, res) ->
               entry.date.updated = entry.transaction_entry_date_added
               delete entry.transaction_entry_date_added
               
-              
-              
-              
               # Don't need this crap
               delete entry.transaction_id
-            
             
               appointment.transactions.push entry
 
@@ -360,19 +353,7 @@ doImport = (req, res) ->
           delete appointment.transaction_uid
           delete appointment.transaction_created_date
           delete appointment.transactoin_updated_date
-          
+
           appointments.set appointment, (callback) ->
-          ### deal w/ this next
-
-          for appointment in appointmentjson.appointments
-            console.log appointment
-        
-          console.log appointment
-
-
           
-          
-        # Work some magic here to figure out which transaction is which
-        # and massage this into some damn fine json! ###
-  
         res.send 'Done!'
