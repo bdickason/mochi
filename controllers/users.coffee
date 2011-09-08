@@ -26,9 +26,9 @@ exports.Users = class Users
               redis.set redisKey, JSON.stringify data
               callback data
         else
-          options = {}        
+          options = {}     
+          options.limit = 20             
           if query.page
-            options.limit = 20
             options.skip = options.limit * query.page
             
           # Show all users

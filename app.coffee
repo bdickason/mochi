@@ -56,14 +56,6 @@ app.get '/favicon.ico', (req, res) ->
 app.get '/import', (req, res) ->
   doImport req, res
     
-###
-# Get All - Generic RESTful route
-app.get '/:route', (req, res) ->
-  obj = getRoute req.params.route
-  
-  obj.get null, params = req.params(json) ->
-    res.send json ###
-
 # Get One - Generic Route
 app.get '/:route/:uid?', (req, res) ->
   obj = getRoute req.params.route

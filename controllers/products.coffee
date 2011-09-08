@@ -23,9 +23,9 @@ exports.Products = class Products
               callback data
         else
           # Show all products
-          options = {}        
+          options = {} 
+          options.limit = 20                 
           if query.page
-            options.limit = 20
             options.skip = options.limit * query.page
                       
           Product.find {}, [], options, (err, data) =>

@@ -23,9 +23,9 @@ exports.Services = class Services
               callback data
         else
           # Show all services
-          options = {}        
+          options = {} 
+          options.limit = 20                 
           if query.page
-            options.limit = 20
             options.skip = options.limit * query.page
                       
           Service.find {}, [], options, (err, data) =>

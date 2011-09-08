@@ -23,9 +23,10 @@ exports.Appointments = class Appointments
               callback data
         else
           # Show all appointments
-          options = {}        
+          options = {} 
+          options.limit = 20                 
+          
           if query.page
-            options.limit = 20
             options.skip = options.limit * query.page        
 
           Appointment.find {}, [], options, (err, data) =>
