@@ -9,8 +9,15 @@ html(lang="en")
     script(type='text/javascript', src='/js/lib/backbone.js')
     script(type='text/javascript', src='/js/lib/json2.js')
 
-        
   body(id="mochi")
-    header 
-      Nav goes here
+    header.adminBar
+      .busName
+        p 
+          a(href='#') Bloom Beauty Lounge
+      .adminBtn
+        p 
+          a(href='#') Reports
+      .clear
+    .calSearchCheckBar
+      p
   != body

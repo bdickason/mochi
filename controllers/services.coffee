@@ -41,7 +41,7 @@ exports.Services = class Services
     service = new Service json
 
     Service.findOne { uid: service.uid }, (err, data) ->
-      if data.length is 0
+      if !data
         # Does not exist, save it!
         service.save (err) ->
           if err

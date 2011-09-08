@@ -302,7 +302,7 @@ doImport = (req, res) ->
           appointment.payments = []
           # Currently, only supports 1 payment at a time, so we can push and reference payments[0]
           if appointment.transaction_payment_type isnt null or appointment.transaction_payment_type isnt ''
-            appointment.payments.push { type: appointment.transaction_payment_type, price: appointment.total}
+            appointment.payments.push { type: appointment.transaction_payment_type, amount: appointment.total}
 
           # Handle individual transactions
           appointment.transactions = []

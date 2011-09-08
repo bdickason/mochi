@@ -41,7 +41,7 @@ exports.Products = class Products
     product = new Product json 
 
     Product.findOne {uid: product.uid}, (err, data) ->
-      if data.length is 0
+      if !data
         # Does not exist, save it!
         product.save (err) ->
           if err

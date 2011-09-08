@@ -43,7 +43,7 @@ exports.Appointments = class Appointments
     
     # Check to make sure it doesn't exist
     Appointment.findOne {uid: appointment.uid}, (err, data) ->
-      if data.length is 0
+      if !data
         # Does not exist, save it!
         appointment.save (err) ->
           if err

@@ -45,7 +45,7 @@ exports.Users = class Users
     user = new User json
 
     User.findOne {uid: user.uid}, (err, data) ->
-      if data.length is 0
+      if !data
         # Does not exist, save it!
         user.save (err) ->
           if err
