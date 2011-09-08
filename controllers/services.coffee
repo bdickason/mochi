@@ -5,9 +5,9 @@ Service = require '../models/service-model'
 
 exports.Services = class Services
 
-  get: (uid, callback) ->
+  get: (uid, query, callback) ->
     # Always check cache first - this should eventually go in each controller
-    redisKey = "/services/#{uid}"
+    redisKey = "/services/#{uid}#{JSON.stringify query}"
     redis.get redisKey, (err, data) ->
       if data
         callback eval data
@@ -15,7 +15,7 @@ exports.Services = class Services
         # Cache is clean, go grab it from mongo    
         if uid
           # Find a single service
-          Service.find { uid: uid }, (err, data) ->
+          Service.findOne { uid: uid }, (err, data) ->
             if err
               console.log err
             else
@@ -23,7 +23,12 @@ exports.Services = class Services
               callback data
         else
           # Show all services
-          Service.find {}, (err, data) =>
+          options = {}        
+          if query.page
+            options.limit = 20
+            options.skip = options.limit * query.page
+                      
+          Service.find {}, [], options, (err, data) =>
             if err
               console.log err
             else
@@ -35,7 +40,7 @@ exports.Services = class Services
     # Callback should be error or no callback if successful
     service = new Service json
 
-    Service.find { uid: service.uid }, (err, data) ->
+    Service.findOne { uid: service.uid }, (err, data) ->
       if data.length is 0
         # Does not exist, save it!
         service.save (err) ->

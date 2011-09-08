@@ -56,18 +56,19 @@ app.get '/favicon.ico', (req, res) ->
 app.get '/import', (req, res) ->
   doImport req, res
     
+###
 # Get All - Generic RESTful route
 app.get '/:route', (req, res) ->
   obj = getRoute req.params.route
   
-  obj.get null, (json) ->
-    res.send json
+  obj.get null, params = req.params(json) ->
+    res.send json ###
 
 # Get One - Generic Route
-app.get '/:route/:uid', (req, res) ->
+app.get '/:route/:uid?', (req, res) ->
   obj = getRoute req.params.route
 
-  obj.get req.params.uid, (json) ->
+  obj.get req.params.uid, req.query, (json) ->
     res.send json
         
 ### Socket.io Stuff ###
@@ -77,6 +78,8 @@ io.enable 'browser client minification'
 io.set 'log level', 2
 
 app.listen process.env.PORT or 3000 
+
+### Utility Functions ###
 
 getRoute = (route) ->
   switch route
