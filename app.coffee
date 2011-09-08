@@ -49,7 +49,8 @@ Import = (require './controllers/utils/import').Import   # Temporary importer sc
 
 # Home Page
 app.get '/', (req, res) ->
-  console.log 'home'
+  # Index - serve up backbone and all that single-page sexiness
+  res.render 'index'
 
 app.get '/favicon.ico', (req, res) ->
 
@@ -57,7 +58,7 @@ app.get '/import', (req, res) ->
   doImport req, res
     
 # Get One - Generic Route
-app.get '/:route/:uid?', (req, res) ->
+app.get '/api/:route/:uid?', (req, res) ->
   obj = getRoute req.params.route
 
   obj.get req.params.uid, req.query, (json) ->
