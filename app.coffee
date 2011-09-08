@@ -45,6 +45,7 @@ Users = (require './controllers/users').Users
 Products = (require './controllers/products').Products
 Services = (require './controllers/services').Services
 Appointments = (require './controllers/appointments').Appointments
+Reports = (require './controllers/reports').Reports
 Import = (require './controllers/utils/import').Import   # Temporary importer script from mysql
 
 # Home Page
@@ -56,7 +57,16 @@ app.get '/favicon.ico', (req, res) ->
 
 app.get '/import', (req, res) ->
   doImport req, res
+
+app.get '/api/reports/:report/:startDate?/:endDate?', (req, res) ->
+  report = new Reports
+
+  switch req.params.report
+    when 'daily'
+      report.daily req.params.startDate, req.params.endDate, (json) ->
+        res.send json
     
+  
 # Get One - Generic Route
 app.get '/api/:route/:uid?', (req, res) ->
   obj = getRoute req.params.route
@@ -84,6 +94,8 @@ getRoute = (route) ->
       obj = new Services
     when 'users'
       obj = new Users
+    when 'reports'
+      obj = new Reports
 
   return obj
   
@@ -290,7 +302,7 @@ doImport = (req, res) ->
           appointment.payments = []
           # Currently, only supports 1 payment at a time, so we can push and reference payments[0]
           if appointment.transaction_payment_type isnt null or appointment.transaction_payment_type isnt ''
-            appointment.payments.push { type: appointment.transaction_payment_type }
+            appointment.payments.push { type: appointment.transaction_payment_type, price: appointment.total}
 
           # Handle individual transactions
           appointment.transactions = []
