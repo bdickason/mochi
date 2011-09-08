@@ -5,9 +5,9 @@ Appointment = require '../models/appointment-model'
 
 exports.Appointments = class Appointments
 
-  get: (uid, callback) ->
+  get: (uid, query, callback) ->
     # Always check cache first - this should eventually go in each controller
-    redisKey = "/appointments/#{uid}"
+    redisKey = "/appointments/#{uid}#{JSON.stringify query}"
     redis.get redisKey, (err, data) ->
       if data
         callback eval data
@@ -15,7 +15,7 @@ exports.Appointments = class Appointments
         # Cache is clean, go grab it from mongo
         if uid
           # Find a single Appointment
-          Appointment.find { uid: uid }, (err, data) ->
+          Appointment.findOne { uid: uid }, (err, data) ->
             if err
               console.log err
             else
@@ -23,7 +23,13 @@ exports.Appointments = class Appointments
               callback data
         else
           # Show all appointments
-          Appointment.find {}, (err, data) =>
+          options = {} 
+          options.limit = 20                 
+          
+          if query.page
+            options.skip = options.limit * query.page        
+
+          Appointment.find {}, [], options, (err, data) =>
             if err
               console.log err
             else
@@ -36,8 +42,8 @@ exports.Appointments = class Appointments
     appointment = new Appointment json
     
     # Check to make sure it doesn't exist
-    Appointment.find {uid: appointment.uid}, (err, data) ->
-      if data.length is 0
+    Appointment.findOne {uid: appointment.uid}, (err, data) ->
+      if !data
         # Does not exist, save it!
         appointment.save (err) ->
           if err

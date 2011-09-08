@@ -3,6 +3,9 @@
 exports.SESSION_SECRET = process.env.SESSION_SECRET || 'internets'
 exports.SESSION_ID = process.env.SESSION_ID || 'express.sid'
 
+exports.PRODUCT_TAX = process.env.PRODUCT_TAX || '0.08875'  # NY Sales Tax is 8.875% http://www.nyc.gov/html/dof/html/business/business_tax_nys_sales.shtml
+exports.SERVICE_TAX = process.env.SERVICE_TAX || '0.045'    # NY Services Tax is 4.5%
+
 # Redis
 exports.REDIS_HOSTNAME = process.env.REDIS_HOSTNAME || 'localhost'
 exports.REDIS_PORT = process.env.REDIS_PORT || 6379

@@ -42,8 +42,6 @@ Transaction = new Schema {
     start: Date,
     end: Date,
     updated: Date
-      
-  payment: String,
 
   author: Number,
   completed: Boolean,  # Checkout is completed and paid for!
