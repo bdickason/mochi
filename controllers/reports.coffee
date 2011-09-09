@@ -30,65 +30,108 @@ exports.Reports = class Reports
         Appointment.find { 'transactions.date.updated': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
           # console.log data
 
+          # Totals
+          @report.totals = {}
+          
           # Services
-          @report.services = {}
-          @report.services.total = 0
+          @report.services = []
+          @report.totals.services = 0
           
           # Products
-          @report.products = {}
-          @report.products.total = 0
+          @report.products = []
+          @report.totals.products = 0
           
           # Payments
-          @report.payments = {}
-          @report.payments.total = 0
+          @report.payments = []
+          @report.totals.payments = 0
 
           for appointment in data
             for transaction in appointment.transactions
                         
               if transaction.service.price  # We can't just check for .service because of empty JSON issues
                 # Ok it's a service, now process it!
-                @report.services.total += transaction.service.price
+                @report.totals.services += transaction.service.price
             
                 # Convert service id to name
-                for service in services
-                  if parseInt(transaction.service.id) is parseInt(service.uid)
-                    transaction.service.name = service.name
-            
-                if !@report.services["#{transaction.service.name}"]
-                  @report.services["#{transaction.service.name}"] = []
+                for _service in services
+                  if parseInt(transaction.service.id) is parseInt(_service.uid)
+                    transaction.service.name = _service.name
 
-                @report.services["#{transaction.service.name}"].push parseFloat transaction.service.price
+                found = false
+                for service in @report.services
+                  if parseInt(service.uid) is parseInt(transaction.service.id)
+                    service.transactions.push transaction.service.price
+                    found = true
                 
-            
+                if !found
+                  # Doesn't exist, we need to create the array
+                  newService = {}
+                  newService.uid = transaction.service.id
+                  newService.name = transaction.service.name
+                  newService.transactions = []
+                  
+                  newService.transactions.push transaction.service.price
+                  
+                  @report.services.push newService
+                
+                                
               # Retail
               if transaction.product.price # Gotta check for .price because otherwise it returns {}
-                @report.products.total += transaction.product.price
+                @report.totals.products += transaction.product.price
               
                 # Convert product id to name
-                for product in products
-                  if parseInt(transaction.product.id) is parseInt(product.uid)
-                    transaction.product.name = product.brand[0].name + ' ' + product.name
+                for _product in products
+                  if parseInt(transaction.product.id) is parseInt(_product.uid)
+                    transaction.product.name = _product.brand[0].name + ' ' + _product.name
+
+                found = false
+                for product in @report.products
+                  if parseInt(product.uid) is parseInt(transaction.product.id)
+                    product.transactions.push transaction.product.price
+                    found = true
                 
-                if !@report.products["#{transaction.product.name}"]
-                  @report.products["#{transaction.product.name}"] = []
-                
-                @report.products["#{transaction.product.name}"].push parseFloat transaction.product.price
+                if !found
+                  # Doesn't exist, we need to create the array
+                  newProduct = {}
+                  newProduct.uid = transaction.product.id
+                  newProduct.name = transaction.product.name
+                  newProduct.transactions = []
+                  
+                  newProduct.transactions.push transaction.product.price
+                  
+                  @report.products.push newProduct
+
+
             
             # Payment Type
             for payment in appointment.payments
-              console.log payment
-              if !@report.payments["#{payment.type}"]
-                @report.payments["#{payment.type}"] = []
-              @report.payments["#{payment.type}"].push parseFloat payment.amount
-              @report.payments.total += parseFloat payment.amount
-            
-
+              @report.totals.payments += parseFloat payment.amount
+              
+              found = false
+              for pay in @report.payments
+                console.log payment.type
+                console.log pay.name
+                if payment.type is pay.name
+                  pay.amounts.push payment.amount
+                  found = true
+              
+              if !found
+                # Doesn't exist, we need to create the array
+                newPayment = {}
+                newPayment.uid = payment.uid
+                newPayment.name = payment.type
+                newPayment.amounts = []
+                
+                newPayment.amounts.push payment.amount
+                
+                @report.payments.push newPayment
           
           # Tax
-          @report.services.tax = Math.round(@report.services.total * cfg.SERVICE_TAX * 100) / 100 # Quickie round to 2 decimals
-          @report.products.tax = Math.round(@report.products.total * cfg.PRODUCT_TAX * 100) / 100 
+          @report.tax = {}
+          @report.tax.services = Math.round(@report.totals.services * cfg.SERVICE_TAX * 100) / 100 # Quickie round to 2 decimals
+          @report.tax.products = Math.round(@report.totals.products * cfg.PRODUCT_TAX * 100) / 100 
 
           # Totals
-          @report.total = @report.services.total + @report.products.total
+          @report.totals.grand = @report.totals.services + @report.totals.products
       
           callback @report
