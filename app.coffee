@@ -67,7 +67,7 @@ app.get '/api/reports/:report/:startDate?/:endDate?', (req, res) ->
         res.send json
     
   
-# Get One - Generic Route
+# RESTful API Routes (appointments, products, etc)
 app.get '/api/:route/:uid?', (req, res) ->
   obj = getRoute req.params.route
 
