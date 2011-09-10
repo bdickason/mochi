@@ -21,7 +21,7 @@
           active: 1
         }, __bind(function(err, products) {
           return Appointment.find({
-            'transactions.date.updated': {
+            'transactions.date.start': {
               '$gte': startDate,
               '$lte': endDate
             },
@@ -123,6 +123,23 @@
             return callback(this.report);
           }, this));
         }, this));
+      }, this));
+    };
+    Reports.prototype.salesTax = function(startDate, endDate, callback) {
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date(endDate);
+      endDate.setHours(23, 59, 59);
+      this.report = {};
+      return Appointment.find({
+        'transactions.date.start': {
+          '$gte': startDate,
+          '$lte': endDate
+        },
+        'confirmed': true
+      }, __bind(function(err, data) {
+        console.log(data);
+        return callback('Done!');
       }, this));
     };
     return Reports;

@@ -66,6 +66,10 @@
         return report.daily(req.params.startDate, req.params.endDate, function(json) {
           return res.send(json);
         });
+      case 'salesTax':
+        return report.salesTax(req.params.startDate, req.params.endDate, function(json) {
+          return res.send(json);
+        });
     }
   });
   app.get('/api/:route/:uid?', function(req, res) {
@@ -336,6 +340,7 @@
               delete entry.transaction_entry_service_id;
               delete entry.transaction_entry_type;
               entry.date = {};
+              entry.date.start = entry.transaction_entry_date_added;
               entry.date.updated = entry.transaction_entry_date_added;
               delete entry.transaction_entry_date_added;
               delete entry.transaction_id;

@@ -65,6 +65,10 @@ app.get '/api/reports/:report/:startDate?/:endDate?', (req, res) ->
     when 'daily'
       report.daily req.params.startDate, req.params.endDate, (json) ->
         res.send json
+    when 'salesTax'
+      report.salesTax req.params.startDate, req.params.endDate, (json) ->
+        res.send json
+    
     
   
 # RESTful API Routes (appointments, products, etc)
@@ -336,6 +340,7 @@ doImport = (req, res) ->
               
               # Date -> JSON object
               entry.date = {}
+              entry.date.start = entry.transaction_entry_date_added   # Mochi didn't have the concept of a start/end date
               entry.date.updated = entry.transaction_entry_date_added
               delete entry.transaction_entry_date_added
               

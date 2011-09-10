@@ -26,7 +26,7 @@ exports.Reports = class Reports
       Product.find { active: 1 }, (err, products) =>
       
         # Grab all transactions in the time period
-        Appointment.find { 'transactions.date.updated': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
+        Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
 
           # Totals
           @report.totals = {}
@@ -131,3 +131,28 @@ exports.Reports = class Reports
           @report.totals.grand = @report.totals.services + @report.totals.products
       
           callback @report
+
+  # Sales Tax - Quarterly Report
+  salesTax: (startDate, endDate, callback)  ->
+
+    startDate = new Date(startDate)
+    
+    # Sales tax comes in quarters:
+    #   Q1: Apr 1 - May 31
+    #   Q2: Jun 1 - Aug 31
+    #   Q3: Aug 1 - Nov 30
+    #   Q4: Dec 1 - Feb 28
+    
+    startDate.setHours 0, 0, 0
+
+
+    endDate = new Date(endDate)   # Override the end date for this report because we're determining the range
+    endDate.setHours 23, 59, 59
+
+    @report = {}   # JSON representing report output
+
+    # Grab all transactions in the time period
+    Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
+      console.log data
+      callback 'Done!'
+  
