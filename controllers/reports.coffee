@@ -12,9 +12,8 @@ exports.Reports = class Reports
 
   # Daily report - sales, etc
   daily: (startDate, endDate, callback)  ->
-
-    # HACK - doesn't read dates yet
-    startDate = new Date(2011, 8, 1, 5, 6, 7)
+    
+    startDate = new Date(startDate)
 
     # We only care about start date for daily report
     startDate.setHours 0, 0, 0
@@ -28,7 +27,6 @@ exports.Reports = class Reports
       
         # Grab all transactions in the time period
         Appointment.find { 'transactions.date.updated': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
-          # console.log data
 
           # Totals
           @report.totals = {}
@@ -109,8 +107,6 @@ exports.Reports = class Reports
               
               found = false
               for pay in @report.payments
-                console.log payment.type
-                console.log pay.name
                 if payment.type is pay.name
                   pay.amounts.push payment.amount
                   found = true
