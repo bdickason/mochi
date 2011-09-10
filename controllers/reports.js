@@ -14,6 +14,9 @@
       endDate = new Date(startDate);
       endDate.setHours(23, 59, 59);
       this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
       return Service.find({
         active: 1
       }, __bind(function(err, services) {
@@ -131,6 +134,13 @@
       endDate = new Date(endDate);
       endDate.setHours(23, 59, 59);
       this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.totals = {};
+      this.report.totals.services = 0;
+      this.report.totals.serviceTax;
+      this.report.totals.products = 0;
       return Appointment.find({
         'transactions.date.start': {
           '$gte': startDate,
@@ -138,8 +148,27 @@
         },
         'confirmed': true
       }, __bind(function(err, data) {
-        console.log(data);
-        return callback('Done!');
+        var appointment, transaction, _i, _j, _len, _len2, _ref;
+        for (_i = 0, _len = data.length; _i < _len; _i++) {
+          appointment = data[_i];
+          _ref = appointment.transactions;
+          for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+            transaction = _ref[_j];
+            console.log(transaction.date.start);
+            if (transaction.service.price) {
+              this.report.totals.services += transaction.service.price;
+            }
+            if (transaction.product.price) {
+              this.report.totals.products += transaction.product.price;
+            }
+          }
+        }
+        this.report.totals.services = Math.round(this.report.totals.services * 100) / 100;
+        this.report.totals.products = Math.round(this.report.totals.products * 100) / 100;
+        this.report.tax = {};
+        this.report.tax.services = Math.round(this.report.totals.services * cfg.SERVICE_TAX * 100) / 100;
+        this.report.tax.products = Math.round(this.report.totals.products * cfg.PRODUCT_TAX * 100) / 100;
+        return callback(this.report);
       }, this));
     };
     return Reports;

@@ -22,6 +22,10 @@ exports.Reports = class Reports
     
     @report = {}   # JSON representing report output
     
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
+    
     Service.find { active: 1 }, (err, services) =>
       Product.find { active: 1 }, (err, products) =>
       
@@ -151,8 +155,43 @@ exports.Reports = class Reports
 
     @report = {}   # JSON representing report output
 
+    # Dates
+    @report.dates = {}  # Add dates to output so you can verify that the request was successful
+    @report.dates.start = startDate
+    @report.dates.end = endDate
+
+    # Totals
+    @report.totals = {}
+    
+    # Services
+    @report.totals.services = 0
+    @report.totals.serviceTax
+    
+    # Products
+    @report.totals.products = 0
+
     # Grab all transactions in the time period
-    Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
-      console.log data
-      callback 'Done!'
+    Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>      
+      for appointment in data
+        for transaction in appointment.transactions
+          console.log transaction.date.start
+          # Services
+          if transaction.service.price  # We can't just check for .service because of empty JSON issues
+             # Ok it's a service, now process it!
+             @report.totals.services += transaction.service.price
+
+          # Retail
+          if transaction.product.price # Gotta check for .price because otherwise it returns {}
+            @report.totals.products += transaction.product.price 
+                 
+      # Normalize totals
+      @report.totals.services = Math.round(@report.totals.services * 100) / 100
+      @report.totals.products = Math.round(@report.totals.products * 100) / 100
+        
+      # Tax
+      @report.tax = {}
+      @report.tax.services = Math.round(@report.totals.services * cfg.SERVICE_TAX * 100) / 100 # Quickie round to 2 decimals
+      @report.tax.products = Math.round(@report.totals.products * cfg.PRODUCT_TAX * 100) / 100 
+
+      callback @report
   
