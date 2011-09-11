@@ -12,7 +12,6 @@ exports.Reports = class Reports
 
   # Daily report - sales, etc
   daily: (startDate, endDate, callback)  ->
-
     startDate = new Date startDate
 
     # We only care about start date for daily report
@@ -27,7 +26,6 @@ exports.Reports = class Reports
       
         # Grab all transactions in the time period
         Appointment.find { 'transactions.date.updated': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>
-          # console.log data
 
           # Totals
           @report.totals = {}
