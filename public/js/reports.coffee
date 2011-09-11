@@ -7,19 +7,34 @@ $ ->
   #   -Daily sales report
   #   -Calculate quarterly sales tax
   #   -Stylist performance reports, etc.
-  window.salesTaxReport = Backbone.Model.extend 
+  window.dailyReport = Backbone.Model.extend 
     initialize: (report) ->
       @set report
       
   # Reports collection - do we need this? :x
   window.Reports = Backbone.Collection.extend
-    model: salesTaxReport
-    url: '/api/reports/salesTax/09-01-2011'
+    model: dailyReport
+    # url: '/api/reports/salesTax/09-01-2011'
 
   # Initialize our reports collection
   window.reports = new Reports
   
-  reports.fetch()
+  # reports.fetch()
+  
+  # Controller - this is where we define our routes
+  window.Router = Backbone.Router.extend
+    routes:
+      '!/daily/:startDate': 'dailyReport'
+  
+    dailyReport: (startDate, endDate)->
+      reports.url = '/api/reports/daily/' + startDate
+      reports.fetch()
+      console.log 'test! ' + startDate
+
+  window.router = new Router
+  
+  Backbone.history.start()
+  
   
   ###
   # Reports views

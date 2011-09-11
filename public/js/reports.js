@@ -1,16 +1,26 @@
 (function() {
   $(function() {
-    /* Report Model for Backbone.js */    window.salesTaxReport = Backbone.Model.extend({
+    /* Report Model for Backbone.js */    window.dailyReport = Backbone.Model.extend({
       initialize: function(report) {
         return this.set(report);
       }
     });
     window.Reports = Backbone.Collection.extend({
-      model: salesTaxReport,
-      url: '/api/reports/salesTax/09-01-2011'
+      model: dailyReport
     });
     window.reports = new Reports;
-    return reports.fetch();
+    window.Router = Backbone.Router.extend({
+      routes: {
+        '!/daily/:startDate': 'dailyReport'
+      },
+      dailyReport: function(startDate, endDate) {
+        reports.url = '/api/reports/daily/' + startDate;
+        reports.fetch();
+        return console.log('test! ' + startDate);
+      }
+    });
+    window.router = new Router;
+    return Backbone.history.start();
     /*
       # Reports views
       window.ReportView = Backbone.View.extend
