@@ -14,11 +14,14 @@ $ ->
   # Reports collection - do we need this? :x
   window.Reports = Backbone.Collection.extend
     model: salesTaxReport
-    url: '/#!/reports'
+    url: '/api/reports/salesTax/09-01-2011'
 
   # Initialize our reports collection
   window.reports = new Reports
-    
+  
+  reports.fetch()
+  
+  ###
   # Reports views
   window.ReportView = Backbone.View.extend
     initialize: ->
@@ -50,4 +53,4 @@ $ ->
       
       reports.fetch()
 
-  window.App = new AppView
+  window.App = new AppView ###

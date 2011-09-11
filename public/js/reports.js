@@ -7,33 +7,42 @@
     });
     window.Reports = Backbone.Collection.extend({
       model: salesTaxReport,
-      url: '/#!/reports'
+      url: '/api/reports/salesTax/09-01-2011'
     });
     window.reports = new Reports;
-    window.ReportView = Backbone.View.extend({
-      initialize: function() {
-        _.bindAll(this, 'render');
-        return this.model.bind('change', this.render);
-      },
-      tagName: 'li',
-      events: {
-        'change .datePicker': 'changeDate'
-      },
-      changeDate: function() {
-        return console.log('New Date: ' + this.input.val());
-      },
-      render: function() {
-        $(this.el).html(this.model.toJSON());
-        return this;
-      }
-    });
-    window.AppView = Backbone.View.extend({
-      el: $('#content'),
-      initialize: function() {
-        _.bindAll(this, 'render');
-        return reports.fetch();
-      }
-    });
-    return window.App = new AppView;
+    return reports.fetch();
+    /*
+      # Reports views
+      window.ReportView = Backbone.View.extend
+        initialize: ->
+          # Make sure functions are called with the right scope
+          _.bindAll this, 'render'
+          
+          # Listen to model changes
+          @model.bind 'change', @render
+        
+        tagName: 'li'
+        # template: Handlebars.compile $('#salesTax-template').html()
+      
+        events: 
+          'change .datePicker'  : 'changeDate'
+      
+        changeDate: ->
+          console.log 'New Date: ' + @input.val()
+          
+        render: ->
+          # $(@el).html @template @model.toJSON()
+          $(@el).html @model.toJSON()
+          return this
+    
+      window.AppView = Backbone.View.extend
+        el: $('#content')
+    
+        initialize: ->
+          _.bindAll this, 'render'
+          
+          reports.fetch()
+    
+      window.App = new AppView */
   });
 }).call(this);
