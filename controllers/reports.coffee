@@ -172,7 +172,6 @@ exports.Reports = class Reports
     Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true }, (err, data) =>      
       for appointment in data
         for transaction in appointment.transactions
-          console.log transaction.date.start
           # Services
           if transaction.service.price  # We can't just check for .service because of empty JSON issues
              # Ok it's a service, now process it!

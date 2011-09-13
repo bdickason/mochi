@@ -6,6 +6,8 @@
       className: 'userWrapper',
       initialize: function() {
         var source;
+        _.bindAll(this, 'render');
+        this.model.bind('change', this.render);
         source = $('#salesTax-template').html();
         return this.template = Handlebars.compile(source);
       },

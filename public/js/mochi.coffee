@@ -5,6 +5,7 @@
 #   -Handlebars (client-side templating)
 
 $ ->
+  
   window.Daily = Backbone.Model.extend {}
     
   window.ReportView = Backbone.View.extend
@@ -13,6 +14,8 @@ $ ->
       
     initialize: ->
       # @el = '.userWrapper'
+      _.bindAll this, 'render'
+      @model.bind 'change', @render
       # Compile Handlebars template at init (Not sure if we have to do this each time or not)
       source = $('#salesTax-template').html()
       @template = Handlebars.compile source

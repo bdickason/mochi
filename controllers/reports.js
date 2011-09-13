@@ -154,7 +154,6 @@
           _ref = appointment.transactions;
           for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
             transaction = _ref[_j];
-            console.log(transaction.date.start);
             if (transaction.service.price) {
               this.report.totals.services += transaction.service.price;
             }
