@@ -10,14 +10,35 @@ html(lang="en")
     script(type='text/javascript', src='/js/lib/underscore-min.js')
     script(type='text/javascript', src='/js/lib/backbone-min.js')
     script(type='text/javascript', src='/js/lib/json2.js')
-    script(type='text/javascript', src='/js/lib/handlebars.1.0.0.beta.3.js')
+    script(type='text/javascript', src='/js/lib/handlebars-1.0.0.beta.2.js')
     
     // App files Currently we've got everything in separate files. Soon we should compile into one file.
     script(type='text/javascript', src='/js/reports.js')
     script(type='text/javascript', src='/js/mochi.js')    
     
-    // Handlebars Templates      
-    script(type='text/x-handlebars-template', src='/js/templates/reports/salesTax-template.handlebars', id='#salesTax-template')
+    // Handlebars Templates - move these to separate files eventually
+    script(type='text/x-handlebars-template', id='salesTax-template')
+      {{#dates}}
+      p Start Date:
+      {{start}}
+      p End Date:
+      {{end}}
+      {{/dates}}
+      
+      {{#totals}}
+      p Totals:
+      {{services}}
+      {{products}}
+      {{/totals}}
+      
+      p Tax:
+      {{#tax}}
+      Services: 
+      {{services}}
+
+      p Products: 
+      {{products}}
+      {{/tax}}
 
   body(id="mochi")
     header.adminBar

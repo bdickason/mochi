@@ -338,7 +338,7 @@ doImport = (req, res) ->
               delete entry.transaction_entry_service_id
               delete entry.transaction_entry_type
               
-              # Date -> JSON object
+              # Date -> JSON object 
               entry.date = {}
               entry.date.start = entry.transaction_entry_date_added   # Mochi didn't have the concept of a start/end date
               entry.date.updated = entry.transaction_entry_date_added

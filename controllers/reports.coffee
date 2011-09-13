@@ -103,8 +103,6 @@ exports.Reports = class Reports
                   
                   @report.products.push newProduct
 
-
-            
             # Payment Type
             for payment in appointment.payments
               @report.totals.payments += parseFloat payment.amount
