@@ -8,7 +8,13 @@
     return child;
   };
   $(function() {
-    window.Daily = Backbone.Model.extend({});
+    window.Daily = (function() {
+      __extends(Daily, Backbone.Model);
+      function Daily() {
+        Daily.__super__.constructor.apply(this, arguments);
+      }
+      return Daily;
+    })();
     window.Reports = (function() {
       __extends(Reports, Backbone.Collection);
       function Reports() {
@@ -38,7 +44,10 @@
       ReportView.prototype.render = function() {
         var renderedContent;
         console.log('rendering!');
-        renderedContent = this.template(this.model.toJSON());
+        console.log(this.collection.toJSON());
+        renderedContent = this.template({
+          report: this.collection.toJSON()
+        });
         $(this.el).html(renderedContent);
         return this;
       };

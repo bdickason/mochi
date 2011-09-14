@@ -18,6 +18,7 @@ html(lang="en")
     
     // Handlebars Templates - move these to separate files eventually
     script(type='text/x-handlebars-template', id='salesTax-template')
+      {{#each report}}
       {{#dates}}
       p Start Date:
       {{start}}
@@ -39,6 +40,7 @@ html(lang="en")
       p Products: 
       {{products}}
       {{/tax}}
+      {{/each}}
 
   body(id="mochi")
     header.adminBar

@@ -6,7 +6,7 @@
 
 $ ->
   
-  window.Daily = Backbone.Model.extend {}
+  class window.Daily extends Backbone.Model
   
   class window.Reports extends Backbone.Collection
     model: Daily
@@ -33,7 +33,8 @@ $ ->
     render: ->
       # Render Handlebars template
       console.log 'rendering!'
-      renderedContent = @template @model.toJSON() #
+      console.log @collection.toJSON()
+      renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent
       return this
   
@@ -41,3 +42,5 @@ $ ->
   window.reports = new Reports
 
   window.reportView = new ReportView {model: report, collection: reports }
+
+  # class window.datePicker extends
