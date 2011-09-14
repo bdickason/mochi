@@ -6,9 +6,18 @@
 
 $ ->
   
-  window.report = new Daily {dates: {start: 'blah', end: 'blah2'}}
-  window.reports = new Reports
+  class window.Routes extends Backbone.Router
+    routes:
+      '!/daily/:startDate': 'daily'
+    
+    daily: (startDate) ->
+      console.log 'worked!'
+      window.report = new Daily {}
+      window.reports = new Reports
 
-  window.reportView = new ReportView { collection: reports }
+      window.reportView = new ReportView { collection: reports }
 
-  # class window.datePicker extends
+      # class window.datePicker extends
+  
+  routes = new Routes
+  Backbone.history.start()
