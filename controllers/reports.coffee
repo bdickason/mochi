@@ -10,13 +10,13 @@ User = require '../models/user-model'
 
 exports.Reports = class Reports
 
-  # Daily report - sales, etc
+  ### Daily report - sales, etc ###
   daily: (startDate, endDate, callback)  ->
     
     startDate = new Date(startDate)
-
-    # We only care about start date for daily report
     startDate.setHours 0, 0, 0
+
+    # We only care about start date for daily report. End date should be the same as the start, just 24hrs later.
     endDate = new Date(startDate)    
     endDate.setHours 23, 59, 59
     
@@ -134,7 +134,7 @@ exports.Reports = class Reports
       
           callback @report
 
-  # Sales Tax - Quarterly Report
+  ### Sales Tax - Quarterly Report ###
   salesTax: (startDate, endDate, callback)  ->
 
     startDate = new Date(startDate)
@@ -192,3 +192,27 @@ exports.Reports = class Reports
 
       callback @report
   
+  ### New Clients Report ###
+  newClients: (stylist, startDate, callback) ->
+    # Displays all clients for a given stylist (or all stylists) from start date to now
+    
+      startDate = new Date(startDate)
+      startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+
+      # We only care about start date for daily report, end date should be today
+      endDate = new Date()
+      endDate.setHours 23, 59, 59
+
+      @report = {}   # JSON representing report output
+
+      @report.dates = {}  # Add dates to output
+      @report.dates.start = startDate
+      @report.dates.end = endDate
+
+      # Grab all clients added in the time period
+      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1 }, { 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1 }, (err, clientdata) =>
+      @report.clients = clientdata
+      User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
+        @report.stylists = stylistdata
+        callback @report
+    

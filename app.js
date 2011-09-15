@@ -70,6 +70,10 @@
         return report.salesTax(req.params.startDate, req.params.endDate, function(json) {
           return res.send(json);
         });
+      case 'newClients':
+        return report.newClients(req.params.startDate, req.params.endDate, function(json) {
+          return res.send(json);
+        });
     }
   });
   app.get('/api/:route/:uid?', function(req, res) {

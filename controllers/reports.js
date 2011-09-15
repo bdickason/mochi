@@ -8,6 +8,7 @@
   User = require('../models/user-model');
   exports.Reports = Reports = (function() {
     function Reports() {}
+    /* Daily report - sales, etc */
     Reports.prototype.daily = function(startDate, endDate, callback) {
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
@@ -128,6 +129,7 @@
         }, this));
       }, this));
     };
+    /* Sales Tax - Quarterly Report */
     Reports.prototype.salesTax = function(startDate, endDate, callback) {
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
@@ -167,6 +169,42 @@
         this.report.tax = {};
         this.report.tax.services = Math.round(this.report.totals.services * cfg.SERVICE_TAX * 100) / 100;
         this.report.tax.products = Math.round(this.report.totals.products * cfg.PRODUCT_TAX * 100) / 100;
+        return callback(this.report);
+      }, this));
+    };
+    /* New Clients Report */
+    Reports.prototype.newClients = function(stylist, startDate, callback) {
+      var endDate;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date();
+      endDate.setHours(23, 59, 59);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      User.find({
+        'date_added': {
+          '$gte': startDate,
+          '$lte': endDate
+        },
+        'active': 1
+      }, {
+        'phone': 1,
+        'name': 1,
+        'email': 1,
+        'phone': 1,
+        'address': 1
+      }, __bind(function(err, clientdata) {}, this));
+      this.report.clients = clientdata;
+      return User.find({
+        'type': 'stylist',
+        'active': 1
+      }, {
+        'name': 1,
+        'uid': 1
+      }, __bind(function(err, stylistdata) {
+        this.report.stylists = stylistdata;
         return callback(this.report);
       }, this));
     };

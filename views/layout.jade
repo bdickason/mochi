@@ -46,6 +46,12 @@ html(lang="en")
         {{products}}
       {{/tax}}
       {{/each}}
+  
+  // Report - New Clients
+  script(type='text/x-handlebars-template', id='newClients-template')
+  h1 New Clients
+  {{#each report}}
+  {{/each}}
 
   body(id="mochi")
     header.adminBar

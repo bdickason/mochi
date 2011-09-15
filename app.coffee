@@ -68,6 +68,10 @@ app.get '/api/reports/:report/:startDate?/:endDate?', (req, res) ->
     when 'salesTax'
       report.salesTax req.params.startDate, req.params.endDate, (json) ->
         res.send json
+    when 'newClients'
+      # Hack - Start date is 'endDate' for now. 
+      report.newClients req.params.startDate, req.params.endDate, (json) ->
+        res.send json
     
     
   
