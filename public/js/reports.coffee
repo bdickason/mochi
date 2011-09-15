@@ -7,8 +7,7 @@ $ ->
   class window.Reports extends Backbone.Collection
     model: Daily
     url: '/api/reports/salesTax/06-01-2011/08-31-2011'
-    
-    
+        
   class window.ReportView extends Backbone.View
     tagName: 'div'
     className: 'userWrapper'

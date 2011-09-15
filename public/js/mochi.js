@@ -19,7 +19,7 @@
       };
       Routes.prototype.daily = function(startDate) {
         console.log('worked!');
-        window.report = new Daily({});
+        console.log(startDate);
         window.reports = new Reports;
         return window.reportView = new ReportView({
           collection: reports

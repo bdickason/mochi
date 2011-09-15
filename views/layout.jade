@@ -17,28 +17,33 @@ html(lang="en")
     script(type='text/javascript', src='/js/mochi.js')    
     
     // Handlebars Templates - move these to separate files eventually
+    
+    // Report - Sales Tax
     script(type='text/x-handlebars-template', id='salesTax-template')
+      h1 Sales Tax
       {{#each report}}
       {{#dates}}
-      p Start Date:
-      {{start}}
-      p End Date:
-      {{end}}
+      h3 Start Date:
+        {{start}}
+        | End Date:
+        {{end}}
       {{/dates}}
       
       {{#totals}}
-      p Totals:
-      {{services}}
-      {{products}}
+      h2 Totals:
+      p Services:
+        {{services}}
+      p Products: 
+        {{products}}
       {{/totals}}
       
-      p Tax:
+      h2 Tax:
       {{#tax}}
-      Services: 
-      {{services}}
+      p Services: 
+        {{services}}
 
       p Products: 
-      {{products}}
+        {{products}}
       {{/tax}}
       {{/each}}
 

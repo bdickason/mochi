@@ -12,9 +12,9 @@ $ ->
     
     daily: (startDate) ->
       console.log 'worked!'
-      window.report = new Daily {}
-      window.reports = new Reports
+      console.log startDate # Pass this into the collection
 
+      window.reports = new Reports
       window.reportView = new ReportView { collection: reports }
 
       # class window.datePicker extends
