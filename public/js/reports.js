@@ -8,12 +8,12 @@
     return child;
   };
   $(function() {
-    window.Daily = (function() {
-      __extends(Daily, Backbone.Model);
-      function Daily() {
-        Daily.__super__.constructor.apply(this, arguments);
+    window.Report = (function() {
+      __extends(Report, Backbone.Model);
+      function Report() {
+        Report.__super__.constructor.apply(this, arguments);
       }
-      return Daily;
+      return Report;
     })();
     /* Reports - Base collection for all reports */
     window.Reports = (function() {
@@ -21,7 +21,7 @@
       function Reports() {
         Reports.__super__.constructor.apply(this, arguments);
       }
-      Reports.prototype.model = Daily;
+      Reports.prototype.model = Report;
       return Reports;
     })();
     /* Sales Tax Report */

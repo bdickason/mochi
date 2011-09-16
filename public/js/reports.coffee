@@ -2,11 +2,11 @@
   # Displays and persists all reports
 
 $ ->
-  class window.Daily extends Backbone.Model
+  class window.Report extends Backbone.Model
   
   ### Reports - Base collection for all reports ###
   class window.Reports extends Backbone.Collection
-    model: Daily
+    model: Report
   
   ### Sales Tax Report ###
   # Collection
