@@ -15,14 +15,24 @@
         Routes.__super__.constructor.apply(this, arguments);
       }
       Routes.prototype.routes = {
-        '!/daily/:startDate': 'daily'
+        '!/salesTax/:startDate/:endDate': 'salesTax',
+        '!/newClients/:startDate': 'newClients',
+        '!/newClients/:startDate/:stylist': 'newClients'
       };
-      Routes.prototype.daily = function(startDate) {
+      Routes.prototype.salesTax = function(startDate, endDate) {
         console.log('worked!');
         console.log(startDate);
-        window.reports = new Reports;
-        return window.reportView = new ReportView({
-          collection: reports
+        window.salesTax = new SalesTax;
+        return window.salesTaxView = new SalesTaxView({
+          collection: salesTax
+        });
+      };
+      Routes.prototype.newClients = function(startDate, stylist) {
+        console.log('worked!');
+        console.log(startDate);
+        window.newClients = new NewClients;
+        return window.newClientsView = new NewClientsView({
+          collection: newClients
         });
       };
       return Routes;

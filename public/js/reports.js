@@ -15,23 +15,35 @@
       }
       return Daily;
     })();
+    /* Reports - Base collection for all reports */
     window.Reports = (function() {
       __extends(Reports, Backbone.Collection);
       function Reports() {
         Reports.__super__.constructor.apply(this, arguments);
       }
       Reports.prototype.model = Daily;
-      Reports.prototype.url = '/api/reports/salesTax/06-01-2011/08-31-2011';
       return Reports;
     })();
-    return window.ReportView = (function() {
-      __extends(ReportView, Backbone.View);
-      function ReportView() {
-        ReportView.__super__.constructor.apply(this, arguments);
+    /* Sales Tax Report */
+    window.SalesTax = (function() {
+      __extends(SalesTax, Reports);
+      function SalesTax() {
+        SalesTax.__super__.constructor.apply(this, arguments);
       }
-      ReportView.prototype.tagName = 'div';
-      ReportView.prototype.className = 'userWrapper';
-      ReportView.prototype.initialize = function() {
+      SalesTax.prototype.initialize = function() {
+        console.log(this.startDate);
+        return this.url = "/api/reports/salesTax/06-01-2011/08-31-2011";
+      };
+      return SalesTax;
+    })();
+    window.SalesTaxView = (function() {
+      __extends(SalesTaxView, Backbone.View);
+      function SalesTaxView() {
+        SalesTaxView.__super__.constructor.apply(this, arguments);
+      }
+      SalesTaxView.prototype.tagName = 'div';
+      SalesTaxView.prototype.className = 'userWrapper';
+      SalesTaxView.prototype.initialize = function() {
         var source;
         this.el = '.userWrapper';
         _.bindAll(this, 'render');
@@ -40,7 +52,7 @@
         this.template = Handlebars.compile(source);
         return this.collection.fetch();
       };
-      ReportView.prototype.render = function() {
+      SalesTaxView.prototype.render = function() {
         var renderedContent;
         console.log('rendering!');
         console.log(this.collection.toJSON());
@@ -50,7 +62,44 @@
         $(this.el).html(renderedContent);
         return this;
       };
-      return ReportView;
+      return SalesTaxView;
+    })();
+    /* New Clients Report */
+    window.NewClients = (function() {
+      __extends(NewClients, Reports);
+      function NewClients() {
+        NewClients.__super__.constructor.apply(this, arguments);
+      }
+      NewClients.prototype.url = '/api/reports/newClients/09-01-2010';
+      return NewClients;
+    })();
+    return window.NewClientsView = (function() {
+      __extends(NewClientsView, Backbone.View);
+      function NewClientsView() {
+        NewClientsView.__super__.constructor.apply(this, arguments);
+      }
+      NewClientsView.prototype.tagName = 'div';
+      NewClientsView.prototype.className = 'userWrapper';
+      NewClientsView.prototype.initialize = function() {
+        var source;
+        this.el = '.userWrapper';
+        _.bindAll(this, 'render');
+        this.collection.bind('reset', this.render);
+        source = $('#newClients-template').html();
+        this.template = Handlebars.compile(source);
+        return this.collection.fetch();
+      };
+      NewClientsView.prototype.render = function() {
+        var renderedContent;
+        console.log('rendering!');
+        console.log(this.collection.toJSON());
+        renderedContent = this.template({
+          report: this.collection.toJSON()
+        });
+        $(this.el).html(renderedContent);
+        return this;
+      };
+      return NewClientsView;
     })();
   });
 }).call(this);

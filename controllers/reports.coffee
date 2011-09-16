@@ -193,7 +193,7 @@ exports.Reports = class Reports
       callback @report
   
   ### New Clients Report ###
-  newClients: (stylist, startDate, callback) ->
+  newClients: (startDate, stylist, callback) ->
     # Displays all clients for a given stylist (or all stylists) from start date to now
     
       startDate = new Date(startDate)
@@ -208,11 +208,15 @@ exports.Reports = class Reports
       @report.dates = {}  # Add dates to output
       @report.dates.start = startDate
       @report.dates.end = endDate
-
-      # Grab all clients added in the time period
-      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1 }, { 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1 }, (err, clientdata) =>
-      @report.clients = clientdata
-      User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
-        @report.stylists = stylistdata
-        callback @report
-    
+      
+      stylistQuery = null
+      
+      if stylist
+        stylistQuery = 'stylist': { cut: stylist }
+        
+      # No stylist specified, Grab all clients added in the time period
+      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, stylistQuery }, { 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
+        @report.clients = clientdata
+        User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
+          @report.stylists = stylistdata
+          callback @report

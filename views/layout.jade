@@ -47,11 +47,24 @@ html(lang="en")
       {{/tax}}
       {{/each}}
   
-  // Report - New Clients
-  script(type='text/x-handlebars-template', id='newClients-template')
-  h1 New Clients
-  {{#each report}}
-  {{/each}}
+    // Report - New Clients
+    script(type='text/x-handlebars-template', id='newClients-template')
+      h1 New Clients
+      {{#each report}}
+      {{#dates}}
+      h3 Start Date:
+        {{start}}
+        | End Date:
+        {{end}}
+      {{/dates}}
+      h3. Clients
+      {{#each clients}}
+      p Name: 
+        {{name}}
+      p Email:
+        {{email}}
+      {{/each}}
+      {{/each}}
 
   body(id="mochi")
     header.adminBar

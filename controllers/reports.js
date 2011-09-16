@@ -173,8 +173,8 @@
       }, this));
     };
     /* New Clients Report */
-    Reports.prototype.newClients = function(stylist, startDate, callback) {
-      var endDate;
+    Reports.prototype.newClients = function(startDate, stylist, callback) {
+      var endDate, stylistQuery;
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
       endDate = new Date();
@@ -183,29 +183,40 @@
       this.report.dates = {};
       this.report.dates.start = startDate;
       this.report.dates.end = endDate;
-      User.find({
+      stylistQuery = null;
+      if (stylist) {
+        stylistQuery = {
+          'stylist': {
+            cut: stylist
+          }
+        };
+      }
+      return User.find({
         'date_added': {
           '$gte': startDate,
           '$lte': endDate
         },
-        'active': 1
+        'active': 1,
+        stylistQuery: stylistQuery
       }, {
         'phone': 1,
         'name': 1,
         'email': 1,
         'phone': 1,
-        'address': 1
-      }, __bind(function(err, clientdata) {}, this));
-      this.report.clients = clientdata;
-      return User.find({
-        'type': 'stylist',
-        'active': 1
-      }, {
-        'name': 1,
-        'uid': 1
-      }, __bind(function(err, stylistdata) {
-        this.report.stylists = stylistdata;
-        return callback(this.report);
+        'address': 1,
+        'stylist': 1
+      }, __bind(function(err, clientdata) {
+        this.report.clients = clientdata;
+        return User.find({
+          'type': 'stylist',
+          'active': 1
+        }, {
+          'name': 1,
+          'uid': 1
+        }, __bind(function(err, stylistdata) {
+          this.report.stylists = stylistdata;
+          return callback(this.report);
+        }, this));
       }, this));
     };
     return Reports;
