@@ -45,7 +45,8 @@ $ ->
   ### New Clients Report ###
   # Collection
   class window.NewClients extends Reports
-    url: '/api/reports/newClients/09-01-2010' # startDate/stylist (optional)
+    initialize: (params) ->
+      @url = "/api/reports/newClients/#{params.startDate}" # startDate/stylist (optional)
     
   # View
   class window.NewClientsView extends Backbone.View
@@ -53,6 +54,7 @@ $ ->
     className: 'userWrapper'
 
     initialize: ->
+      
       @el = '.userWrapper'
       _.bindAll this, 'render'
       @collection.bind 'reset', @render

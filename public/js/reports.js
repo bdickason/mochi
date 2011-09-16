@@ -70,7 +70,9 @@
       function NewClients() {
         NewClients.__super__.constructor.apply(this, arguments);
       }
-      NewClients.prototype.url = '/api/reports/newClients/09-01-2010';
+      NewClients.prototype.initialize = function(params) {
+        return this.url = "/api/reports/newClients/" + params.startDate;
+      };
       return NewClients;
     })();
     return window.NewClientsView = (function() {

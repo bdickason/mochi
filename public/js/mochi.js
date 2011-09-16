@@ -30,7 +30,9 @@
       Routes.prototype.newClients = function(startDate, stylist) {
         console.log('worked!');
         console.log(startDate);
-        window.newClients = new NewClients;
+        window.newClients = new NewClients({
+          startDate: startDate
+        });
         return window.newClientsView = new NewClientsView({
           collection: newClients
         });

@@ -23,7 +23,7 @@ $ ->
       console.log 'worked!'
       console.log startDate
       
-      window.newClients = new NewClients 
+      window.newClients = new NewClients { startDate }
       window.newClientsView = new NewClientsView { collection: newClients }
 
       # class window.datePicker extends
