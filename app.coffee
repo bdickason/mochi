@@ -178,18 +178,17 @@ doImport = (req, res) ->
         # A user can have many stylists, with different specialties (cut, color, etc)
         # Iterate through options and setup the user's stylists
         for entry in optionsjson.users
-          if entry.uid is user.uid and entry.user_option_value isnt 'none'  # Ignore blank entries
+          if parseInt(entry.uid) is user.uid and entry.user_option_value isnt 'none'  # Ignore blank entries
             if !user.stylist
               user.stylist = [] # Define stylist array if it's not already defined
               
             if entry.user_option_tag is 'salon_stylist_cut'
               # set cut stylist
               user.stylist.push { id: parseInt(entry.user_option_value), type: 'cut' }  # Gotta convert String to Int   
-              console.log 'adding cut: ' + user.stylist
+
             else if entry.user_option_tag is 'salon_stylist_color'
               # set color stylist
               user.stylist.push { id: parseInt(entry.user_option_value), type: 'color' }   # Gotta convert String to Int
-              console.log 'adding color: ' + user.stylist
 
         # Old/deprecated stuff
         delete user.tax_info
