@@ -1,5 +1,6 @@
 (function() {
-  /* Users db model */  var Note, ObjectId, Phone, Schema, UserSchema, cfg, mongoose;
+
+  /* Users db model */  var Note, ObjectId, Phone, Schema, Stylist, UserSchema, cfg, mongoose;
   cfg = require('../config/config.js');
   mongoose = require('mongoose');
   Schema = mongoose.Schema;
@@ -25,6 +26,17 @@
       type: String
     }
   });
+  /* Embedded Doc - A user can have many stylists */
+  Stylist = new Schema({
+    id: {
+      type: Number
+    },
+    type: {
+      type: String
+    }
+  });
+
+
   UserSchema = new Schema({
     /* Client Stuff (all users) */
     uid: {
@@ -69,14 +81,8 @@
     referral: {
       type: String
     },
-    stylist: {
-      cut: {
-        type: Number
-      },
-      color: {
-        type: Number
-      }
-    },
+    stylist: [Stylist],
+
     /* Stylist stuff goes below here */
     ssn: {
       type: String

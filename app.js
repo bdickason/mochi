@@ -198,14 +198,20 @@
           _ref2 = optionsjson.users;
           for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
             entry = _ref2[_j];
-            if (entry.uid === user.uid && entry.user_option_value !== 'none') {
+            if (parseInt(entry.uid) === user.uid && entry.user_option_value !== 'none') {
               if (!user.stylist) {
-                user.stylist = {};
+                user.stylist = [];
               }
               if (entry.user_option_tag === 'salon_stylist_cut') {
-                user.stylist.cut = parseInt(entry.user_option_value);
+                user.stylist.push({
+                  id: parseInt(entry.user_option_value),
+                  type: 'cut'
+                });
               } else if (entry.user_option_tag === 'salon_stylist_color') {
-                user.stylist.color = parseInt(entry.user_option_value);
+                user.stylist.push({
+                  id: parseInt(entry.user_option_value),
+                  type: 'color'
+                });
               }
             }
           }

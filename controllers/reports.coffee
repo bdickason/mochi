@@ -12,8 +12,10 @@ exports.Reports = class Reports
 
   ### Daily report - sales, etc ###
   daily: (startDate, endDate, callback)  ->
-    
-    startDate = new Date(startDate)
+
+    startDate = new Date startDate
+
+    # We only care about start date for daily report
     startDate.setHours 0, 0, 0
 
     # We only care about start date for daily report. End date should be the same as the start, just 24hrs later.

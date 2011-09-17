@@ -24,6 +24,12 @@ Note = new Schema {
   author: { type: String }
 }
 
+### Embedded Doc - A user can have many stylists ###
+Stylist = new Schema { 
+  id: { type: Number },
+  type: { type: String}   # Cut, color, etc.
+}
+
 
 UserSchema = new Schema {
   ### Client Stuff (all users) ###
@@ -46,10 +52,7 @@ UserSchema = new Schema {
   
   referral: { type: String },     # Who referred this stylist
   
-  stylist: { 
-    cut: { type: Number },
-    color: { type: Number }
-  },
+  stylist: [Stylist],
   
   ### Stylist stuff goes below here ###
   ssn: { type: String },
