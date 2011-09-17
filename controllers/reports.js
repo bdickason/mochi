@@ -174,7 +174,7 @@
     };
     /* New Clients Report */
     Reports.prototype.newClients = function(startDate, stylist, callback) {
-      var endDate, stylistQuery;
+      var endDate;
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
       endDate = new Date();
@@ -183,42 +183,64 @@
       this.report.dates = {};
       this.report.dates.start = startDate;
       this.report.dates.end = endDate;
-      stylistQuery = null;
       if (stylist) {
-        stylistQuery = {
-          'stylist': {
-            cut: stylist
-          }
-        };
-      }
-      return User.find({
-        'date_added': {
-          '$gte': startDate,
-          '$lte': endDate
-        },
-        'active': 1,
-        stylistQuery: stylistQuery
-      }, {
-        'uid': 1,
-        'phone': 1,
-        'name': 1,
-        'email': 1,
-        'phone': 1,
-        'address': 1,
-        'stylist': 1
-      }, __bind(function(err, clientdata) {
-        this.report.clients = clientdata;
         return User.find({
-          'type': 'stylist',
+          'date_added': {
+            '$gte': startDate,
+            '$lte': endDate
+          },
+          'active': 1,
+          'stylist.id': parseInt(stylist)
+        }, {
+          'uid': 1,
+          'phone': 1,
+          'name': 1,
+          'email': 1,
+          'phone': 1,
+          'address': 1,
+          'stylist': 1
+        }, __bind(function(err, clientdata) {
+          this.report.clients = clientdata;
+          return User.find({
+            'type': 'stylist',
+            'active': 1
+          }, {
+            'name': 1,
+            'uid': 1
+          }, __bind(function(err, stylistdata) {
+            this.report.stylists = stylistdata;
+            return callback(this.report);
+          }, this));
+        }, this));
+      } else {
+        return User.find({
+          'date_added': {
+            '$gte': startDate,
+            '$lte': endDate
+          },
           'active': 1
         }, {
+          'uid': 1,
+          'phone': 1,
           'name': 1,
-          'uid': 1
-        }, __bind(function(err, stylistdata) {
-          this.report.stylists = stylistdata;
-          return callback(this.report);
+          'email': 1,
+          'phone': 1,
+          'address': 1,
+          'stylist': 1
+        }, __bind(function(err, clientdata) {
+          this.report.clients = clientdata;
+          return User.find({
+            'type': 'stylist',
+            'active': 1
+          }, {
+            'name': 1,
+            'uid': 1
+          }, __bind(function(err, stylistdata) {
+            this.report.stylists = stylistdata;
+            return callback(this.report);
+          }, this));
         }, this));
-      }, this));
+      }
     };
     return Reports;
   })();

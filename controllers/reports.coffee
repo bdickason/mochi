@@ -211,14 +211,18 @@ exports.Reports = class Reports
       @report.dates.start = startDate
       @report.dates.end = endDate
       
-      stylistQuery = null
-      
+      # Todo - Do this more sexy and programatically instead of two separate blocks
       if stylist
-        stylistQuery = 'stylist': { cut: stylist }
-        
-      # No stylist specified, Grab all clients added in the time period
-      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, stylistQuery }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
-        @report.clients = clientdata
-        User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
-          @report.stylists = stylistdata
-          callback @report
+        User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, 'stylist.id': parseInt(stylist) }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
+          @report.clients = clientdata
+          User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
+            @report.stylists = stylistdata
+            callback @report
+      else
+        # No stylist specified, Grab all clients added in the time period
+        User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1 }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
+          @report.clients = clientdata
+          User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
+            @report.stylists = stylistdata
+            callback @report
+      
