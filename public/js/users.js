@@ -33,13 +33,51 @@
       return Users;
     })();
     /* Stylists  */
+    window.Stylist = (function() {
+      __extends(Stylist, User);
+      function Stylist() {
+        Stylist.__super__.constructor.apply(this, arguments);
+      }
+      return Stylist;
+    })();
     window.Stylists = (function() {
       __extends(Stylists, Users);
       function Stylists() {
         Stylists.__super__.constructor.apply(this, arguments);
       }
+      Stylists.prototype.initialize = function(params) {
+        return this.url = "/api/stylists/" + params.stylist;
+      };
       return Stylists;
     })();
+    /*
+      # Select Stylist dropdown
+      # Grabs a list of stylists (Stylists) and lets the user select one to update a form
+      # Made sexier with Chosen
+      class window.StylistSelector extends Backbone.View
+        tagName: 'div'
+        className: 'srchResult'
+    
+        initialize: ->
+         @el = '.srchResult' 
+         _.bindAll this, 'render'
+         @collection.bind 'reset', @render
+    
+         # Compile Handlebars template at init (Not sure if we have to do this each time or not)
+         source = $('#newClients-template').html()
+         @template = Handlebars.compile source
+    
+         # Get the latest collections
+         @collection.fetch()
+    
+        render: ->
+         # Render Handlebars template
+         console.log 'rendering!'
+         console.log @collection.toJSON()
+         renderedContent = @template { report: @collection.toJSON() }
+         $(@el).html renderedContent
+         return this
+      */
     /* Clients */
     return window.Clients = (function() {
       __extends(Clients, Users);

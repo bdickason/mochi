@@ -2,7 +2,12 @@
 html(lang="en")
   head
     title Mochi v2!
-    link(rel='stylesheet', href='/css/style.css')
+    // Stylesheets
+    link(rel='stylesheet', href='/js/lib/chosen/chosen.css')  // Stylesheet for Chosen (sexy dropdowns)    
+    link(rel='stylesheet', href='/css/style.css') // Core stylesheet
+
+
+    
 
     // Libraries
     script(type='text/javascript', src='/js/lib/jquery-1.6.3.min.js')
@@ -11,6 +16,7 @@ html(lang="en")
     script(type='text/javascript', src='/js/lib/backbone-min.js')
     script(type='text/javascript', src='/js/lib/json2.js')
     script(type='text/javascript', src='/js/lib/handlebars-1.0.0.beta.2.js')
+    script(type='text/javascript', src='/js/lib/chosen/chosen.jquery.min.js')
     
     // App files Currently we've got everything in separate files. Soon we should compile into one file.
     script(type='text/javascript', src='/js/reports.js')
@@ -53,9 +59,13 @@ html(lang="en")
       {{#each report}}
       .listingName
         .youSearched
-          | You searched:
+          | Stylist:
         .srchResult
-          input(name='clientName', type='text', value='Smith')
+          select.chzn-select(id='stylists', style='width:350px')
+            option(value='null') All Stylists
+            {{#each stylists}}
+            option(value='{{uid}}') {{name}}
+            {{/each}}
       .clear
       .listingContainer.clearfix
         .listingBar

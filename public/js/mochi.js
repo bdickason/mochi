@@ -8,7 +8,8 @@
     return child;
   };
   $(function() {
-    var routes;
+    /* Loaders */    var routes;
+    $(".chzn-select").chosen();
     window.Routes = (function() {
       __extends(Routes, Backbone.Router);
       function Routes() {

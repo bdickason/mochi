@@ -53,6 +53,9 @@ $ ->
     tagName: 'div'
     className: 'containerOuter'
 
+    events: 
+      'change #stylists': 'selectStylist'
+      
     initialize: ->
       @el = '.containerOuter' 
       _.bindAll this, 'render'
@@ -71,4 +74,12 @@ $ ->
       console.log @collection.toJSON()
       renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent
+
+      # Hack - make chosen dropdown re-render itself after render
+      $('.chzn-select').chosen()
       return this
+  
+    selectStylist: ->
+      console.log 'hit it!'
+      console.log stuff
+  

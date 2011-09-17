@@ -82,6 +82,9 @@
       }
       NewClientsView.prototype.tagName = 'div';
       NewClientsView.prototype.className = 'containerOuter';
+      NewClientsView.prototype.events = {
+        'change #stylists': 'selectStylist'
+      };
       NewClientsView.prototype.initialize = function() {
         var source;
         this.el = '.containerOuter';
@@ -99,7 +102,12 @@
           report: this.collection.toJSON()
         });
         $(this.el).html(renderedContent);
+        $('.chzn-select').chosen();
         return this;
+      };
+      NewClientsView.prototype.selectStylist = function() {
+        console.log('hit it!');
+        return console.log(stuff);
       };
       return NewClientsView;
     })();

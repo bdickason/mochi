@@ -5,6 +5,9 @@
 #   -Handlebars (client-side templating)
 
 $ ->
+  ### Loaders ###
+  $(".chzn-select").chosen() # Chosen - sexy dropdowns and selects! See: /lib/chosen/chosen.jquery.min.js
+  
   
   class window.Routes extends Backbone.Router
     routes:
@@ -23,8 +26,10 @@ $ ->
       console.log 'worked!'
       console.log startDate
       
-      window.newClients = new NewClients { startDate }
-      window.newClientsView = new NewClientsView { collection: newClients }
+      # window.stylists = new Stylists                                          # see users.coffee
+      # window.stylistSelector = new StylistSelector {collection: stylists }    # see users.coffee
+      window.newClients = new NewClients { startDate }                        # see reports.coffee
+      window.newClientsView = new NewClientsView { collection: newClients }   # see reports.coffee
 
       # class window.datePicker extends
   

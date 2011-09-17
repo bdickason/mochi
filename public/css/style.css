@@ -2062,24 +2062,27 @@ span.closeIconAlt {
 }
 
 .listingName {
-	padding:6px 0 0 10px; 
-	margin:0 0 20px 0; 
+	padding:0 0 10px 0; 
 	display:block; 
 }
 
 .listingName input {
-	width:402px;
 	font-family:Arial, sans-serif;
 	padding:0 14px 0 14px;
-	height:48px;
 	margin:0; 
 	display:block;
 	letter-spacing:-1px; 
 	font-size:28px;
-	line-height:29px;
 	font-weight:bold;
 	color:#383838;
-	vertical-align:middle;
+	vertical-align:middle;  
+}
+
+.listingName input #search {
+  /* Specific to regular text inputs */
+	width:402px;  
+	height:48px;
+	line-height:29px;	
 }
 
 .listingName .youSearched {
@@ -2137,6 +2140,20 @@ span.closeIconAlt {
 	margin:2px 0 0 0;
 }
 
+/* Chosen select override */
+.chzn-container-single .chzn-single {
+  height: 36px;
+  line-height: 26px;
+	font-family:Arial, sans-serif;
+	padding:12px 14px 0 14px;
+	margin:0; 
+	display:block;
+	letter-spacing:-1px; 
+	font-size:28px;
+	font-weight:bold;
+	color:#383838;
+	vertical-align:middle;  
+}
 .colUser {
 	float:left;
 	width:245px;
