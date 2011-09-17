@@ -48,16 +48,15 @@ $ ->
     initialize: (params) ->
       if params.startDate
         @startDate = params.startDate
-
       @setStylist params.stylist
     
     setStylist: (stylist) ->
-      if stylist
+      if stylist and stylist isnt 'null'  # Need second piece since we get a string back from the <select>
         @stylist = stylist
         @url = "/api/reports/newClients/#{@startDate}/#{@stylist}"
       else
         delete @stylist
-        @url = "/api/reports/newClients/#{@startDate}"      
+        @url = "/api/reports/newClients/#{@startDate}"
     
   # View
   class window.NewClientsView extends Backbone.View

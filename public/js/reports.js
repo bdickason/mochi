@@ -77,7 +77,7 @@
         return this.setStylist(params.stylist);
       };
       NewClients.prototype.setStylist = function(stylist) {
-        if (stylist) {
+        if (stylist && stylist !== 'null') {
           this.stylist = stylist;
           return this.url = "/api/reports/newClients/" + this.startDate + "/" + this.stylist;
         } else {
