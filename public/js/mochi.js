@@ -17,22 +17,19 @@
       }
       Routes.prototype.routes = {
         '!/salesTax/:startDate/:endDate': 'salesTax',
-        '!/newClients/:startDate': 'newClients',
-        '!/newClients/:startDate/:stylist': 'newClients'
+        '!/newClients/:startDate/:stylist': 'newClients',
+        '!/newClients/:startDate': 'newClients'
       };
       Routes.prototype.salesTax = function(startDate, endDate) {
-        console.log('worked!');
-        console.log(startDate);
         window.salesTax = new SalesTax;
         return window.salesTaxView = new SalesTaxView({
           collection: salesTax
         });
       };
       Routes.prototype.newClients = function(startDate, stylist) {
-        console.log('worked!');
-        console.log(startDate);
         window.newClients = new NewClients({
-          startDate: startDate
+          startDate: startDate,
+          stylist: stylist
         });
         return window.newClientsView = new NewClientsView({
           collection: newClients

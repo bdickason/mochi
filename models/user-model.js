@@ -1,5 +1,4 @@
 (function() {
-
   /* Users db model */  var Note, ObjectId, Phone, Schema, Stylist, UserSchema, cfg, mongoose;
   cfg = require('../config/config.js');
   mongoose = require('mongoose');
@@ -35,8 +34,6 @@
       type: String
     }
   });
-
-
   UserSchema = new Schema({
     /* Client Stuff (all users) */
     uid: {
@@ -82,7 +79,6 @@
       type: String
     },
     stylist: [Stylist],
-
     /* Stylist stuff goes below here */
     ssn: {
       type: String

@@ -71,7 +71,12 @@
         NewClients.__super__.constructor.apply(this, arguments);
       }
       NewClients.prototype.initialize = function(params) {
-        return this.url = "/api/reports/newClients/" + params.startDate;
+        console.log(params);
+        if (!params.stylist) {
+          return this.url = "/api/reports/newClients/" + params.startDate;
+        } else {
+          return this.url = "/api/reports/newClients/" + params.startDate + "/" + params.stylist;
+        }
       };
       return NewClients;
     })();
@@ -96,8 +101,6 @@
       };
       NewClientsView.prototype.render = function() {
         var renderedContent;
-        console.log('rendering!');
-        console.log(this.collection.toJSON());
         renderedContent = this.template({
           report: this.collection.toJSON()
         });
@@ -105,9 +108,9 @@
         $('.chzn-select').chosen();
         return this;
       };
-      NewClientsView.prototype.selectStylist = function() {
+      NewClientsView.prototype.selectStylist = function(e) {
         console.log('hit it!');
-        return console.log(stuff);
+        return console.log(e);
       };
       return NewClientsView;
     })();

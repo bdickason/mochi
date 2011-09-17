@@ -46,7 +46,12 @@ $ ->
   # Collection
   class window.NewClients extends Reports
     initialize: (params) ->
-      @url = "/api/reports/newClients/#{params.startDate}" # startDate/stylist (optional)
+      console.log params
+      if !params.stylist
+        @url = "/api/reports/newClients/#{params.startDate}"
+      else
+        @url = "/api/reports/newClients/#{params.startDate}/#{params.stylist}" # /stylistId (optional)
+
     
   # View
   class window.NewClientsView extends Backbone.View
@@ -70,8 +75,6 @@ $ ->
 
     render: ->
       # Render Handlebars template
-      console.log 'rendering!'
-      console.log @collection.toJSON()
       renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent
 
@@ -79,7 +82,7 @@ $ ->
       $('.chzn-select').chosen()
       return this
   
-    selectStylist: ->
+    selectStylist: (e) ->
       console.log 'hit it!'
-      console.log stuff
+      console.log e
   

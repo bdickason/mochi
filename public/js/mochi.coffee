@@ -12,23 +12,17 @@ $ ->
   class window.Routes extends Backbone.Router
     routes:
       '!/salesTax/:startDate/:endDate': 'salesTax'
-      '!/newClients/:startDate': 'newClients'
       '!/newClients/:startDate/:stylist': 'newClients'
+      '!/newClients/:startDate': 'newClients'      
     
     salesTax: (startDate, endDate) ->
-      console.log 'worked!'
-      console.log startDate # TODO: Pass this into the collection
-
       window.salesTax = new SalesTax
       window.salesTaxView = new SalesTaxView { collection: salesTax }
       
     newClients: (startDate, stylist) ->
-      console.log 'worked!'
-      console.log startDate
-      
       # window.stylists = new Stylists                                          # see users.coffee
       # window.stylistSelector = new StylistSelector {collection: stylists }    # see users.coffee
-      window.newClients = new NewClients { startDate }                        # see reports.coffee
+      window.newClients = new NewClients { startDate, stylist }                        # see reports.coffee
       window.newClientsView = new NewClientsView { collection: newClients }   # see reports.coffee
 
       # class window.datePicker extends
