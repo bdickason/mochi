@@ -49,22 +49,52 @@ html(lang="en")
   
     // Report - New Clients
     script(type='text/x-handlebars-template', id='newClients-template')
-      h1 New Clients
+      // Start Listing
       {{#each report}}
-      {{#dates}}
-      h3 Start Date:
-        {{start}}
-        | End Date:
-        {{end}}
-      {{/dates}}
-      h3. Clients
-      {{#each clients}}
-      p Name: 
-        {{name}}
-      p Email:
-        {{email}}
-      {{/each}}
-      {{/each}}
+      .listingName
+        .youSearched
+          | You searched:
+        .srchResult
+          input(name='clientName', type='text', value='Smith')
+      .clear
+      .listingContainer.clearfix
+        .listingBar
+          // Why the hell isn't this white? :(
+          a(href='#')
+            .colLastTrans E-mail
+          a(href='#')
+            .colUser Name &#x25BE;
+          a(href='#')
+            .colPhone Phone
+          .clear
+        .listingList
+          ul
+            // Start listing users!
+            {{#each clients}}
+            li
+              a(href='#!/users/{{uid}}')
+                .colLastTrans 
+                  {{email}}
+                .colUser
+                  {{name}}
+                .colPhone
+                  {{#each phone}}
+                  {{number}}
+                  em ({{type}})
+                  {{/each}}                  
+                .clear
+            {{/each}}
+            
+
+        {{#dates}}
+        h3 Start Date:
+          {{start}}
+          | End Date:
+          {{end}}
+        {{/dates}}
+        h3. Clients
+        {{/each}}
+    
 
   body(id="mochi")
     header.adminBar

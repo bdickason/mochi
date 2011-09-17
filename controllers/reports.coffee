@@ -215,7 +215,7 @@ exports.Reports = class Reports
         stylistQuery = 'stylist': { cut: stylist }
         
       # No stylist specified, Grab all clients added in the time period
-      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, stylistQuery }, { 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
+      User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, stylistQuery }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
         @report.clients = clientdata
         User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
           @report.stylists = stylistdata

@@ -19,10 +19,10 @@ $ ->
   # View
   class window.SalesTaxView extends Backbone.View
     tagName: 'div'
-    className: 'userWrapper'
+    className: 'containerOuter'
 
     initialize: ->
-      @el = '.userWrapper'
+      @el = '.containerOuter'
       _.bindAll this, 'render'
       @collection.bind 'reset', @render
 
@@ -51,11 +51,10 @@ $ ->
   # View
   class window.NewClientsView extends Backbone.View
     tagName: 'div'
-    className: 'userWrapper'
+    className: 'containerOuter'
 
     initialize: ->
-      
-      @el = '.userWrapper'
+      @el = '.containerOuter' 
       _.bindAll this, 'render'
       @collection.bind 'reset', @render
 

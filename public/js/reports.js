@@ -42,10 +42,10 @@
         SalesTaxView.__super__.constructor.apply(this, arguments);
       }
       SalesTaxView.prototype.tagName = 'div';
-      SalesTaxView.prototype.className = 'userWrapper';
+      SalesTaxView.prototype.className = 'containerOuter';
       SalesTaxView.prototype.initialize = function() {
         var source;
-        this.el = '.userWrapper';
+        this.el = '.containerOuter';
         _.bindAll(this, 'render');
         this.collection.bind('reset', this.render);
         source = $('#salesTax-template').html();
@@ -81,10 +81,10 @@
         NewClientsView.__super__.constructor.apply(this, arguments);
       }
       NewClientsView.prototype.tagName = 'div';
-      NewClientsView.prototype.className = 'userWrapper';
+      NewClientsView.prototype.className = 'containerOuter';
       NewClientsView.prototype.initialize = function() {
         var source;
-        this.el = '.userWrapper';
+        this.el = '.containerOuter';
         _.bindAll(this, 'render');
         this.collection.bind('reset', this.render);
         source = $('#newClients-template').html();
