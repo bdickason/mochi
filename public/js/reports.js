@@ -71,11 +71,18 @@
         NewClients.__super__.constructor.apply(this, arguments);
       }
       NewClients.prototype.initialize = function(params) {
-        console.log(params);
-        if (!params.stylist) {
-          return this.url = "/api/reports/newClients/" + params.startDate;
+        if (params.startDate) {
+          this.startDate = params.startDate;
+        }
+        return this.setStylist(params.stylist);
+      };
+      NewClients.prototype.setStylist = function(stylist) {
+        if (stylist) {
+          this.stylist = stylist;
+          return this.url = "/api/reports/newClients/" + this.startDate + "/" + this.stylist;
         } else {
-          return this.url = "/api/reports/newClients/" + params.startDate + "/" + params.stylist;
+          delete this.stylist;
+          return this.url = "/api/reports/newClients/" + this.startDate;
         }
       };
       return NewClients;
@@ -85,22 +92,23 @@
       function NewClientsView() {
         NewClientsView.__super__.constructor.apply(this, arguments);
       }
-      NewClientsView.prototype.tagName = 'div';
-      NewClientsView.prototype.className = 'containerOuter';
       NewClientsView.prototype.events = {
         'change #stylists': 'selectStylist'
       };
       NewClientsView.prototype.initialize = function() {
         var source;
-        this.el = '.containerOuter';
+        this.el = $('.containerOuter');
         _.bindAll(this, 'render');
         this.collection.bind('reset', this.render);
+        this.collection.bind('all', this.debug);
         source = $('#newClients-template').html();
         this.template = Handlebars.compile(source);
         return this.collection.fetch();
       };
       NewClientsView.prototype.render = function() {
         var renderedContent;
+        console.log('rendering!');
+        console.log(this.collection.toJSON());
         renderedContent = this.template({
           report: this.collection.toJSON()
         });
@@ -109,8 +117,11 @@
         return this;
       };
       NewClientsView.prototype.selectStylist = function(e) {
-        console.log('hit it!');
-        return console.log(e);
+        this.collection.setStylist($(e.currentTarget).val());
+        return this.collection.fetch();
+      };
+      NewClientsView.prototype.debug = function(e) {
+        return console.log("Fired event: " + e);
       };
       return NewClientsView;
     })();

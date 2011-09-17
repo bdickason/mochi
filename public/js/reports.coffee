@@ -46,25 +46,30 @@ $ ->
   # Collection
   class window.NewClients extends Reports
     initialize: (params) ->
-      console.log params
-      if !params.stylist
-        @url = "/api/reports/newClients/#{params.startDate}"
-      else
-        @url = "/api/reports/newClients/#{params.startDate}/#{params.stylist}" # /stylistId (optional)
+      if params.startDate
+        @startDate = params.startDate
 
+      @setStylist params.stylist
+    
+    setStylist: (stylist) ->
+      if stylist
+        @stylist = stylist
+        @url = "/api/reports/newClients/#{@startDate}/#{@stylist}"
+      else
+        delete @stylist
+        @url = "/api/reports/newClients/#{@startDate}"      
     
   # View
   class window.NewClientsView extends Backbone.View
-    tagName: 'div'
-    className: 'containerOuter'
-
+      
     events: 
       'change #stylists': 'selectStylist'
-      
+  
     initialize: ->
-      @el = '.containerOuter' 
+      @el = $('.containerOuter')
       _.bindAll this, 'render'
       @collection.bind 'reset', @render
+      @collection.bind 'all', @debug  # Simple debugger to tell me which events fire
 
       # Compile Handlebars template at init (Not sure if we have to do this each time or not)
       source = $('#newClients-template').html()
@@ -74,6 +79,8 @@ $ ->
       @collection.fetch()
 
     render: ->
+      console.log 'rendering!'
+      console.log @collection.toJSON()
       # Render Handlebars template
       renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent
@@ -81,8 +88,16 @@ $ ->
       # Hack - make chosen dropdown re-render itself after render
       $('.chzn-select').chosen()
       return this
-  
+
     selectStylist: (e) ->
-      console.log 'hit it!'
-      console.log e
+      # Switch up the collection to display the new stylist that's been selected
+      
+      @collection.setStylist $(e.currentTarget).val() # Pass the stylist ID from the dropdown to the collection
+      
+      @collection.fetch() # Hack to get collection to re-render itself    
+    
+  
+    debug: (e) ->
+      # Simple debugger to tell me what event fired
+      console.log "Fired event: #{e}"
   

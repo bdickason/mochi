@@ -32,6 +32,7 @@
           stylist: stylist
         });
         return window.newClientsView = new NewClientsView({
+          el: $('.containerOuter'),
           collection: newClients
         });
       };

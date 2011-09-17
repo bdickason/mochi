@@ -23,7 +23,7 @@ $ ->
       # window.stylists = new Stylists                                          # see users.coffee
       # window.stylistSelector = new StylistSelector {collection: stylists }    # see users.coffee
       window.newClients = new NewClients { startDate, stylist }                        # see reports.coffee
-      window.newClientsView = new NewClientsView { collection: newClients }   # see reports.coffee
+      window.newClientsView = new NewClientsView { el: $('.containerOuter'), collection: newClients }   # see reports.coffee
 
       # class window.datePicker extends
   
