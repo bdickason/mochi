@@ -180,10 +180,10 @@
       endDate = new Date();
       endDate.setHours(23, 59, 59);
       this.report = {};
-      this.report.count = 0;
       this.report.dates = {};
       this.report.dates.start = startDate;
       this.report.dates.end = endDate;
+      this.report.clients = [];
       if (stylist) {
         return User.find({
           'date_added': {
@@ -193,26 +193,38 @@
           'active': 1,
           'stylist.id': parseInt(stylist)
         }, {
-          'uid': 1,
           'phone': 1,
           'name': 1,
-          'email': 1,
-          'phone': 1,
-          'address': 1,
-          'stylist': 1
+          'email': 1
         }, __bind(function(err, clientdata) {
-          this.report.clients = clientdata;
-          this.report.count = clientdata.length;
-          return User.find({
-            'type': 'stylist',
-            'active': 1
-          }, {
-            'name': 1,
-            'uid': 1
-          }, __bind(function(err, stylistdata) {
-            this.report.stylists = stylistdata;
-            return callback(this.report);
-          }, this));
+          var array, final, i, index, line, str, user, _i, _j, _len, _len2, _ref, _ref2;
+          for (_i = 0, _len = clientdata.length; _i < _len; _i++) {
+            user = clientdata[_i];
+            final = [];
+            if (user.email) {
+              final[0] = user.email;
+            }
+            if (user.name) {
+              final[1] = user.name;
+            }
+            this.report.clients.push(final);
+          }
+          str = '';
+          array = this.report.clients;
+          for (i = 0, _ref = array.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
+            line = '';
+            _ref2 = array[i];
+            for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+              index = _ref2[_j];
+              if (line !== '') {
+                line += ',';
+              }
+              line += index;
+            }
+            str += line + '\n';
+          }
+          console.log(str);
+          return callback(this.report);
         }, this));
       } else {
         return User.find({

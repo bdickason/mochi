@@ -206,20 +206,40 @@ exports.Reports = class Reports
       endDate.setHours 23, 59, 59
 
       @report = {}   # JSON representing report output
-      @report.count = 0
 
       @report.dates = {}  # Add dates to output
       @report.dates.start = startDate
       @report.dates.end = endDate
       
+      @report.clients = []
+      
       # Todo - Do this more sexy and programatically instead of two separate blocks
       if stylist
-        User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, 'stylist.id': parseInt(stylist) }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
-          @report.clients = clientdata
-          @report.count = clientdata.length
-          User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
-            @report.stylists = stylistdata
-            callback @report
+        User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, 'stylist.id': parseInt(stylist) }, { 'phone': 1, 'name': 1, 'email': 1 }, (err, clientdata) =>
+          for user in clientdata
+            final = []
+            if user.email
+              final[0] = user.email
+            if user.name
+              final[1] = user.name
+      
+            @report.clients.push final
+
+          ## User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
+          ##   @report.stylists = stylistdata
+          str = ''
+          array = @report.clients
+          for i in [0...array.length]
+            line = ''
+            for index in array[i]
+              if line != ''
+                line += ','
+
+              line += index
+
+            str += line + '\n'
+          console.log str
+          callback @report
       else
         # No stylist specified, Grab all clients added in the time period
         User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1 }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
