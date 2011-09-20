@@ -147,10 +147,10 @@
         var source;
         this.el = $('.srchResult');
         _.bindAll(this, 'render');
+        this.collection.bind('reset', this.render);
         this.collection.bind('all', this.debug);
         source = $('#selectStylist-template').html();
-        this.template = Handlebars.compile(source);
-        return this.render();
+        return this.template = Handlebars.compile(source);
       };
       SelectStylist.prototype.render = function() {
         var renderedContent;

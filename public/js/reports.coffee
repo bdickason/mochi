@@ -110,11 +110,11 @@ $ ->
     initialize: ->
       @el = $('.srchResult')
       _.bindAll this, 'render'
+      @collection.bind 'reset', @render
       @collection.bind 'all', @debug  # Simple debugger to tell me which events fire
       # Compile Handlebars template at init (Not sure if we have to do this each time or not)
       source = $('#selectStylist-template').html()
       @template = Handlebars.compile source
-      @render()
     
     render: ->
       # Hack - make chosen dropdown re-render itself after render
