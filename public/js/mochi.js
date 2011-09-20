@@ -27,12 +27,19 @@
         });
       };
       Routes.prototype.newClients = function(startDate, stylist) {
+        window.reportView = new ReportView({
+          el: $('.containerOuter')
+        });
         window.newClients = new NewClients({
           startDate: startDate,
           stylist: stylist
         });
+        window.selectStylist = new SelectStylist({
+          el: $('.srchResult'),
+          collection: newClients
+        });
         return window.newClientsView = new NewClientsView({
-          el: $('.containerOuter'),
+          el: $('.listingContainer'),
           collection: newClients
         });
       };

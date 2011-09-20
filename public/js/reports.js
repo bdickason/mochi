@@ -8,7 +8,23 @@
     return child;
   };
   $(function() {
-    var ReportView, selectStylist;
+    /* Master view for the Report class */    var ReportView;
+    ReportView = (function() {
+      __extends(ReportView, Backbone.View);
+      function ReportView() {
+        ReportView.__super__.constructor.apply(this, arguments);
+      }
+      ReportView.prototype.initialize = function(params) {
+        switch (params.type) {
+          case 'newClients':
+            return console.log('new clients');
+          case 'daily':
+            return console.log('daily');
+        }
+      };
+      return ReportView;
+    })();
+    /* Simple report model */
     window.Report = (function() {
       __extends(Report, Backbone.Model);
       function Report() {
@@ -94,12 +110,9 @@
       function NewClientsView() {
         NewClientsView.__super__.constructor.apply(this, arguments);
       }
-      NewClientsView.prototype.events = {
-        'change #stylists': 'selectStylist'
-      };
       NewClientsView.prototype.initialize = function() {
         var source;
-        this.el = $('.containerOuter');
+        this.el = $('.listingContainer');
         _.bindAll(this, 'render');
         this.collection.bind('reset', this.render);
         this.collection.bind('all', this.debug);
@@ -115,31 +128,64 @@
           report: this.collection.toJSON()
         });
         $(this.el).html(renderedContent);
-        $('.chzn-select').chosen();
         return this;
-      };
-      NewClientsView.prototype.selectStylist = function(e) {
-        this.collection.setStylist($(e.currentTarget).val());
-        return this.collection.fetch();
       };
       NewClientsView.prototype.debug = function(e) {
         return console.log("Fired event: " + e);
       };
       return NewClientsView;
     })();
-    selectStylist = (function() {
-      __extends(selectStylist, Backbone.View);
-      function selectStylist() {
-        selectStylist.__super__.constructor.apply(this, arguments);
+    window.SelectStylist = (function() {
+      __extends(SelectStylist, Backbone.View);
+      function SelectStylist() {
+        SelectStylist.__super__.constructor.apply(this, arguments);
       }
-      return selectStylist;
+      SelectStylist.prototype.events = {
+        'change #stylists': 'selectStylist'
+      };
+      SelectStylist.prototype.initialize = function() {
+        var source;
+        this.el = $('.srchResult');
+        _.bindAll(this, 'render');
+        this.collection.bind('all', this.debug);
+        source = $('#selectStylist-template').html();
+        this.template = Handlebars.compile(source);
+        return this.render();
+      };
+      SelectStylist.prototype.render = function() {
+        var renderedContent;
+        console.log(this.collection);
+        renderedContent = this.template({
+          report: this.collection.toJSON()
+        });
+        $(this.el).html(renderedContent);
+        return $('.chzn-select').chosen();
+      };
+      SelectStylist.prototype.selectStylist = function(e) {
+        this.collection.setStylist($(e.currentTarget).val());
+        return this.collection.fetch();
+      };
+      return SelectStylist;
     })();
-    /* Master view for the Report class */
-    return ReportView = (function() {
+    return window.ReportView = (function() {
       __extends(ReportView, Backbone.View);
       function ReportView() {
         ReportView.__super__.constructor.apply(this, arguments);
       }
+      ReportView.prototype.initialize = function() {
+        var source;
+        this.el = $('.containerOuter');
+        _.bindAll(this, 'render');
+        source = $('#report-template').html();
+        this.template = Handlebars.compile(source);
+        return this.render();
+      };
+      ReportView.prototype.render = function() {
+        var renderedContent;
+        console.log('got here');
+        renderedContent = this.template({});
+        return $(this.el).html(renderedContent);
+      };
       return ReportView;
     })();
   });

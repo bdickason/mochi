@@ -20,10 +20,11 @@ $ ->
       window.salesTaxView = new SalesTaxView { collection: salesTax }
       
     newClients: (startDate, stylist) ->
-      # window.stylists = new Stylists                                          # see users.coffee
-      # window.stylistSelector = new StylistSelector {collection: stylists }    # see users.coffee
-      window.newClients = new NewClients { startDate, stylist }                        # see reports.coffee
-      window.newClientsView = new NewClientsView { el: $('.containerOuter'), collection: newClients }   # see reports.coffee
+      window.reportView = new ReportView { el: $('.containerOuter') } # Overall report container
+
+      window.newClients = new NewClients { startDate, stylist }                                         # see reports.coffee
+      window.selectStylist = new SelectStylist { el: $('.srchResult'), collection: newClients }       # see reports.coffee
+      window.newClientsView = new NewClientsView { el: $('.listingContainer'), collection: newClients }   # see reports.coffee
 
       # class window.datePicker extends
   

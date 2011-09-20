@@ -23,8 +23,10 @@ html(lang="en")
     script(type='text/javascript', src='/js/mochi.js')    
     
     // Handlebars Templates - move these to separate files eventually
+    !=partial('templates/reports')
     !=partial('templates/reports/salesTax')
     !=partial('templates/reports/newClients')
+    !=partial('templates/reports/selectStylist')
 
   body(id="mochi")
     header.adminBar

@@ -1,0 +1,9 @@
+// Report - Stylist dropdown template
+script(type='text/x-handlebars-template', id='selectStylist-template')
+  select.chzn-select(id='stylists', style='width:350px')
+    option(value='null') All Stylists
+    {{#each report}}
+    {{#each stylists}}
+    option(value='{{uid}}') {{name}}
+    {{/each}}
+    {{/each}}

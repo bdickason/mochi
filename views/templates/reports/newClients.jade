@@ -1,50 +1,37 @@
 // Report - New Clients frontend template
 script(type='text/x-handlebars-template', id='newClients-template')
-  // Start Listing
-  {{#each report}}
-  .listingName
-    .youSearched
-      | Stylist:
-    .srchResult
-      select.chzn-select(id='stylists', style='width:350px')
-        option(value='null') All Stylists
-        {{#each stylists}}
-        option(value='{{uid}}') {{name}}
-        {{/each}}
-  .clear
-  .listingContainer.clearfix
-    .listingBar
-      // Why the hell isn't this white? :(
-      a(href='#')
-        .colLastTrans E-mail
-      a(href='#')
-        .colUser Name &#x25BE;
-      a(href='#')
-        .colPhone Phone
-      .clear
-    .listingList
-      ul
-        // Start listing users!
-        {{#each clients}}
-        li
-          a(href='#!/users/{{uid}}')
-            .colLastTrans 
-              {{email}}
-            .colUser
-              {{name}}
-            .colPhone
-              {{#each phone}}
-              {{number}}
-              em ({{type}})
-              {{/each}}                  
-            .clear
-        {{/each}}
-        
+  .listingBar
+    {{#each report}}
+    a(href='#')
+      .colLastTrans E-mail
+    a(href='#')
+      .colUser Name &#x25BE;
+    a(href='#')
+      .colPhone Phone
+    .clear
+  .listingList
+    ul
+      // Start listing users!
+      {{#each clients}}
+      li
+        a(href='#!/users/{{uid}}')
+          .colLastTrans 
+            {{email}}
+          .colUser
+            {{name}}
+          .colPhone
+            {{#each phone}}
+            {{number}}
+            em ({{type}})
+            {{/each}}                  
+          .clear
+      {{/each}}
+      
 
-    {{#dates}}
-    h3 Start Date:
-      {{start}}
-      | End Date:
-      {{end}}
-    {{/dates}}
-    {{/each}}
+  {{#dates}}
+  h3 Start Date:
+    {{start}}
+    | End Date:
+    {{end}}
+  {{/dates}}
+  {{/each}}
