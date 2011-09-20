@@ -206,6 +206,7 @@ exports.Reports = class Reports
       endDate.setHours 23, 59, 59
 
       @report = {}   # JSON representing report output
+      @report.count = 0
 
       @report.dates = {}  # Add dates to output
       @report.dates.start = startDate
@@ -215,6 +216,7 @@ exports.Reports = class Reports
       if stylist
         User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1, 'stylist.id': parseInt(stylist) }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
           @report.clients = clientdata
+          @report.count = clientdata.length
           User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
             @report.stylists = stylistdata
             callback @report
@@ -222,7 +224,55 @@ exports.Reports = class Reports
         # No stylist specified, Grab all clients added in the time period
         User.find { 'date_added': {'$gte': startDate, '$lte': endDate }, 'active': 1 }, { 'uid': 1, 'phone': 1, 'name': 1, 'email': 1, 'phone': 1, 'address': 1, 'stylist': 1 }, (err, clientdata) =>
           @report.clients = clientdata
+          @report.count = clientdata.length          
           User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
             @report.stylists = stylistdata
             callback @report
-      
+  
+  ### TMP New Clients Report - Uses transactions not users ###  
+  tmpClients: (startDate, stylist, callback) ->
+    # Temporary report to query transactions + return clients based on which stylist has had a transaction with that user
+    
+    startDate = new Date(startDate)
+    startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+
+    # We only care about start date for daily report, end date should be today
+    endDate = new Date()
+    endDate.setHours 23, 59, 59
+
+    @report = {}   # JSON representing report output
+
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
+    
+    @report.clients = []
+    @report.count = 0
+    
+    query = { $or: [] } # We'll use this to catalog all the user ID's we wanna grab info for
+    
+    if stylist
+      Appointment.find { 'transactions.stylist': parseInt(stylist) }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
+        for appointment in appointmentdata
+          for transaction in appointment.transactions
+            query['$or'].push {uid: transaction.client }  # Throw all the clients that match into our query
+        
+        User.find { query }, { 'phone': 1, 'name': 1, 'email': 1}, (err, userdata) =>
+          for user in userdata
+            final = {}
+            if user.email
+              final.email = user.email
+            if user.name
+              final.name = user.name
+        
+            if user.phone.length > 0                
+              final.phone = []
+              for phone in user.phone
+                final.phone.push phone.number
+
+            @report.count++
+            @report.clients.push final
+        
+          callback @report
+
+        # console.log @report ###

@@ -1,0 +1,28 @@
+// Report - Sales Tax Template
+script(type='text/x-handlebars-template', id='salesTax-template')
+  h1 Sales Tax
+  {{#each report}}
+  {{#dates}}
+  h3 Start Date:
+    {{start}}
+    | End Date:
+    {{end}}
+  {{/dates}}
+  
+  {{#totals}}
+  h2 Totals:
+  p Services:
+    {{services}}
+  p Products: 
+    {{products}}
+  {{/totals}}
+  
+  h2 Tax:
+  {{#tax}}
+  p Services: 
+    {{services}}
+
+  p Products: 
+    {{products}}
+  {{/tax}}
+  {{/each}}

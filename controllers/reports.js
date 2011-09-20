@@ -180,6 +180,7 @@
       endDate = new Date();
       endDate.setHours(23, 59, 59);
       this.report = {};
+      this.report.count = 0;
       this.report.dates = {};
       this.report.dates.start = startDate;
       this.report.dates.end = endDate;
@@ -201,6 +202,7 @@
           'stylist': 1
         }, __bind(function(err, clientdata) {
           this.report.clients = clientdata;
+          this.report.count = clientdata.length;
           return User.find({
             'type': 'stylist',
             'active': 1
@@ -229,6 +231,7 @@
           'stylist': 1
         }, __bind(function(err, clientdata) {
           this.report.clients = clientdata;
+          this.report.count = clientdata.length;
           return User.find({
             'type': 'stylist',
             'active': 1
@@ -237,6 +240,73 @@
             'uid': 1
           }, __bind(function(err, stylistdata) {
             this.report.stylists = stylistdata;
+            return callback(this.report);
+          }, this));
+        }, this));
+      }
+    };
+    /* TMP New Clients Report - Uses transactions not users */
+    Reports.prototype.tmpClients = function(startDate, stylist, callback) {
+      var endDate, query;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date();
+      endDate.setHours(23, 59, 59);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.clients = [];
+      this.report.count = 0;
+      query = {
+        $or: []
+      };
+      if (stylist) {
+        return Appointment.find({
+          'transactions.stylist': parseInt(stylist)
+        }, {
+          'transactions.client': 1,
+          'transactions.stylist': 1
+        }, __bind(function(err, appointmentdata) {
+          var appointment, transaction, _i, _j, _len, _len2, _ref;
+          for (_i = 0, _len = appointmentdata.length; _i < _len; _i++) {
+            appointment = appointmentdata[_i];
+            _ref = appointment.transactions;
+            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+              transaction = _ref[_j];
+              query['$or'].push({
+                uid: transaction.client
+              });
+            }
+          }
+          return User.find({
+            query: query
+          }, {
+            'phone': 1,
+            'name': 1,
+            'email': 1
+          }, __bind(function(err, userdata) {
+            var final, phone, user, _k, _l, _len3, _len4, _ref2;
+            for (_k = 0, _len3 = userdata.length; _k < _len3; _k++) {
+              user = userdata[_k];
+              final = {};
+              if (user.email) {
+                final.email = user.email;
+              }
+              if (user.name) {
+                final.name = user.name;
+              }
+              if (user.phone.length > 0) {
+                final.phone = [];
+                _ref2 = user.phone;
+                for (_l = 0, _len4 = _ref2.length; _l < _len4; _l++) {
+                  phone = _ref2[_l];
+                  final.phone.push(phone.number);
+                }
+              }
+              this.report.count++;
+              this.report.clients.push(final);
+            }
             return callback(this.report);
           }, this));
         }, this));

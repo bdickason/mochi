@@ -8,6 +8,7 @@
     return child;
   };
   $(function() {
+    var ReportView, selectStylist;
     window.Report = (function() {
       __extends(Report, Backbone.Model);
       function Report() {
@@ -87,7 +88,8 @@
       };
       return NewClients;
     })();
-    return window.NewClientsView = (function() {
+    /* New Client report View */
+    window.NewClientsView = (function() {
       __extends(NewClientsView, Backbone.View);
       function NewClientsView() {
         NewClientsView.__super__.constructor.apply(this, arguments);
@@ -124,6 +126,21 @@
         return console.log("Fired event: " + e);
       };
       return NewClientsView;
+    })();
+    selectStylist = (function() {
+      __extends(selectStylist, Backbone.View);
+      function selectStylist() {
+        selectStylist.__super__.constructor.apply(this, arguments);
+      }
+      return selectStylist;
+    })();
+    /* Master view for the Report class */
+    return ReportView = (function() {
+      __extends(ReportView, Backbone.View);
+      function ReportView() {
+        ReportView.__super__.constructor.apply(this, arguments);
+      }
+      return ReportView;
     })();
   });
 }).call(this);

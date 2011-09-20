@@ -2,6 +2,22 @@
   # Displays and persists all reports
 
 $ ->
+  ### Master view for the Report class ###
+  class ReportView extends Backbone.View
+    initialize: (params) ->
+      # Creates the different objects used in each view
+      switch params.type
+        when 'newClients'
+          # Stylist Selector
+          # Date Picker (Start? or Start + End)
+          # newClientsView - table below
+          console.log 'new clients'
+        when 'daily'
+          # Date Picker (Start)
+          # dailyView - table below
+          console.log 'daily'
+
+  ### Simple report model ###
   class window.Report extends Backbone.Model
   
   ### Reports - Base collection for all reports ###
@@ -58,7 +74,7 @@ $ ->
         delete @stylist
         @url = "/api/reports/newClients/#{@startDate}"
     
-  # View
+  ### New Client report View ###
   class window.NewClientsView extends Backbone.View
       
     events: 
@@ -86,6 +102,7 @@ $ ->
 
       # Hack - make chosen dropdown re-render itself after render
       $('.chzn-select').chosen()
+
       return this
 
     selectStylist: (e) ->
@@ -99,4 +116,9 @@ $ ->
     debug: (e) ->
       # Simple debugger to tell me what event fired
       console.log "Fired event: #{e}"
-  
+
+  # Pick a stylist from a dropdown
+  class selectStylist extends Backbone.View
+    
+
+'
