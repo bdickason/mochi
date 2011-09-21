@@ -146,7 +146,6 @@
         this.el = $('.srchResult');
         _.bindAll(this, 'render');
         this.collection.bind('reset', this.render);
-        this.collection.bind('all', this.debug);
         source = $('#selectStylist-template').html();
         return this.template = Handlebars.compile(source);
       };
