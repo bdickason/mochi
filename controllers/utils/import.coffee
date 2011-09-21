@@ -1,4 +1,5 @@
 http = require 'http'
+cfg = require '../../config/config.js'    # contains API keys, etc.'
 
 exports.Import = class Import
   constructor: ->
@@ -9,27 +10,27 @@ exports.Import = class Import
     }
   
   users: (callback) ->
-    @options.path = 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000'
+    @options.path = "http://bloom.getmochi.com/api/users/?secret=#{cfg.MOCHI_KEY}&format=json&action=list&num=10000"
     @getRequest callback
   
   userOptions: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000"
+    @options.path = "http://bloom.getmochi.com/api/users_options/?secret=#{cfg.MOCHI_KEY}&format=json&action=list&num=10000"
     @getRequest callback
   
   products: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000"
+    @options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=#{cfg.MOCHI_KEY}&num=2000"
     @getRequest callback
 
   services: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/services/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000"
+    @options.path = "http://bloom.getmochi.com/api/services/?action=list&format=JSON&secret=#{cfg.MOCHI_KEY}&num=2000"
     @getRequest callback
 
   transactions: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/transactions/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000"
+    @options.path = "http://bloom.getmochi.com/api/transactions/?action=list&format=JSON&secret=#{cfg.MOCHI_KEY}&num=50000"
     @getRequest callback
 
   transactionEntries: (callback) ->
-    @options.path = "http://bloom.getmochi.com/api/transactionEntries/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000"
+    @options.path = "http://bloom.getmochi.com/api/transactionEntries/?action=list&format=JSON&secret=#{cfg.MOCHI_KEY}&num=50000"
     @getRequest callback
     
 

@@ -1,5 +1,6 @@
 (function() {
-  /* Config.coffee - Configuration of random stuffs */  exports.SESSION_SECRET = process.env.SESSION_SECRET || 'internets';
+  /* Config.coffee - Configuration of random stuffs */  exports.MOCHI_KEY = process.env.MOCHI_KEY || '';
+  exports.SESSION_SECRET = process.env.SESSION_SECRET || 'internets';
   exports.SESSION_ID = process.env.SESSION_ID || 'express.sid';
   exports.PRODUCT_TAX = process.env.PRODUCT_TAX || '0.08875';
   exports.SERVICE_TAX = process.env.SERVICE_TAX || '0.045';

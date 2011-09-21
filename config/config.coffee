@@ -1,5 +1,6 @@
 ### Config.coffee - Configuration of random stuffs ###
 
+exports.MOCHI_KEY = process.env.MOCHI_KEY || '' # Mochi stuff - only needed for temporary import stuff
 exports.SESSION_SECRET = process.env.SESSION_SECRET || 'internets'
 exports.SESSION_ID = process.env.SESSION_ID || 'express.sid'
 

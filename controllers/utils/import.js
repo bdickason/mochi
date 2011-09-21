@@ -1,6 +1,7 @@
 (function() {
-  var Import, http;
+  var Import, cfg, http;
   http = require('http');
+  cfg = require('../../config/config.js');
   exports.Import = Import = (function() {
     function Import() {
       this.options = {
@@ -10,27 +11,27 @@
       };
     }
     Import.prototype.users = function(callback) {
-      this.options.path = 'http://bloom.getmochi.com/api/users/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000';
+      this.options.path = "http://bloom.getmochi.com/api/users/?secret=" + cfg.MOCHI_KEY + "&format=json&action=list&num=10000";
       return this.getRequest(callback);
     };
     Import.prototype.userOptions = function(callback) {
-      this.options.path = "http://bloom.getmochi.com/api/users_options/?secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&format=json&action=list&num=10000";
+      this.options.path = "http://bloom.getmochi.com/api/users_options/?secret=" + cfg.MOCHI_KEY + "&format=json&action=list&num=10000";
       return this.getRequest(callback);
     };
     Import.prototype.products = function(callback) {
-      this.options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000";
+      this.options.path = "http://bloom.getmochi.com/api/products/?action=list&format=JSON&secret=" + cfg.MOCHI_KEY + "&num=2000";
       return this.getRequest(callback);
     };
     Import.prototype.services = function(callback) {
-      this.options.path = "http://bloom.getmochi.com/api/services/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=2000";
+      this.options.path = "http://bloom.getmochi.com/api/services/?action=list&format=JSON&secret=" + cfg.MOCHI_KEY + "&num=2000";
       return this.getRequest(callback);
     };
     Import.prototype.transactions = function(callback) {
-      this.options.path = "http://bloom.getmochi.com/api/transactions/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000";
+      this.options.path = "http://bloom.getmochi.com/api/transactions/?action=list&format=JSON&secret=" + cfg.MOCHI_KEY + "&num=50000";
       return this.getRequest(callback);
     };
     Import.prototype.transactionEntries = function(callback) {
-      this.options.path = "http://bloom.getmochi.com/api/transactionEntries/?action=list&format=JSON&secret=jsu90132jnkanclkm12k3mr12km5kmasDJFKASJFKJIJ51sadcmakj&num=50000";
+      this.options.path = "http://bloom.getmochi.com/api/transactionEntries/?action=list&format=JSON&secret=" + cfg.MOCHI_KEY + "&num=50000";
       return this.getRequest(callback);
     };
     /* API: 'GET' */
