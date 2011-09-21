@@ -122,7 +122,6 @@
       };
       NewClientsView.prototype.render = function() {
         var renderedContent;
-        console.log('rendering!');
         console.log(this.collection.toJSON());
         renderedContent = this.template({
           report: this.collection.toJSON()

@@ -90,7 +90,6 @@ $ ->
       @collection.fetch()
 
     render: ->
-      console.log 'rendering!'
       console.log @collection.toJSON()
       # Render Handlebars template
       renderedContent = @template { report: @collection.toJSON() }
