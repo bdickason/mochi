@@ -122,7 +122,6 @@
       };
       NewClientsView.prototype.render = function() {
         var renderedContent;
-        console.log(this.collection.toJSON());
         renderedContent = this.template({
           report: this.collection.toJSON()
         });
@@ -153,12 +152,12 @@
       };
       SelectStylist.prototype.render = function() {
         var renderedContent;
-        console.log(this.collection);
         renderedContent = this.template({
           report: this.collection.toJSON()
         });
         $(this.el).html(renderedContent);
-        return $('.chzn-select').chosen();
+        $('.chzn-select').chosen();
+        return this.collection.unbind('reset', this.render);
       };
       SelectStylist.prototype.selectStylist = function(e) {
         this.collection.setStylist($(e.currentTarget).val());

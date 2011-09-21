@@ -90,7 +90,7 @@ $ ->
       @collection.fetch()
 
     render: ->
-      console.log @collection.toJSON()
+
       # Render Handlebars template
       renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent
@@ -117,10 +117,12 @@ $ ->
     
     render: ->
       # Hack - make chosen dropdown re-render itself after render
-      console.log @collection
       renderedContent = @template { report: @collection.toJSON() }
-      $(@el).html renderedContent
+      $(@el).html renderedContent  
+
       $('.chzn-select').chosen()
+      
+      @collection.unbind 'reset', @render  # Hack so we don't re-render the dropdown every time
       
     selectStylist: (e) ->
       # Switch up the collection to display the new stylist that's been selected
