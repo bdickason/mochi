@@ -31,7 +31,6 @@ $ ->
       @collection.fetch()
 
     render: ->
-
       # Render Handlebars template
       renderedContent = @template { report: @collection.toJSON() }
       $(@el).html renderedContent

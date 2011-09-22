@@ -7,11 +7,12 @@
     function Users() {}
     Users.prototype.get = function(uid, query, callback) {
       var redisKey;
+      console.log(uid);
       redisKey = "/users/" + uid + (JSON.stringify(query));
       return redis.get(redisKey, function(err, data) {
         var options;
         if (data) {
-          return callback(eval(data));
+          return callback(JSON.parse(data));
         } else {
           if (uid) {
             return User.findOne({

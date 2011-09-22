@@ -23,6 +23,7 @@ html(lang="en")
     script(type='text/javascript', src='/js/utils/selectStylist.js')  # Select Box - pick a stylist
     script(type='text/javascript', src='/js/reports/salesTax.js')  # Generic report files
     script(type='text/javascript', src='/js/reports/newClients.js')  # Generic report files    
+    script(type='text/javascript', src='/js/users.js')    # User stuff
     script(type='text/javascript', src='/js/mochi.js')    # Core app files  
     
     // Handlebars Templates - move these to separate files eventually
@@ -30,6 +31,7 @@ html(lang="en")
     !=partial('templates/reports/salesTax')
     !=partial('templates/reports/newClients')
     !=partial('templates/reports/selectStylist')
+    !=partial('templates/users/user')
 
   body(id="mochi")
     header.adminBar

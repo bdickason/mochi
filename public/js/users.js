@@ -22,8 +22,13 @@
         Users.__super__.constructor.apply(this, arguments);
       }
       Users.prototype.model = User;
-      Users.prototype.url = '/api/users';
-      Users.prototype.isAdmin = function(uid) {
+      Users.prototype.initialize = function(params) {
+        if (params.id) {
+          this.id = params.id;
+          return this.url = "/api/users/" + this.id;
+        }
+      };
+      Users.prototype.isAdmin = function(id) {
         if (this.model.get('type') === 'administrator') {
           return true;
         } else {
@@ -32,59 +37,33 @@
       };
       return Users;
     })();
-    /* Stylists  */
-    window.Stylist = (function() {
-      __extends(Stylist, User);
-      function Stylist() {
-        Stylist.__super__.constructor.apply(this, arguments);
+    return window.UsersView = (function() {
+      __extends(UsersView, Backbone.View);
+      function UsersView() {
+        UsersView.__super__.constructor.apply(this, arguments);
       }
-      return Stylist;
-    })();
-    window.Stylists = (function() {
-      __extends(Stylists, Users);
-      function Stylists() {
-        Stylists.__super__.constructor.apply(this, arguments);
-      }
-      Stylists.prototype.initialize = function(params) {
-        return this.url = "/api/stylists/" + params.stylist;
+      UsersView.prototype.initialize = function() {
+        var source;
+        this.el = $('.containerOuter');
+        _.bindAll(this, 'render');
+        this.collection.bind('reset', this.render);
+        this.collection.bind('all', this.debug);
+        source = $('#users-template').html();
+        this.template = Handlebars.compile(source);
+        return this.collection.fetch();
       };
-      return Stylists;
-    })();
-    /*
-      # Select Stylist dropdown
-      # Grabs a list of stylists (Stylists) and lets the user select one to update a form
-      # Made sexier with Chosen
-      class window.StylistSelector extends Backbone.View
-        tagName: 'div'
-        className: 'srchResult'
-    
-        initialize: ->
-         @el = '.srchResult' 
-         _.bindAll this, 'render'
-         @collection.bind 'reset', @render
-    
-         # Compile Handlebars template at init (Not sure if we have to do this each time or not)
-         source = $('#newClients-template').html()
-         @template = Handlebars.compile source
-    
-         # Get the latest collections
-         @collection.fetch()
-    
-        render: ->
-         # Render Handlebars template
-         console.log 'rendering!'
-         console.log @collection.toJSON()
-         renderedContent = @template { report: @collection.toJSON() }
-         $(@el).html renderedContent
-         return this
-      */
-    /* Clients */
-    return window.Clients = (function() {
-      __extends(Clients, Users);
-      function Clients() {
-        Clients.__super__.constructor.apply(this, arguments);
-      }
-      return Clients;
+      UsersView.prototype.render = function() {
+        var renderedContent;
+        renderedContent = this.template({
+          report: this.collection.toJSON()
+        });
+        $(this.el).html(renderedContent);
+        return this;
+      };
+      UsersView.prototype.debug = function(e) {
+        return console.log("Fired event: " + e);
+      };
+      return UsersView;
     })();
   });
 }).call(this);
