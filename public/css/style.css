@@ -1141,6 +1141,7 @@ span.newClientIconAdjust {
 	width:460px; 
 	margin:10px 10px 0 0; 
 	display:block;
+	float:left;
 }
 
 .streetaddressInput input {
@@ -1156,6 +1157,7 @@ span.newClientIconAdjust {
 	width:156px; 
 	margin:10px 0 10px 0; 
 	display:block;
+	float:right;
 }
 
 .aptInput input {

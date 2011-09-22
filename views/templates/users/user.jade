@@ -41,26 +41,35 @@ script(type='text/x-handlebars-template', id='users-template')
   // Left Column
   .userLeftCol.floatLeft
     // E-mail
-    .titleBar
+    label.titleBar
       p E-mail Address
     .emailInput
       input(type='text', name='email', value='{{email}}')
     
     // Phone Number(s)
-    .titleBar
+    label.titleBar
       p Phone Number
     .phoneRow
       {{#each phone}}
-      .phoneNum(style='float:left')
+      .phoneNum
         input(type='text', name='phone', value='{{number}}')
-      .phoneType(style='float:left')
+      .phoneType
         select(class='chzn-select', style='width:140px', value='{{type}}')
           option Mobile
           option Home
           option Work
-      .addBtn(style='float:right')
+      .addBtn
         a(href='#', title='Add a phone number')
       {{/each}}
+    
+    .clear
+    // Address
+    label.titleBar
+      p Mailing Address
+    label.subTitleBar.streetaddress
+      p Street Address
+    label.subTitleBar.apt
+      p Apartment #
     
   
   // Right Column
