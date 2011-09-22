@@ -11,7 +11,6 @@ exports.Users = class Users
   # GET - Grab a user by UID
   get: (uid, query, callback) ->
     # Always check cache first - this should eventually go in each controller
-    console.log uid
     redisKey = "/users/#{uid}#{JSON.stringify query}"
     redis.get redisKey, (err, data) ->
       if data

@@ -1118,6 +1118,9 @@ span.newClientIconAdjust {
 	margin-bottom:20px;
 }
 
+.phoneNum {
+  float: left;
+}
 .phoneNum input {
 	width:320px; 
 	padding:15px 18px;
@@ -1131,6 +1134,7 @@ span.newClientIconAdjust {
 .phoneType {
 	width:214px; 
 	margin:10px 10px 0 0; 
+	float: left;
 }
 
 .streetaddress {
@@ -1319,6 +1323,7 @@ span.newClientIconAdjust {
 	margin:10px 0 0 0; 
 	padding:0; 
 	border:none;
+	float:right;
 }
 
 .addBtn a:hover { 

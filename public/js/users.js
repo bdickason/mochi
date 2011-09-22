@@ -55,9 +55,10 @@
       UsersView.prototype.render = function() {
         var renderedContent;
         renderedContent = this.template({
-          report: this.collection.toJSON()
+          user: this.collection.toJSON()
         });
         $(this.el).html(renderedContent);
+        $('.chzn-select').chosen();
         return this;
       };
       UsersView.prototype.debug = function(e) {

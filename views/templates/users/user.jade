@@ -1,7 +1,71 @@
 // Individual User Profile
 script(type='text/x-handlebars-template', id='users-template')
+  {{#each user}}
+  // Header
   .noteToolbar
     p
       a(href='#')
         span.smallCalIcon
-        Checkout this Client
+        | Checkout this Client
+      a(href='#')
+        span.noteIconAdd
+        | Add a Note
+      a(href='#')
+        span.noteIconEmail
+        | Send an E-mail
+      a(href='#')
+        span.noteIconAppt
+        | Make an Appointment
+  .profileName
+    .female
+      input(name='clientname', type='text', value='{{name}}')
+  .clear
+
+  // Notes
+  .noteContainer
+    {{#each notes}}  
+    .noteWrapperLast
+      table(border='0', cellpadding='0', cellspacing='0')
+        tbody
+          tr
+            td
+              .noteDate
+                p 10-26-06
+            td.note
+              input(name='textfield', type='text', id='textfield', value='{{message}}')
+            td
+              .noteDelete
+                a(href='#', title='Delete Note')
+    {{/each}}
+    
+  // Left Column
+  .userLeftCol.floatLeft
+    // E-mail
+    .titleBar
+      p E-mail Address
+    .emailInput
+      input(type='text', name='email', value='{{email}}')
+    
+    // Phone Number(s)
+    .titleBar
+      p Phone Number
+    .phoneRow
+      {{#each phone}}
+      .phoneNum(style='float:left')
+        input(type='text', name='phone', value='{{number}}')
+      .phoneType(style='float:left')
+        select(class='chzn-select', style='width:140px', value='{{type}}')
+          option Mobile
+          option Home
+          option Work
+      .addBtn(style='float:right')
+        a(href='#', title='Add a phone number')
+      {{/each}}
+    
+  
+  // Right Column
+  .userRightCol.floatLeft
+    .titleBarColor
+      p Preferred Stylist
+  
+  {{/each}}

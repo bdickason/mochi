@@ -33,10 +33,12 @@ $ ->
       # Get the latest collections
       @collection.fetch()
 
-    render: ->
+    render: ->      
       # Render Handlebars template
-      renderedContent = @template { report: @collection.toJSON() }
+      renderedContent = @template { user: @collection.toJSON() }
       $(@el).html renderedContent
+
+      $('.chzn-select').chosen()
 
       return this
 
