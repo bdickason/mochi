@@ -71,6 +71,12 @@ script(type='text/x-handlebars-template', id='users-template')
     label.subTitleBar.apt
       p Apartment #
     
+    .streetaddressInput
+      input(type='text', name='street', value='{{address.street}}')
+    .aptInput
+      input(type='text', name='apt', value='{{address.apartment}}')
+
+    
   
   // Right Column
   .userRightCol.floatLeft
