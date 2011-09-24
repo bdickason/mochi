@@ -54,33 +54,97 @@ script(type='text/x-handlebars-template', id='users-template')
       .phoneNum
         input(type='text', name='phone', value='{{number}}')
       .phoneType
-        select(class='chzn-select', style='width:140px', value='{{type}}')
+        select(class='chzn-select', name='phoneType', style='width:140px', value='{{type}}')
           option Mobile
           option Home
           option Work
       .addBtn
         a(href='#', title='Add a phone number')
       {{/each}}
-    
     .clear
+    
     // Address
     label.titleBar
       p Mailing Address
-    label.subTitleBar.streetaddress
+    label.subTitleBar#streetaddress
       p Street Address
-    label.subTitleBar.apt
+    label.subTitleBar#apt
       p Apartment #
-    
     .streetaddressInput
       input(type='text', name='street', value='{{address.street}}')
     .aptInput
       input(type='text', name='apt', value='{{address.apartment}}')
-
+    label.subTitleBar#city
+      p City
+    label.subTitleBar#state
+      p State
+    label.subTitleBar#zip
+      p Zip Code
+    .cityInput
+      input(type='text', name='city', value='{{address.city}}')    
+    .stateInput
+      input(type='text', name='state', value='{{address.state}}')    
+    .zipInput
+      input(type='text', name='zip', value='{{address.zip}}') 
+    .clear   
     
+    // Profile (Bday, Gender, Referral, etc.)
+    label.titleBar
+      p Profile Details
+    label.subTitleBar#bday
+      p Birthday
+    label.subTitleBar#gender
+      p Gender
+    .bdayInput#month
+      select(class='chzn-select', style='width:140px', name='bday.months', value='')
+        option January
+        option February
+        option March
+        option April
+        option May
+        option June
+        option July
+        option August
+        option September
+        option October
+        option November
+        option December
+    .bdayInput#day
+      input(type='text', name='bday.day', value='') 
+    .bdayInput#year
+      input(type='text', name='bday.year', value='')
+    .genderInput
+      select(class='chzn-select', style='width:140px', name='gender', value='{{gender}}')
+        option Female
+        option Male    
+    label.subTitleBar#referred
+      p Referred By
+    label.subTitleBar#userType
+      p This person is a...
+    .referredInput
+      input(type='text', name='referral', value='')
+    .genderInput
+      select(class='chzn-select', style='width:140px', name='type', value='{{type}}')
+        option Client
+        option Stylist
+        option Assistant
+        option Administrator
+    .clear
+    .delUser(align='center')
+      input(type='checkbox', name='delete')
+      label(for='deleteUser') 
+      | Delete this user
   
   // Right Column
+  // Stylists
   .userRightCol.floatLeft
     .titleBarColor
       p Preferred Stylist
+    .rightColSelect
+      select(class='chzn-select', style='width:140px', name='stylist', value='{{type}}')
+        option Clarissa
+        option etc
+        option Assistant
+        option Administrator
   
   {{/each}}
