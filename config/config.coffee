@@ -24,4 +24,3 @@ exports.REDISTOGO_URL = process.env.REDISTOGO_URL || null
 # Fix for heroku
 if exports.MONGOHQ_URL != null
   exports.DB = exports.MONGOHQ_URL
-  

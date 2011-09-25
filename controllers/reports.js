@@ -245,6 +245,25 @@
         }, this));
       }
     };
+    /* Retention Report - How many clients are we keeping? losing? */
+    Reports.prototype.retention = function(startDate, endDate, callback) {
+      this.report = {};
+      this.report.newClients = [];
+      return Appointment.find({
+        'active': 1
+      }, __bind(function(err, appointments) {
+        var appointment, _i, _len;
+        for (_i = 0, _len = appointments.length; _i < _len; _i++) {
+          appointment = appointments[_i];
+          if (!this.report.newClients[appointment.transactions[0].client]) {
+            this.report.newClients[appointment.transactions[0].client] = 1;
+          } else if (this.report.newClients[appointment.transactions[0].client] >= 1) {
+            this.report.newClients[appointment.transactions[0].client]++;
+          }
+        }
+        return callback(this.report);
+      }, this));
+    };
     /* TMP New Clients Report - Uses transactions not users */
     Reports.prototype.tmpClients = function(startDate, stylist, callback) {
       var endDate, query;

@@ -228,7 +228,32 @@ exports.Reports = class Reports
           User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
             @report.stylists = stylistdata
             callback @report
-  
+
+  ### Retention Report - How many clients are we keeping? losing? ###
+  retention: (startDate, endDate, callback) ->
+    # Avg. # of visits per client
+    # of clients who have returned in a given period
+    # of clients who have not returned in a given period
+    # streaks?
+    
+    # number of return clients in last 30 days
+    @report = {}
+        
+    @report.newClients = []
+    
+    # number of new clients in last 30 days    
+    Appointment.find { 'active': 1 }, (err, appointments) =>
+      for appointment in appointments
+        # Right now we only have one client per appointment
+          if !@report.newClients[appointment.transactions[0].client]
+            # This is a new client
+            @report.newClients[appointment.transactions[0].client] = 1
+          else if @report.newClients[appointment.transactions[0].client] >= 1
+            # This is a return client, increment!
+            @report.newClients[appointment.transactions[0].client]++
+      callback @report
+
+                
   ### TMP New Clients Report - Uses transactions not users ###  
   tmpClients: (startDate, stylist, callback) ->
     # Temporary report to query transactions + return clients based on which stylist has had a transaction with that user
@@ -276,4 +301,4 @@ exports.Reports = class Reports
           callback @report
 
         # console.log @report ###
-        
+  

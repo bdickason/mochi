@@ -78,6 +78,8 @@
         return report.tmpClients(req.params.startDate, req.params.endDate, function(json) {
           return res.send(json);
         });
+      case 'retention':
+        return report.retention(req.params.startDate, req.params.endDate, function(json) {});
     }
   });
   app.get('/api/:route/:uid?', function(req, res) {
