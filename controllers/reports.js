@@ -265,7 +265,7 @@
       }, this));
     };
     /* TMP New Clients Report - Uses transactions not users */
-    Reports.prototype.tmpClients = function(startDate, stylist, callback) {
+    Reports.prototype.allClients = function(startDate, stylist, callback) {
       var endDate, query;
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
@@ -298,6 +298,88 @@
               });
             }
           }
+          return User.find({
+            query: query
+          }, {
+            'phone': 1,
+            'name': 1,
+            'email': 1
+          }, __bind(function(err, userdata) {
+            var final, phone, user, _k, _l, _len3, _len4, _ref2;
+            for (_k = 0, _len3 = userdata.length; _k < _len3; _k++) {
+              user = userdata[_k];
+              final = {};
+              if (user.email) {
+                final.email = user.email;
+              }
+              if (user.name) {
+                final.name = user.name;
+              }
+              if (user.phone.length > 0) {
+                final.phone = [];
+                _ref2 = user.phone;
+                for (_l = 0, _len4 = _ref2.length; _l < _len4; _l++) {
+                  phone = _ref2[_l];
+                  final.phone.push(phone.number);
+                }
+              }
+              this.report.count++;
+              this.report.clients.push(final);
+            }
+            return callback(this.report);
+          }, this));
+        }, this));
+      }
+    };
+    /* TMP New Clients Report - Uses transactions not users */
+    Reports.prototype.uniqueClients = function(startDate, stylist, callback) {
+      var endDate, query, tmpClients;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date();
+      endDate.setHours(23, 59, 59);
+      stylist = parseInt(stylist);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.clients = [];
+      this.report.count = 0;
+      query = {
+        $or: []
+      };
+      tmpClients = [];
+      if (stylist) {
+        return Appointment.find({
+          'transactions.stylist': stylist
+        }, {
+          'transactions.client': 1,
+          'transactions.stylist': 1
+        }, __bind(function(err, appointmentdata) {
+          var appointment, key, transaction, value, _i, _j, _len, _len2, _ref;
+          for (_i = 0, _len = appointmentdata.length; _i < _len; _i++) {
+            appointment = appointmentdata[_i];
+            _ref = appointment.transactions;
+            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+              transaction = _ref[_j];
+              if (parseInt(transaction.stylist) === stylist) {
+                if (!tmpClients[parseInt(transaction.client)]) {
+                  tmpClients[parseInt(transaction.client)] = 1;
+                }
+              } else {
+                tmpClients[parseInt(transaction.client)] = 2;
+              }
+            }
+          }
+          for (key in tmpClients) {
+            value = tmpClients[key];
+            if (value === 1) {
+              query['$or'].push({
+                uid: parseInt(key)
+              });
+            }
+          }
+          console.log(query);
           return User.find({
             query: query
           }, {

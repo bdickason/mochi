@@ -255,9 +255,9 @@ exports.Reports = class Reports
 
                 
   ### TMP New Clients Report - Uses transactions not users ###  
-  tmpClients: (startDate, stylist, callback) ->
-    # Temporary report to query transactions + return clients based on which stylist has had a transaction with that user
-    
+  allClients: (startDate, stylist, callback) ->
+    # returns ALL clients that have ever visited a given stylist in a date range.
+
     startDate = new Date(startDate)
     startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
 
@@ -270,17 +270,87 @@ exports.Reports = class Reports
     @report.dates = {}  # Add dates to output
     @report.dates.start = startDate
     @report.dates.end = endDate
+
+    @report.clients = []
+    @report.count = 0
+
+    query = { $or: [] } # We'll use this to catalog all the user ID's we wanna grab info for
+
+    if stylist
+      Appointment.find { 'transactions.stylist': parseInt(stylist) }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
+        for appointment in appointmentdata
+          for transaction in appointment.transactions
+            query['$or'].push {uid: transaction.client }  # Throw all the clients that match into our query
+
+        User.find { query }, { 'phone': 1, 'name': 1, 'email': 1}, (err, userdata) =>
+          for user in userdata
+            final = {}
+            if user.email
+              final.email = user.email
+            if user.name
+              final.name = user.name
+
+            if user.phone.length > 0                
+              final.phone = []
+              for phone in user.phone
+                final.phone.push phone.number
+
+            @report.count++
+            @report.clients.push final
+
+          callback @report
+
+        # console.log @report ###
+
+    
+
+  
+  ### TMP New Clients Report - Uses transactions not users ###  
+  uniqueClients: (startDate, stylist, callback) ->
+    # returns clients that have ONLY ever visited a given stylist in a date range.
+
+    startDate = new Date(startDate)
+    startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+
+    # We only care about start date for daily report, end date should be today
+    endDate = new Date()
+    endDate.setHours 23, 59, 59
+    
+    # Convert string to Int
+    stylist = parseInt stylist
+
+    @report = {}   # JSON representing report output
+
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
     
     @report.clients = []
     @report.count = 0
     
     query = { $or: [] } # We'll use this to catalog all the user ID's we wanna grab info for
     
+    tmpClients = [] # temporary array for storing clients
+    # create an array w/ client Id's
+    # If id = 1, it's only this style
+    # If id = 0, there's no hit
+    # If id > 1, they've seen another stylist
+    
     if stylist
-      Appointment.find { 'transactions.stylist': parseInt(stylist) }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
+      Appointment.find { 'transactions.stylist': stylist }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
         for appointment in appointmentdata
-          for transaction in appointment.transactions
-            query['$or'].push {uid: transaction.client }  # Throw all the clients that match into our query
+          for transaction in appointment.transactions            
+            if parseInt(transaction.stylist) is stylist
+              if !tmpClients[parseInt(transaction.client)]
+                tmpClients[parseInt(transaction.client)] = 1
+            else
+              tmpClients[parseInt(transaction.client)] = 2
+
+        for key, value of tmpClients
+          if value is 1
+            query['$or'].push {uid: parseInt(key)}  # Only query for clients that have a value of 1 (only seen the stylist)
+
+        console.log query
         
         User.find { query }, { 'phone': 1, 'name': 1, 'email': 1}, (err, userdata) =>
           for user in userdata
@@ -299,6 +369,3 @@ exports.Reports = class Reports
             @report.clients.push final
         
           callback @report
-
-        # console.log @report ###
-  
