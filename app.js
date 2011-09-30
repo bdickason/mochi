@@ -84,6 +84,10 @@
         });
       case 'retention':
         return report.retention(req.params.startDate, req.params.endDate, function(json) {});
+      case 'alv':
+        return report.alv(req.params.startDate, req.params.endDate, function(json) {
+          return res.send(json);
+        });
     }
   });
   app.get('/api/:route/:uid?', function(req, res) {

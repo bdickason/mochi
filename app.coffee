@@ -80,9 +80,11 @@ app.get '/api/reports/:report/:startDate?/:endDate?', (req, res) ->
       # Hack - temporary report until we properly set stylists
       report.allClients req.params.startDate, req.params.endDate, (json) ->
         res.send json
-    
     when 'retention'
       report.retention req.params.startDate, req.params.endDate, (json) ->
+    when 'alv'
+      report.alv req.params.startDate, req.params.endDate, (json) ->
+        res.send json
     
 # RESTful API Routes (appointments, products, etc)
 app.get '/api/:route/:uid?', (req, res) ->

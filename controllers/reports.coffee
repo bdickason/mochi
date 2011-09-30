@@ -369,3 +369,66 @@ exports.Reports = class Reports
             @report.clients.push final
         
           callback @report
+
+  ### _THE ONLY REPORT THAT MATTERS ###
+  alv: (startDate, endDate, callback) ->
+    # Average Lifetime Value of customers, spread via cohort analysis and segmented by source
+    # see: http://blog.kissmetrics.com/how-to-calculate-lifetime-value/?wide=1
+
+    startDate = new Date(startDate)
+    startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+    endDate = new Date(endDate)
+    endDate.setHours 23, 59, 59
+    
+    @report = {}   # JSON representing report output
+
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
+
+    @report.count = 0
+    
+    tmpClients = []
+
+    # Grab all transactions in the time period
+    Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true, 'void.void': false }, (err, data) =>      
+
+      @report.numClients = 0
+      totalRevenue = 0      
+      
+      for appointment in data
+        if parseInt(appointment.transactions[0].client) != 3803 # HACK - Fake client used for internal crap. Filter it out!
+
+          # Get average $$$ spent per visit
+          for transaction in appointment.transactions
+            if transaction.product.price
+              totalRevenue += transaction.product.price * transaction.product.quantity
+            else
+              totalRevenue += transaction.service.price
+
+          # 2. Calculate average # of visits per client
+          uid = parseInt appointment.transactions[0].client # Each transaction currently only has 1 client
+          if tmpClients[uid]
+            tmpClients[uid]++ # Client has visited an additional time
+          else
+            tmpClients[uid] = 1 # First time this client has visited
+      
+      for client, visits of tmpClients
+        # console.log "#{client}: #{visits}"
+        @report.numClients++
+          
+      @report.numAppointments = data.length
+      
+      @report.avgRevenue = totalRevenue / @report.numAppointments # Average revenue per visit
+      @report.avgVisits = @report.numAppointments / @report.numClients
+      @report.avgValue = @report.avgRevenue * @report.avgVisits
+
+      
+      callback @report
+      
+      # console.log data # 401 appointments
+      
+    
+    
+
+    # 3. Calculate average monthly value (multiply them)

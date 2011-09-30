@@ -413,6 +413,61 @@
         }, this));
       }
     };
+    /* _THE ONLY REPORT THAT MATTERS */
+    Reports.prototype.alv = function(startDate, endDate, callback) {
+      var tmpClients;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date(endDate);
+      endDate.setHours(23, 59, 59);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.count = 0;
+      tmpClients = [];
+      return Appointment.find({
+        'transactions.date.start': {
+          '$gte': startDate,
+          '$lte': endDate
+        },
+        'confirmed': true,
+        'void.void': false
+      }, __bind(function(err, data) {
+        var appointment, client, totalRevenue, transaction, uid, visits, _i, _j, _len, _len2, _ref;
+        this.report.numClients = 0;
+        totalRevenue = 0;
+        for (_i = 0, _len = data.length; _i < _len; _i++) {
+          appointment = data[_i];
+          if (parseInt(appointment.transactions[0].client) !== 3803) {
+            _ref = appointment.transactions;
+            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+              transaction = _ref[_j];
+              if (transaction.product.price) {
+                totalRevenue += transaction.product.price * transaction.product.quantity;
+              } else {
+                totalRevenue += transaction.service.price;
+              }
+            }
+            uid = parseInt(appointment.transactions[0].client);
+            if (tmpClients[uid]) {
+              tmpClients[uid]++;
+            } else {
+              tmpClients[uid] = 1;
+            }
+          }
+        }
+        for (client in tmpClients) {
+          visits = tmpClients[client];
+          this.report.numClients++;
+        }
+        this.report.numAppointments = data.length;
+        this.report.avgRevenue = totalRevenue / this.report.numAppointments;
+        this.report.avgVisits = this.report.numAppointments / this.report.numClients;
+        this.report.avgValue = this.report.avgRevenue * this.report.avgVisits;
+        return callback(this.report);
+      }, this));
+    };
     return Reports;
   })();
 }).call(this);
