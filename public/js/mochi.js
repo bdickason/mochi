@@ -15,10 +15,12 @@
         Routes.__super__.constructor.apply(this, arguments);
       }
       Routes.prototype.routes = {
-        '!/salesTax/:startDate/:endDate': 'salesTax',
-        '!/newClients/:startDate/:stylist': 'newClients',
-        '!/newClients/:startDate': 'newClients'
+        '!/reports/salesTax/:startDate/:endDate': 'salesTax',
+        '!/reports/newClients/:startDate/:stylist': 'newClients',
+        '!/reports/newClients/:startDate': 'newClients',
+        '!/users/:id': 'user'
       };
+      /* Reports */
       Routes.prototype.salesTax = function(startDate, endDate) {
         window.salesTax = new SalesTax;
         return window.salesTaxView = new SalesTaxView({
@@ -40,6 +42,16 @@
         return window.newClientsView = new NewClientsView({
           el: $('.listingContainer'),
           collection: newClients
+        });
+      };
+      /* Users */
+      Routes.prototype.user = function(id) {
+        window.users = new Users({
+          id: id
+        });
+        return window.usersView = new UsersView({
+          el: $('.userWrapper'),
+          collection: users
         });
       };
       return Routes;

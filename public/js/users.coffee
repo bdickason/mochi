@@ -7,53 +7,41 @@ $ ->
   ### users - Base collection ###  
   class window.Users extends Backbone.Collection
     model: User
-    url: '/api/users'
+
+    initialize: (params) ->
+      if params.id
+        @id = params.id
+        @url = "/api/users/#{@id}"
+        
     
-    isAdmin: (uid) ->
+    isAdmin: (id) ->
       if @model.get('type') is 'administrator'  # TODO: Make a new field for admins like 'admin': true
         return true
       else return false
         
-  ### Stylists  ###
-  # Stylist Base Model
-  class window.Stylist extends User
-  
-  # Stylists Base Collection
-  class window.Stylists extends Users
-    initialize: (params) ->
-      @url = "/api/stylists/#{params.stylist}" # /stylist id(optional)
-
-
-  ###
-  # Select Stylist dropdown
-  # Grabs a list of stylists (Stylists) and lets the user select one to update a form
-  # Made sexier with Chosen
-  class window.StylistSelector extends Backbone.View
-    tagName: 'div'
-    className: 'srchResult'
-
+  class window.UsersView extends Backbone.View
     initialize: ->
-     @el = '.srchResult' 
-     _.bindAll this, 'render'
-     @collection.bind 'reset', @render
+      @el = $('.containerOuter')
+      _.bindAll this, 'render'
+      @collection.bind 'reset', @render
+      @collection.bind 'all', @debug  # Simple debugger to tell me which events fire
 
-     # Compile Handlebars template at init (Not sure if we have to do this each time or not)
-     source = $('#newClients-template').html()
-     @template = Handlebars.compile source
+      # Compile Handlebars template at init (Not sure if we have to do this each time or not)
+      source = $('#users-template').html()
+      @template = Handlebars.compile source
 
-     # Get the latest collections
-     @collection.fetch()
+      # Get the latest collections
+      @collection.fetch()
 
-    render: ->
-     # Render Handlebars template
-     console.log 'rendering!'
-     console.log @collection.toJSON()
-     renderedContent = @template { report: @collection.toJSON() }
-     $(@el).html renderedContent
-     return this
-  ###
-  
+    render: ->      
+      # Render Handlebars template
+      renderedContent = @template { user: @collection.toJSON() }
+      $(@el).html renderedContent
 
-  ### Clients ###
-  class window.Clients extends Users
-  
+      $('.chzn-select').chosen()
+
+      return this
+
+    debug: (e) ->
+      # Simple debugger to tell me what event fired
+      console.log "Fired event: #{e}"

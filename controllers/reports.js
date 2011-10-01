@@ -245,8 +245,27 @@
         }, this));
       }
     };
+    /* Retention Report - How many clients are we keeping? losing? */
+    Reports.prototype.retention = function(startDate, endDate, callback) {
+      this.report = {};
+      this.report.newClients = [];
+      return Appointment.find({
+        'active': 1
+      }, __bind(function(err, appointments) {
+        var appointment, _i, _len;
+        for (_i = 0, _len = appointments.length; _i < _len; _i++) {
+          appointment = appointments[_i];
+          if (!this.report.newClients[appointment.transactions[0].client]) {
+            this.report.newClients[appointment.transactions[0].client] = 1;
+          } else if (this.report.newClients[appointment.transactions[0].client] >= 1) {
+            this.report.newClients[appointment.transactions[0].client]++;
+          }
+        }
+        return callback(this.report);
+      }, this));
+    };
     /* TMP New Clients Report - Uses transactions not users */
-    Reports.prototype.tmpClients = function(startDate, stylist, callback) {
+    Reports.prototype.allClients = function(startDate, stylist, callback) {
       var endDate, query;
       startDate = new Date(startDate);
       startDate.setHours(0, 0, 0);
@@ -311,6 +330,151 @@
           }, this));
         }, this));
       }
+    };
+    /* TMP New Clients Report - Uses transactions not users */
+    Reports.prototype.uniqueClients = function(startDate, stylist, callback) {
+      var endDate, query, tmpClients;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date();
+      endDate.setHours(23, 59, 59);
+      stylist = parseInt(stylist);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.clients = [];
+      this.report.count = 0;
+      query = {
+        $or: []
+      };
+      tmpClients = [];
+      if (stylist) {
+        return Appointment.find({
+          'transactions.stylist': stylist
+        }, {
+          'transactions.client': 1,
+          'transactions.stylist': 1
+        }, __bind(function(err, appointmentdata) {
+          var appointment, key, transaction, value, _i, _j, _len, _len2, _ref;
+          for (_i = 0, _len = appointmentdata.length; _i < _len; _i++) {
+            appointment = appointmentdata[_i];
+            _ref = appointment.transactions;
+            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+              transaction = _ref[_j];
+              if (parseInt(transaction.stylist) === stylist) {
+                if (!tmpClients[parseInt(transaction.client)]) {
+                  tmpClients[parseInt(transaction.client)] = 1;
+                }
+              } else {
+                tmpClients[parseInt(transaction.client)] = 2;
+              }
+            }
+          }
+          for (key in tmpClients) {
+            value = tmpClients[key];
+            if (value === 1) {
+              query['$or'].push({
+                uid: parseInt(key)
+              });
+            }
+          }
+          console.log(query);
+          return User.find({
+            query: query
+          }, {
+            'phone': 1,
+            'name': 1,
+            'email': 1
+          }, __bind(function(err, userdata) {
+            var final, phone, user, _k, _l, _len3, _len4, _ref2;
+            for (_k = 0, _len3 = userdata.length; _k < _len3; _k++) {
+              user = userdata[_k];
+              final = {};
+              if (user.email) {
+                final.email = user.email;
+              }
+              if (user.name) {
+                final.name = user.name;
+              }
+              if (user.phone.length > 0) {
+                final.phone = [];
+                _ref2 = user.phone;
+                for (_l = 0, _len4 = _ref2.length; _l < _len4; _l++) {
+                  phone = _ref2[_l];
+                  final.phone.push(phone.number);
+                }
+              }
+              this.report.count++;
+              this.report.clients.push(final);
+            }
+            return callback(this.report);
+          }, this));
+        }, this));
+      }
+    };
+    /* _THE ONLY REPORT THAT MATTERS */
+    Reports.prototype.alv = function(startDate, endDate, callback) {
+      var tmpClients;
+      startDate = new Date(startDate);
+      startDate.setHours(0, 0, 0);
+      endDate = new Date(endDate);
+      endDate.setHours(23, 59, 59);
+      this.report = {};
+      this.report.dates = {};
+      this.report.dates.start = startDate;
+      this.report.dates.end = endDate;
+      this.report.numClients = 0;
+      this.report.avgRetail = 0;
+      this.report.avgService = 0;
+      tmpClients = [];
+      return Appointment.find({
+        'transactions.date.start': {
+          '$gte': startDate,
+          '$lte': endDate
+        },
+        'confirmed': true,
+        'void.void': false
+      }, __bind(function(err, data) {
+        var appointment, client, totalAppointments, totalProducts, totalRevenue, totalServices, transaction, uid, visits, _i, _j, _len, _len2, _ref;
+        totalRevenue = 0;
+        totalProducts = 0;
+        totalServices = 0;
+        totalAppointments = 0;
+        for (_i = 0, _len = data.length; _i < _len; _i++) {
+          appointment = data[_i];
+          if (parseInt(appointment.transactions[0].client) !== 3803) {
+            _ref = appointment.transactions;
+            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+              transaction = _ref[_j];
+              if (transaction.product.price) {
+                totalRevenue += transaction.product.price * transaction.product.quantity;
+                totalProducts += transaction.product.price * transaction.product.quantity;
+              } else {
+                totalRevenue += transaction.service.price;
+                totalServices += transaction.service.price;
+              }
+            }
+            uid = parseInt(appointment.transactions[0].client);
+            if (tmpClients[uid]) {
+              tmpClients[uid]++;
+            } else {
+              tmpClients[uid] = 1;
+            }
+          }
+        }
+        for (client in tmpClients) {
+          visits = tmpClients[client];
+          this.report.numClients++;
+        }
+        totalAppointments = data.length;
+        this.report.avgRevenue = totalRevenue / totalAppointments;
+        this.report.avgRetail = totalProducts / totalAppointments;
+        this.report.avgService = totalServices / totalAppointments;
+        this.report.avgVisits = totalAppointments / this.report.numClients;
+        this.report.avgLifetimeValue = this.report.avgRevenue * this.report.avgVisits;
+        return callback(this.report);
+      }, this));
     };
     return Reports;
   })();

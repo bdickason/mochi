@@ -11,7 +11,7 @@
       return redis.get(redisKey, function(err, data) {
         var options;
         if (data) {
-          return callback(eval(data));
+          return callback(JSON.parse(data));
         } else {
           if (uid) {
             return User.findOne({

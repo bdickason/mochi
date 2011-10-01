@@ -1118,10 +1118,13 @@ span.newClientIconAdjust {
 	margin-bottom:20px;
 }
 
+.phoneNum {
+  float: left;
+}
 .phoneNum input {
 	width:320px; 
 	padding:15px 18px;
-	margin:10px 10px 0 0; 
+	margin:10px 10px 20px 0; 
 	font-weight:bold; 
 	display:block;
 	font-size:19px;
@@ -1131,27 +1134,31 @@ span.newClientIconAdjust {
 .phoneType {
 	width:214px; 
 	margin:10px 10px 0 0; 
+	float: left;
 }
 
-.streetaddress {
+#streetaddress {
 	width:460px; 
 	margin:10px 10px 0 0; 
 	display:block;
+	float:left;
 }
 
 .streetaddressInput input {
 	width:433px; 
 	padding:15px 18px;
-	margin:0px 10px 20px 0px; 
+	margin:10px 10px 20px 0px; 
 	display:block;
 	font-size:19px;
 	line-height:19px;
+	float: left;
 }
 
-.apt {
+#apt {
 	width:156px; 
 	margin:10px 0 10px 0; 
 	display:block;
+	float:right;
 }
 
 .aptInput input {
@@ -1162,10 +1169,11 @@ span.newClientIconAdjust {
 	line-height:19px;
 }
 
-.city {
+#city {
 	width:407px; 
 	margin:0 10px 0 0; 
 	display:block;
+	float: left;
 }
 
 .cityInput input {
@@ -1175,28 +1183,39 @@ span.newClientIconAdjust {
 	display:block;
 	font-size:19px;
 	line-height:19px;
+	float:left;
 }
 
-.state {
+#state {
 	width:61px; 
 	margin:0 10px 0 0; 
 	display:block;
+	float:left;
 }
 
 .stateInput input {
 	width:34px; 
 	padding:15px 18px;
-	margin:10px 10px 20px 0; 
+	margin:10px 10px 20px 10px; 
 	display:block;
 	text-align:center;
 	font-size:19px;
 	line-height:19px;
+	float:left;
 }
 
-.zip {
+#bday {
+	width:413px; 
+	margin:10px 0 0 0; 
+	display:block;
+	float: left;
+}
+
+#zip {
 	width:127px; 
 	margin:0; 
 	display:block;
+	float: right;
 }
 
 .zipInput input {
@@ -1206,36 +1225,56 @@ span.newClientIconAdjust {
 	display:block;
 	font-size:19px;
 	line-height:19px;
+	float:right;
 }
 
-.bday {
-	width:413px; 
-	margin:10px 10px 0 0; 
-	display:block;
-}
-
-.bdaySelect  {
+#month {
 	width:214px; 
 	margin:10px 10px 0 0; 
+	display:block;
+	float:left;
 }
 
-.year input {
+#day input {
+  width: 34px;
+  padding:15px 18px;
+  margin:10px 10px 0 0;
+  display:block;
+  text-align:center;
+  font-size:19px;
+  line-height:19px;
+  float:left;
+}
+
+#year {
+  width: 100px;
+  margin:10px 10px 0 0;
+  display:block;
+  float: left;
+}
+#year input {
 	width:80px; 
 	padding:15px 18px;
-	margin:10px 10px 0 0; 
 	display:block;
 	text-align:center;
 	font-size:19px;
 	line-height:19px;
+	float:left;
 }
 
-.gender {
+#gender {
 	width:203px; 
 	margin:10px 0 0 0; 
 	display:block;
+	float:right;
 }
 
-.genderSelect  {
+.genderInput {
+  float:right;
+	padding:12px 18px;  
+}
+
+.genderInput select {
 	width:214px; 
 	margin:10px 0 0 0; 
 }
@@ -1247,18 +1286,21 @@ span.newClientIconAdjust {
 	display:inline-block;
 	font-size:19px;
 	line-height:19px;
+	float: left;
 }
 
-.userType {
+#userType {
 	width:203px; 
-	margin:0; 
+  margin: 0px 0 0 0;
 	display:block;
+	float:right;
 }
 
-.referred {
+#referred {
 	width:413px; 
-	margin:0 10px 0 0; 
+	margin:10px 0 0 0; 
 	display:block;
+	float:left;
 }
 
 .adminPW {
@@ -1319,6 +1361,7 @@ span.newClientIconAdjust {
 	margin:10px 0 0 0; 
 	padding:0; 
 	border:none;
+	float:right;
 }
 
 .addBtn a:hover { 

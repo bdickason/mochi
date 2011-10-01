@@ -14,7 +14,7 @@ exports.Users = class Users
     redisKey = "/users/#{uid}#{JSON.stringify query}"
     redis.get redisKey, (err, data) ->
       if data
-        callback eval data
+        callback JSON.parse data
       else
         # Cache is clean, go grab it from mongo    
         if uid

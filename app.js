@@ -74,8 +74,18 @@
         return report.newClients(req.params.startDate, req.params.endDate, function(json) {
           return res.send(json);
         });
-      case 'tmpClients':
-        return report.tmpClients(req.params.startDate, req.params.endDate, function(json) {
+      case 'uniqueClients':
+        return report.uniqueClients(req.params.startDate, req.params.endDate, function(json) {
+          return res.send(json);
+        });
+      case 'allClients':
+        return report.allClients(req.params.startDate, req.params.endDate, function(json) {
+          return res.send(json);
+        });
+      case 'retention':
+        return report.retention(req.params.startDate, req.params.endDate, function(json) {});
+      case 'alv':
+        return report.alv(req.params.startDate, req.params.endDate, function(json) {
           return res.send(json);
         });
     }

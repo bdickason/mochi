@@ -228,11 +228,36 @@ exports.Reports = class Reports
           User.find { 'type': 'stylist', 'active': 1 }, { 'name': 1, 'uid': 1 }, (err, stylistdata) =>
             @report.stylists = stylistdata
             callback @report
-  
-  ### TMP New Clients Report - Uses transactions not users ###  
-  tmpClients: (startDate, stylist, callback) ->
-    # Temporary report to query transactions + return clients based on which stylist has had a transaction with that user
+
+  ### Retention Report - How many clients are we keeping? losing? ###
+  retention: (startDate, endDate, callback) ->
+    # Avg. # of visits per client
+    # of clients who have returned in a given period
+    # of clients who have not returned in a given period
+    # streaks?
     
+    # number of return clients in last 30 days
+    @report = {}
+        
+    @report.newClients = []
+    
+    # number of new clients in last 30 days    
+    Appointment.find { 'active': 1 }, (err, appointments) =>
+      for appointment in appointments
+        # Right now we only have one client per appointment
+          if !@report.newClients[appointment.transactions[0].client]
+            # This is a new client
+            @report.newClients[appointment.transactions[0].client] = 1
+          else if @report.newClients[appointment.transactions[0].client] >= 1
+            # This is a return client, increment!
+            @report.newClients[appointment.transactions[0].client]++
+      callback @report
+
+                
+  ### TMP New Clients Report - Uses transactions not users ###  
+  allClients: (startDate, stylist, callback) ->
+    # returns ALL clients that have ever visited a given stylist in a date range.
+
     startDate = new Date(startDate)
     startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
 
@@ -245,17 +270,87 @@ exports.Reports = class Reports
     @report.dates = {}  # Add dates to output
     @report.dates.start = startDate
     @report.dates.end = endDate
+
+    @report.clients = []
+    @report.count = 0
+
+    query = { $or: [] } # We'll use this to catalog all the user ID's we wanna grab info for
+
+    if stylist
+      Appointment.find { 'transactions.stylist': parseInt(stylist) }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
+        for appointment in appointmentdata
+          for transaction in appointment.transactions
+            query['$or'].push {uid: transaction.client }  # Throw all the clients that match into our query
+
+        User.find { query }, { 'phone': 1, 'name': 1, 'email': 1}, (err, userdata) =>
+          for user in userdata
+            final = {}
+            if user.email
+              final.email = user.email
+            if user.name
+              final.name = user.name
+
+            if user.phone.length > 0                
+              final.phone = []
+              for phone in user.phone
+                final.phone.push phone.number
+
+            @report.count++
+            @report.clients.push final
+
+          callback @report
+
+        # console.log @report ###
+
+    
+
+  
+  ### TMP New Clients Report - Uses transactions not users ###  
+  uniqueClients: (startDate, stylist, callback) ->
+    # returns clients that have ONLY ever visited a given stylist in a date range.
+
+    startDate = new Date(startDate)
+    startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+
+    # We only care about start date for daily report, end date should be today
+    endDate = new Date()
+    endDate.setHours 23, 59, 59
+    
+    # Convert string to Int
+    stylist = parseInt stylist
+
+    @report = {}   # JSON representing report output
+
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
     
     @report.clients = []
     @report.count = 0
     
     query = { $or: [] } # We'll use this to catalog all the user ID's we wanna grab info for
     
+    tmpClients = [] # temporary array for storing clients
+    # create an array w/ client Id's
+    # If id = 1, it's only this style
+    # If id = 0, there's no hit
+    # If id > 1, they've seen another stylist
+    
     if stylist
-      Appointment.find { 'transactions.stylist': parseInt(stylist) }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
+      Appointment.find { 'transactions.stylist': stylist }, { 'transactions.client': 1, 'transactions.stylist': 1 }, (err, appointmentdata) =>
         for appointment in appointmentdata
-          for transaction in appointment.transactions
-            query['$or'].push {uid: transaction.client }  # Throw all the clients that match into our query
+          for transaction in appointment.transactions            
+            if parseInt(transaction.stylist) is stylist
+              if !tmpClients[parseInt(transaction.client)]
+                tmpClients[parseInt(transaction.client)] = 1
+            else
+              tmpClients[parseInt(transaction.client)] = 2
+
+        for key, value of tmpClients
+          if value is 1
+            query['$or'].push {uid: parseInt(key)}  # Only query for clients that have a value of 1 (only seen the stylist)
+
+        console.log query
         
         User.find { query }, { 'phone': 1, 'name': 1, 'email': 1}, (err, userdata) =>
           for user in userdata
@@ -275,5 +370,75 @@ exports.Reports = class Reports
         
           callback @report
 
-        # console.log @report ###
-        
+  ### _THE ONLY REPORT THAT MATTERS ###
+  alv: (startDate, endDate, callback) ->
+    # Average Lifetime Value of customers, spread via cohort analysis and segmented by source
+    # see: http://blog.kissmetrics.com/how-to-calculate-lifetime-value/?wide=1
+
+    startDate = new Date(startDate)
+    startDate.setHours 0, 0, 0  # We always want to start at the beginning of the day
+    endDate = new Date(endDate)
+    endDate.setHours 23, 59, 59
+    
+    @report = {}   # JSON representing report output
+
+    @report.dates = {}  # Add dates to output
+    @report.dates.start = startDate
+    @report.dates.end = endDate
+
+    @report.numClients = 0
+    @report.avgRetail = 0
+    @report.avgService = 0
+    
+    tmpClients = []
+
+    # Grab all transactions in the time period
+    Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true, 'void.void': false }, (err, data) =>      
+    
+      # temporary variables for averages
+      totalRevenue = 0 
+      totalProducts = 0
+      totalServices = 0
+      totalAppointments = 0
+            
+      for appointment in data
+        if parseInt(appointment.transactions[0].client) != 3803 # HACK - Fake client used for internal crap. Filter it out!
+
+          # Get average $$$ spent per visit
+          for transaction in appointment.transactions
+            if transaction.product.price
+              totalRevenue += transaction.product.price * transaction.product.quantity
+              totalProducts += transaction.product.price * transaction.product.quantity              
+            else
+              totalRevenue += transaction.service.price
+              totalServices += transaction.service.price
+
+          # Calculate average # of visits per client
+          uid = parseInt appointment.transactions[0].client # Each transaction currently only has 1 client
+          if tmpClients[uid]
+            tmpClients[uid]++ # Client has visited an additional time
+          else
+            tmpClients[uid] = 1 # First time this client has visited
+      
+      for client, visits of tmpClients
+        # console.log "#{client}: #{visits}"
+        @report.numClients++
+          
+      totalAppointments = data.length
+      
+      @report.avgRevenue = totalRevenue / totalAppointments # Average revenue per visit
+      @report.avgRetail = totalProducts / totalAppointments
+      @report.avgService = totalServices / totalAppointments
+
+      @report.avgVisits = totalAppointments / @report.numClients
+      @report.avgLifetimeValue = @report.avgRevenue * @report.avgVisits
+
+      
+      callback @report
+      
+      # console.log data # 401 appointments
+      
+    
+    
+
+    # 3. Calculate average monthly value (multiply them)
