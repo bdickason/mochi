@@ -386,16 +386,21 @@ exports.Reports = class Reports
     @report.dates.start = startDate
     @report.dates.end = endDate
 
-    @report.count = 0
+    @report.numClients = 0
+    @report.avgRetail = 0
+    @report.avgService = 0
     
     tmpClients = []
 
     # Grab all transactions in the time period
     Appointment.find { 'transactions.date.start': {'$gte': startDate, '$lte': endDate }, 'confirmed': true, 'void.void': false }, (err, data) =>      
-
-      @report.numClients = 0
-      totalRevenue = 0      
-      
+    
+      # temporary variables for averages
+      totalRevenue = 0 
+      totalProducts = 0
+      totalServices = 0
+      totalAppointments = 0
+            
       for appointment in data
         if parseInt(appointment.transactions[0].client) != 3803 # HACK - Fake client used for internal crap. Filter it out!
 
@@ -403,10 +408,12 @@ exports.Reports = class Reports
           for transaction in appointment.transactions
             if transaction.product.price
               totalRevenue += transaction.product.price * transaction.product.quantity
+              totalProducts += transaction.product.price * transaction.product.quantity              
             else
               totalRevenue += transaction.service.price
+              totalServices += transaction.service.price
 
-          # 2. Calculate average # of visits per client
+          # Calculate average # of visits per client
           uid = parseInt appointment.transactions[0].client # Each transaction currently only has 1 client
           if tmpClients[uid]
             tmpClients[uid]++ # Client has visited an additional time
@@ -417,11 +424,14 @@ exports.Reports = class Reports
         # console.log "#{client}: #{visits}"
         @report.numClients++
           
-      @report.numAppointments = data.length
+      totalAppointments = data.length
       
-      @report.avgRevenue = totalRevenue / @report.numAppointments # Average revenue per visit
-      @report.avgVisits = @report.numAppointments / @report.numClients
-      @report.avgValue = @report.avgRevenue * @report.avgVisits
+      @report.avgRevenue = totalRevenue / totalAppointments # Average revenue per visit
+      @report.avgRetail = totalProducts / totalAppointments
+      @report.avgService = totalServices / totalAppointments
+
+      @report.avgVisits = totalAppointments / @report.numClients
+      @report.avgLifetimeValue = @report.avgRevenue * @report.avgVisits
 
       
       callback @report

@@ -424,7 +424,9 @@
       this.report.dates = {};
       this.report.dates.start = startDate;
       this.report.dates.end = endDate;
-      this.report.count = 0;
+      this.report.numClients = 0;
+      this.report.avgRetail = 0;
+      this.report.avgService = 0;
       tmpClients = [];
       return Appointment.find({
         'transactions.date.start': {
@@ -434,9 +436,11 @@
         'confirmed': true,
         'void.void': false
       }, __bind(function(err, data) {
-        var appointment, client, totalRevenue, transaction, uid, visits, _i, _j, _len, _len2, _ref;
-        this.report.numClients = 0;
+        var appointment, client, totalAppointments, totalProducts, totalRevenue, totalServices, transaction, uid, visits, _i, _j, _len, _len2, _ref;
         totalRevenue = 0;
+        totalProducts = 0;
+        totalServices = 0;
+        totalAppointments = 0;
         for (_i = 0, _len = data.length; _i < _len; _i++) {
           appointment = data[_i];
           if (parseInt(appointment.transactions[0].client) !== 3803) {
@@ -445,8 +449,10 @@
               transaction = _ref[_j];
               if (transaction.product.price) {
                 totalRevenue += transaction.product.price * transaction.product.quantity;
+                totalProducts += transaction.product.price * transaction.product.quantity;
               } else {
                 totalRevenue += transaction.service.price;
+                totalServices += transaction.service.price;
               }
             }
             uid = parseInt(appointment.transactions[0].client);
@@ -461,10 +467,12 @@
           visits = tmpClients[client];
           this.report.numClients++;
         }
-        this.report.numAppointments = data.length;
-        this.report.avgRevenue = totalRevenue / this.report.numAppointments;
-        this.report.avgVisits = this.report.numAppointments / this.report.numClients;
-        this.report.avgValue = this.report.avgRevenue * this.report.avgVisits;
+        totalAppointments = data.length;
+        this.report.avgRevenue = totalRevenue / totalAppointments;
+        this.report.avgRetail = totalProducts / totalAppointments;
+        this.report.avgService = totalServices / totalAppointments;
+        this.report.avgVisits = totalAppointments / this.report.numClients;
+        this.report.avgLifetimeValue = this.report.avgRevenue * this.report.avgVisits;
         return callback(this.report);
       }, this));
     };
